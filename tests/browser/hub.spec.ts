@@ -1,0 +1,24 @@
+import { readFileSync, existsSync } from 'node:fs';
+import { test, expect } from '@playwright/test';
+import { parseManifest } from '../../src/game/assets/manifest';
+import { Navigation } from '../../src/game/movement/navigation';
+const installed=existsSync('public/assets/manifest.json');
+test('Astrub : clic simple, maintien du clic droit, déplacement animé et resize',async({page})=>{
+ test.skip(!installed,'Assets locaux nécessaires.');
+ const manifest=parseManifest(JSON.parse(readFileSync('public/assets/manifest.json','utf8'))),map=manifest.hub,navigation=new Navigation(map.walkable!),spawn=map.spawn;
+ const candidates=map.walkable!.filter(c=>Math.hypot(c.position[0]-spawn[0],c.position[1]-spawn[1])>60&&Math.hypot(c.position[0]-spawn[0],c.position[1]-spawn[1])<110&&navigation.clear(spawn,c.position));
+ expect(candidates.length).toBeGreaterThan(1);
+ await page.goto('/');await expect(page.getByRole('button',{name:'Donjons',exact:true})).toBeVisible({timeout:60000});
+ const canvas=page.locator('canvas'),rect=(await canvas.boundingBox())!;
+ const [left,bottom,right,top]=map.bounds,scale=rect.height/Math.max(map.cameraHeight,(right-left)*rect.height/rect.width);
+ const screen=(point:[number,number])=>({x:rect.x+rect.width/2+(point[0]-(left+right)/2)*scale,y:rect.y+rect.height/2-(point[1]-(bottom+top)/2)*scale});
+ const first=screen(candidates[0].position);await page.mouse.move(first.x,first.y);await page.mouse.down({button:'right'});
+ await expect.poll(()=>canvas.getAttribute('data-animation')).toContain('cra.run.');
+ const target=screen(candidates.at(-1)!.position);await page.mouse.move(target.x,target.y,{steps:5});
+ await expect.poll(async()=>Math.hypot(Number(await canvas.getAttribute('data-player-x'))-candidates.at(-1)!.position[0],Number(await canvas.getAttribute('data-player-y'))-candidates.at(-1)!.position[1]),{timeout:15000}).toBeLessThan(1);
+ await page.mouse.up({button:'right'});
+ const origin=screen(spawn);await page.mouse.click(origin.x,origin.y,{button:'right'});
+ await expect.poll(async()=>Math.hypot(Number(await canvas.getAttribute('data-player-x'))-spawn[0],Number(await canvas.getAttribute('data-player-y'))-spawn[1]),{timeout:15000}).toBeLessThan(1);
+ expect(await canvas.evaluate(c=>!c.dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true})))).toBe(true);
+ await page.setViewportSize({width:800,height:600});await expect(canvas).toBeVisible();
+});

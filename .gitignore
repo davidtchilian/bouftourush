@@ -1,0 +1,9 @@
+# Archives et sources locales : ne pas publier.
+*.[zZ][iI][pP]
+.local-assets/
+
+# Dépendances et caches locaux.
+node_modules/
+.venv/
+__pycache__/
+*.pyc

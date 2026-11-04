@@ -1,0 +1,44 @@
+{
+  "name": "bouftourush",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.2",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build && tsx scripts/build-offline.ts",
+    "preview": "vite preview",
+    "test": "vitest run && python3 -m unittest discover -s tests -p \"*_test.py\"",
+    "test:browser": "playwright test",
+    "assets:import": "tsx scripts/import-assets.ts",
+    "assets:validate": "tsx scripts/validate-assets.ts",
+    "assets:inspect": "python3 scripts/inspect-client.py",
+    "assets:export": "python3 scripts/export-sprites.py",
+    "assets:prepare": "python3 scripts/prepare-hub.py",
+    "assets:prepare:game": "python3 scripts/prepare-hub.py && python3 scripts/prepare-game.py && tsx scripts/compose-ui-buttons.ts && python3 scripts/prepare-spell-icons.py && tsx scripts/rasterize-appearance.ts --spell-icons && python3 scripts/prepare-appearance.py && tsx scripts/rasterize-appearance.ts && python3 scripts/prepare-ui-previews.py && tsx scripts/rasterize-appearance.ts --previews && tsx scripts/pack-atlas.ts .local-assets/game-runtime && tsx scripts/pack-atlas.ts .local-assets/game-runtime --previews",
+    "test:offline": "playwright test -c playwright.offline.config.ts",
+    "test:simulation": "tsx scripts/simulate-run.ts",
+    "assets:compare": "tsx scripts/verify-composition.ts",
+    "assets:measure": "tsx scripts/measure-composition.ts",
+    "test:loot": "tsx scripts/audit-loot.ts",
+    "assets:spells": "python3 scripts/prepare-spell-icons.py && tsx scripts/rasterize-appearance.ts --spell-icons"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.182.0",
+    "zustand": "^5.0.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.182.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.9.0",
+    "vite": "^6.4.0",
+    "vitest": "^3.2.0"
+  }
+}
