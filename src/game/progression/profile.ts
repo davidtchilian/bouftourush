@@ -15,6 +15,17 @@ export function finalStats(profile:Profile):Stats&{cooldownReduction:number} {
  stats.cooldownReduction=Math.min(balance.maxCooldownReduction,Math.max(0,stats.cooldownReduction));
  return stats;
 }
+/** Bonus de vitesse en pourcentage, recalculé sans modifier la sauvegarde. */
+export function movementSpeedBonus(profile:Profile):number {
+ const equipped=slots.flatMap(slot=>{const instance=profile.inventory.find(i=>i.uid===profile.equipment[slot]);return instance&&items[instance.item]?[items[instance.item]]:[];});
+ let bonus=equipped.reduce((sum,item)=>sum+(item.stats.movementSpeed??0),0);
+ for(const [id,set] of Object.entries(sets)){
+  const count=new Set(equipped.filter(item=>item.set===id).map(item=>item.id)).size;
+  const threshold=Object.keys(set.thresholds).map(Number).filter(n=>n<=count).sort((a,b)=>b-a)[0];
+  if(threshold)bonus+=set.thresholds[threshold].movementSpeed??0;
+ }
+ return Math.max(-50,Math.min(60,bonus));
+}
 export function awardXp(profile:Profile,amount:number):number {
  const old=profile.level;profile.xp+=amount;
  while(profile.level<balance.maxLevel && profile.xp>=xpForLevel(profile.level)){profile.xp-=xpForLevel(profile.level);profile.level++;}

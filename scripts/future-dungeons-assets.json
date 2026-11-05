@@ -1,0 +1,1251 @@
+{
+  "version": 1,
+  "visualVersion": "1.40.13-remastered",
+  "preparedOnly": true,
+  "archiveSha256": "aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5",
+  "identitySources": [
+    "items_fr_450.swf / I.u",
+    "itemsets_fr_180.swf / IS",
+    "Ancestra-Evolutive / monsters et mobgroups_fix"
+  ],
+  "families": [
+    {
+      "id": "chefBwork",
+      "name": "Chef Bwork",
+      "setId": 19,
+      "items": [
+        {
+          "id": "6799",
+          "name": "Lame du Chef Bwork",
+          "set": 19,
+          "type": 6,
+          "gfx": 48,
+          "source": "clips/items/6/48.swf"
+        },
+        {
+          "id": "6804",
+          "name": "Amulette du Chef Bwork",
+          "set": 19,
+          "type": 1,
+          "gfx": 66,
+          "source": "clips/items/1/66.swf"
+        },
+        {
+          "id": "6805",
+          "name": "Bracelet du Chef Bwork",
+          "set": 19,
+          "type": 9,
+          "gfx": 58,
+          "source": "clips/items/9/58.swf"
+        },
+        {
+          "id": "6807",
+          "name": "Bottes du Chef Bwork",
+          "set": 19,
+          "type": 11,
+          "gfx": 44,
+          "source": "clips/items/11/44.swf"
+        },
+        {
+          "id": "6811",
+          "name": "Cape du Chef Bwork",
+          "set": 19,
+          "type": 17,
+          "gfx": 60,
+          "source": "clips/items/17/60.swf",
+          "accessorySource": "clips/sprites/accessories/a2.swf",
+          "accessorySymbol": "17_60"
+        },
+        {
+          "id": "6812",
+          "name": "Slip du Chef Bwork",
+          "set": 19,
+          "type": 10,
+          "gfx": 59,
+          "source": "clips/items/10/59.swf"
+        },
+        {
+          "id": "6813",
+          "name": "Casque du Chef Bwork",
+          "set": 19,
+          "type": 16,
+          "gfx": 65,
+          "source": "clips/items/16/65.swf",
+          "accessorySource": "clips/sprites/accessories/a1.swf",
+          "accessorySymbol": "16_65"
+        }
+      ],
+      "monsters": [
+        {
+          "id": 876,
+          "name": "Bwork",
+          "sprite": "1003",
+          "source": "clips/sprites/1003.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 74,
+          "name": "Bwork Archer",
+          "sprite": "1004",
+          "source": "clips/sprites/1004.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 53,
+          "name": "Bwork Mage",
+          "sprite": "1012",
+          "source": "clips/sprites/1012.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 792,
+          "name": "Bworkette",
+          "sprite": "1241",
+          "source": "clips/sprites/1241.swf",
+          "boss": true,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 1042,
+          "name": "Chef Bworkestre",
+          "sprite": "1003",
+          "source": "clips/sprites/1003.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        }
+      ],
+      "map": {
+        "id": "9760",
+        "status": "public-layout-available",
+        "source": "maps/9760/9760_0701291449.swf",
+        "navigationReady": false
+      }
+    },
+    {
+      "id": "blopMulti",
+      "name": "Blop Multicolore Royal",
+      "setId": 106,
+      "items": [
+        {
+          "id": "9148",
+          "name": "Blopanneau Multicolore Royal",
+          "set": 106,
+          "type": 9,
+          "gfx": 157,
+          "source": "clips/items/9/157.swf"
+        },
+        {
+          "id": "9157",
+          "name": "Amublop Multicolore Royale",
+          "set": 106,
+          "type": 1,
+          "gfx": 136,
+          "source": "clips/items/1/136.swf"
+        },
+        {
+          "id": "9166",
+          "name": "Bloptes Multicolores Royales",
+          "set": 106,
+          "type": 11,
+          "gfx": 125,
+          "source": "clips/items/11/125.swf"
+        },
+        {
+          "id": "9175",
+          "name": "Blopture Multicolore Royale",
+          "set": 106,
+          "type": 10,
+          "gfx": 144,
+          "source": "clips/items/10/144.swf"
+        }
+      ],
+      "monsters": [
+        {
+          "id": 273,
+          "name": "Blop Coco",
+          "sprite": "1174",
+          "source": "clips/sprites/1174.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 274,
+          "name": "Blop Indigo",
+          "sprite": "1171",
+          "source": "clips/sprites/1171.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 275,
+          "name": "Blop Griotte",
+          "sprite": "1172",
+          "source": "clips/sprites/1172.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 276,
+          "name": "Blop Reinette",
+          "sprite": "1173",
+          "source": "clips/sprites/1173.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 277,
+          "name": "Biblop Indigo",
+          "sprite": "1175",
+          "source": "clips/sprites/1175.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 278,
+          "name": "Biblop Coco",
+          "sprite": "1178",
+          "source": "clips/sprites/1178.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 279,
+          "name": "Biblop Griotte",
+          "sprite": "1176",
+          "source": "clips/sprites/1176.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 280,
+          "name": "Biblop Reinette",
+          "sprite": "1177",
+          "source": "clips/sprites/1177.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 1181,
+          "name": "Gloutoblop",
+          "sprite": "1652",
+          "source": "clips/sprites/1652.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 1182,
+          "name": "Blopignon",
+          "sprite": "1645",
+          "source": "clips/sprites/1645.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 1183,
+          "name": "Tronkoblop",
+          "sprite": "1653",
+          "source": "clips/sprites/1653.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 1184,
+          "name": "Blop Coco Royal",
+          "sprite": "1654",
+          "source": "clips/sprites/1654.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 1185,
+          "name": "Blop Griotte Royal",
+          "sprite": "1657",
+          "source": "clips/sprites/1657.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 1186,
+          "name": "Blop Indigo Royal",
+          "sprite": "1656",
+          "source": "clips/sprites/1656.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 1187,
+          "name": "Blop Reinette Royal",
+          "sprite": "1655",
+          "source": "clips/sprites/1655.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 1188,
+          "name": "Blop Multicolore Royal",
+          "sprite": "1647",
+          "source": "clips/sprites/1647.swf",
+          "boss": true,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        }
+      ],
+      "map": {
+        "id": "11892",
+        "status": "public-layout-available",
+        "source": "Ancestra-Evolutive/sql/ancestra-evolutive-full.sql#maps/11892@0712071740",
+        "layoutSourceType": "public-sql",
+        "layoutSha256": "08d52d2a904453f7b4216fa9ee92789101cfedaa5dd0a8a19a163149736a8d52",
+        "date": "0712071740",
+        "metadataSource": "maps/11892/11892_0712071740X.swf",
+        "metadataFieldsUsed": [
+          "width",
+          "height",
+          "backgroundNum"
+        ],
+        "navigationReady": false,
+        "identitySource": "mobgroups_fix[11892] : Blop Multicolore Royal ; disposition de 479 cellules déjà publiée en clair"
+      }
+    },
+    {
+      "id": "craqueleur",
+      "name": "Craqueleur",
+      "setId": 26,
+      "items": [
+        {
+          "id": "6930",
+          "name": "Casque du Craqueleur",
+          "set": 26,
+          "type": 16,
+          "gfx": 85,
+          "source": "clips/items/16/85.swf",
+          "accessorySource": "clips/sprites/accessories/a1.swf",
+          "accessorySymbol": "16_85"
+        },
+        {
+          "id": "6931",
+          "name": "Craquelocape",
+          "set": 26,
+          "type": 17,
+          "gfx": 77,
+          "source": "clips/items/17/77.swf",
+          "accessorySource": "clips/sprites/accessories/a2.swf",
+          "accessorySymbol": "17_77"
+        },
+        {
+          "id": "6933",
+          "name": "Bottes du Craqueleur",
+          "set": 26,
+          "type": 11,
+          "gfx": 52,
+          "source": "clips/items/11/52.swf"
+        },
+        {
+          "id": "6934",
+          "name": "Craquamulette",
+          "set": 26,
+          "type": 1,
+          "gfx": 77,
+          "source": "clips/items/1/77.swf"
+        },
+        {
+          "id": "6935",
+          "name": "Ceinture du Craqueleur",
+          "set": 26,
+          "type": 10,
+          "gfx": 74,
+          "source": "clips/items/10/74.swf"
+        },
+        {
+          "id": "6957",
+          "name": "Lame du Craqueleur",
+          "set": 26,
+          "type": 6,
+          "gfx": 54,
+          "source": "clips/items/6/54.swf"
+        }
+      ],
+      "monsters": [
+        {
+          "id": 106,
+          "name": "Craqueleur",
+          "sprite": "1008",
+          "source": "clips/sprites/1008.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 293,
+          "name": "Craqueleur des plaines",
+          "sprite": "1049",
+          "source": "clips/sprites/1049.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 295,
+          "name": "Méga Craqueleur",
+          "sprite": "1152",
+          "source": "clips/sprites/1152.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 669,
+          "name": "Craqueleur L?gendaire",
+          "sprite": "1358",
+          "source": "clips/sprites/1358.swf",
+          "boss": true,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        }
+      ],
+      "map": {
+        "id": "9580",
+        "status": "public-layout-available",
+        "source": "maps/9580/9580_0610091135.swf",
+        "navigationReady": false,
+        "identitySource": "maps_fr_299.swf / MA.m[9580], sa 252 : Donjon des Craqueleurs, salle 11"
+      }
+    },
+    {
+      "id": "gelax",
+      "name": "Gelax",
+      "setId": 6,
+      "items": [
+        {
+          "id": "2446",
+          "name": "Gelocape",
+          "set": 6,
+          "type": 17,
+          "gfx": 47,
+          "source": "clips/items/17/47.swf",
+          "accessorySource": "clips/sprites/accessories/a2.swf",
+          "accessorySymbol": "17_47"
+        },
+        {
+          "id": "2447",
+          "name": "Gelocoiffe",
+          "set": 6,
+          "type": 16,
+          "gfx": 43,
+          "source": "clips/items/16/43.swf",
+          "accessorySource": "clips/sprites/accessories/a1.swf",
+          "accessorySymbol": "16_43"
+        },
+        {
+          "id": "2469",
+          "name": "Gelano",
+          "set": 6,
+          "type": 9,
+          "gfx": 47,
+          "source": "clips/items/9/47.swf"
+        },
+        {
+          "id": "2470",
+          "name": "Gelobottes",
+          "set": 6,
+          "type": 11,
+          "gfx": 31,
+          "source": "clips/items/11/31.swf"
+        },
+        {
+          "id": "2471",
+          "name": "Geloture",
+          "set": 6,
+          "type": 10,
+          "gfx": 32,
+          "source": "clips/items/10/32.swf"
+        },
+        {
+          "id": "2472",
+          "name": "Gelamu",
+          "set": 6,
+          "type": 1,
+          "gfx": 51,
+          "source": "clips/items/1/51.swf"
+        }
+      ],
+      "monsters": [
+        {
+          "id": 55,
+          "name": "Gelée Bleue",
+          "sprite": "1062",
+          "source": "clips/sprites/1062.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 56,
+          "name": "Gelée Menthe",
+          "sprite": "1064",
+          "source": "clips/sprites/1064.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 57,
+          "name": "Gelée Fraise",
+          "sprite": "1066",
+          "source": "clips/sprites/1066.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 58,
+          "name": "Gelée Royale Bleue",
+          "sprite": "1061",
+          "source": "clips/sprites/1061.swf",
+          "boss": true,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 85,
+          "name": "Gelée Royale Menthe",
+          "sprite": "1063",
+          "source": "clips/sprites/1063.swf",
+          "boss": true,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 86,
+          "name": "Gelée Royale Fraise",
+          "sprite": "1065",
+          "source": "clips/sprites/1065.swf",
+          "boss": true,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 429,
+          "name": "Gelée Citron",
+          "sprite": "1221",
+          "source": "clips/sprites/1221.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 430,
+          "name": "Gelée Royale Citron",
+          "sprite": "1222",
+          "source": "clips/sprites/1222.swf",
+          "boss": true,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        }
+      ],
+      "map": {
+        "id": "6831",
+        "status": "public-layout-available",
+        "source": "maps/6831/6831_0612071702.swf",
+        "navigationReady": false,
+        "identitySource": "maps_fr_1021.swf / MA.m[6831], sa 78 : Gelaxième dimension royale"
+      }
+    },
+    {
+      "id": "ancestral",
+      "name": "Ancestrale",
+      "setId": 65,
+      "items": [
+        {
+          "id": "8463",
+          "name": "Abracaska Ancestral",
+          "set": 65,
+          "type": 16,
+          "gfx": 174,
+          "source": "clips/items/16/174.swf",
+          "accessorySource": "clips/sprites/accessories/a1.swf",
+          "accessorySymbol": "16_174"
+        },
+        {
+          "id": "8464",
+          "name": "Abracapa Ancestrale",
+          "set": 65,
+          "type": 17,
+          "gfx": 126,
+          "source": "clips/items/17/126.swf",
+          "accessorySource": "clips/sprites/accessories/a2.swf",
+          "accessorySymbol": "17_126"
+        },
+        {
+          "id": "8465",
+          "name": "Torque Ancestral",
+          "set": 65,
+          "type": 1,
+          "gfx": 118,
+          "source": "clips/items/1/118.swf"
+        },
+        {
+          "id": "8466",
+          "name": "Anneau Ancestral",
+          "set": 65,
+          "type": 9,
+          "gfx": 123,
+          "source": "clips/items/9/123.swf"
+        },
+        {
+          "id": "8467",
+          "name": "Protège-Tibias Ancestraux",
+          "set": 65,
+          "type": 11,
+          "gfx": 96,
+          "source": "clips/items/11/96.swf"
+        },
+        {
+          "id": "8468",
+          "name": "Abrature Ancestrale",
+          "set": 65,
+          "type": 10,
+          "gfx": 112,
+          "source": "clips/items/10/112.swf"
+        }
+      ],
+      "monsters": [
+        {
+          "id": 47,
+          "name": "Abraknyde",
+          "sprite": "1001",
+          "source": "clips/sprites/1001.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 253,
+          "name": "Abraknyde Sombre",
+          "sprite": "1158",
+          "source": "clips/sprites/1158.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 650,
+          "name": "Abrakne",
+          "sprite": "1333",
+          "source": "clips/sprites/1333.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 651,
+          "name": "Abrakne Sombre",
+          "sprite": "1334",
+          "source": "clips/sprites/1334.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 173,
+          "name": "Abraknyde Ancestral",
+          "sprite": "1458",
+          "source": "clips/sprites/1458.swf",
+          "boss": true,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        }
+      ],
+      "map": {
+        "id": "8721",
+        "status": "public-layout-available",
+        "source": "maps/8721/8721_0702080947.swf",
+        "navigationReady": false
+      }
+    },
+    {
+      "id": "meulou",
+      "name": "Meulou",
+      "setId": 55,
+      "items": [
+        {
+          "id": "8262",
+          "name": "La Meulette",
+          "set": 55,
+          "type": 1,
+          "gfx": 107,
+          "source": "clips/items/1/107.swf"
+        },
+        {
+          "id": "8263",
+          "name": "Anneau du Meulou",
+          "set": 55,
+          "type": 9,
+          "gfx": 113,
+          "source": "clips/items/9/113.swf"
+        },
+        {
+          "id": "8264",
+          "name": "Bottes du Meulou",
+          "set": 55,
+          "type": 11,
+          "gfx": 85,
+          "source": "clips/items/11/85.swf"
+        },
+        {
+          "id": "8265",
+          "name": "Cape du Meulou",
+          "set": 55,
+          "type": 17,
+          "gfx": 110,
+          "source": "clips/items/17/110.swf",
+          "accessorySource": "clips/sprites/accessories/a2.swf",
+          "accessorySymbol": "17_110"
+        },
+        {
+          "id": "8266",
+          "name": "Ceinture du Meulou",
+          "set": 55,
+          "type": 10,
+          "gfx": 103,
+          "source": "clips/items/10/103.swf"
+        },
+        {
+          "id": "8267",
+          "name": "Coiffe du Meulou",
+          "set": 55,
+          "type": 16,
+          "gfx": 144,
+          "source": "clips/items/16/144.swf",
+          "accessorySource": "clips/sprites/accessories/a1.swf",
+          "accessorySymbol": "16_144"
+        }
+      ],
+      "monsters": [
+        {
+          "id": 159,
+          "name": "Milimulou",
+          "sprite": "1107",
+          "source": "clips/sprites/1107.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 287,
+          "name": "Kanigrou",
+          "sprite": "1039",
+          "source": "clips/sprites/1039.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 102,
+          "name": "Mulou",
+          "sprite": "1069",
+          "source": "clips/sprites/1069.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 301,
+          "name": "Ouginak",
+          "sprite": "1196",
+          "source": "clips/sprites/1196.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 299,
+          "name": "Croc Gland",
+          "sprite": "1201",
+          "source": "clips/sprites/1201.swf",
+          "boss": false,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        },
+        {
+          "id": 232,
+          "name": "Meulou",
+          "sprite": "1134",
+          "source": "clips/sprites/1134.swf",
+          "boss": true,
+          "animations": {
+            "idleR": "staticR",
+            "idleL": "staticL",
+            "runR": "runR",
+            "runL": "runL",
+            "attackR": "anim0R",
+            "attackL": "anim0L",
+            "hitR": "hitR",
+            "hitL": "hitL",
+            "deathR": "dieR",
+            "deathL": "dieL"
+          }
+        }
+      ],
+      "map": {
+        "id": "9648",
+        "status": "public-layout-available",
+        "source": "maps/9648/9648_0612071646.swf",
+        "navigationReady": false
+      }
+    }
+  ]
+}

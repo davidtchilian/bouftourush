@@ -1,6 +1,7 @@
 import {defineConfig,type Plugin} from 'vite';
 import {readFile,realpath,writeFile} from 'node:fs/promises';
 import {resolve,sep} from 'node:path';
+import {authentication} from './server/auth';
 const localAssets:Plugin={
  name:'local-assets-after-import',apply:'serve',
  configureServer(server){
@@ -38,7 +39,7 @@ const localAssets:Plugin={
  },
 };
 export default defineConfig({
- plugins:[localAssets],
+ plugins:[authentication(),localAssets],
  server:{watch:{usePolling:true,interval:750,ignored:['**/.local-assets/**','**/dist/**','**/test-results/**','**/public/assets/**','**/public/.assets-staging/**']}},
  optimizeDeps:{entries:['index.html']},
 });

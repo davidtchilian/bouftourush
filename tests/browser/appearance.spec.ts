@@ -10,7 +10,7 @@ test('icônes recadrées, coiffe et cape portées, cartes figées',async({page},
  const profile=newProfile();profile.inventory=[{uid:'hat',item:'2411'},{uid:'cape',item:'2414'},{uid:'hat2',item:'2474'},{uid:'cape2',item:'2473'},{uid:'mousseHat',item:'8259'},{uid:'mousseCape',item:'8258'}];profile.equipment={hat:'hat',cape:'cape'};
  await page.addInitScript(profile=>localStorage.setItem('bouftourush.save.v1',JSON.stringify({version:1,profile})),profile);
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
- await page.goto('/');const canvas=page.locator('canvas');await expect(canvas).toHaveAttribute('data-animation',/^appearance\.2411\.2414\.cra\./);
+ await page.goto('/');const canvas=page.locator('canvas');await expect(canvas).toHaveAttribute('data-animation',/^appearance\.2411\.2414\.cra\./,{timeout:60000});
  await page.screenshot({path:testInfo.outputPath('equipped.png')});
  await page.keyboard.press('i');const dialog=page.getByRole('dialog',{name:'Inventaire et équipement',exact:true});
  const preview=dialog.getByRole('img',{name:'Aperçu du Crâ équipé',exact:true});

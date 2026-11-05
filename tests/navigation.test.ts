@@ -21,7 +21,7 @@ it('ramène un clic extérieur vers une cellule autorisée',()=>{
 type ReviewedCell=Cell&{assetId:string};
 const manifest=JSON.parse(readFileSync('public/assets/manifest.json','utf8'));
 const rules=JSON.parse(readFileSync('scripts/map-navigation.json','utf8'));
-for(const mapId of ['hub','incarnam','bouftou','ensable']){
+for(const mapId of ['hub','incarnam','bouftou','ensable','tofu','scara']){
  it(`${mapId} : traverse les décors depuis le spawn et respecte obstacles et limites`,()=>{
   const map=(mapId==='hub'?manifest.hub:manifest.maps[mapId]) as {walkable:Cell[];spawn:Point;enemySpawns?:Point[];layers:{assetId:string;position:Point;order:number}[]};
   const n=new Navigation(map.walkable);

@@ -8,8 +8,8 @@ import {InventoryPanel} from './InventoryPanel';
 import {DungeonPanel} from './DungeonPanel';
 const spellLabels:Record<SpellId,string>={explosive:'Explosive',flaming:'Enflammée',magic:'Magique',power:'Puissant'};
 export function GameUI({controller}:{controller:GameController|null}){
- const {snapshot:s,manifest}=useAppStore();
- const [menu,setMenu]=useState(false),[inventory,setInventory]=useState(false),[offline,setOffline]=useState(false);
+ const {snapshot:s,manifest,status}=useAppStore();
+ const [menu,setMenu]=useState(false),[inventory,setInventory]=useState(false);
  const [help,setHelp]=useState(false),[journalVisible,setJournalVisible]=useState(false);
  const latestMessage=s?.log[0];
  useEffect(()=>{
@@ -20,7 +20,6 @@ export function GameUI({controller}:{controller:GameController|null}){
  useEffect(()=>{try{setHelp(localStorage.getItem('bouftourush.help.seen')!=='1');}catch{setHelp(true);}},[]);
  const dismissHelp=()=>{setHelp(false);try{localStorage.setItem('bouftourush.help.seen','1');}catch{/* L’aide reste utilisable sans stockage. */}};
  const image=(id:string)=>manifest?.assets[id]?'/assets/'+manifest.assets[id].frames[0].path:undefined;
- useEffect(()=>{let live=true;if('serviceWorker' in navigator)navigator.serviceWorker.ready.then(()=>{if(live)setOffline(true);}).catch(()=>{});return()=>{live=false;};},[]);
  useEffect(()=>{if(controller)controller.simulation.paused=menu||inventory;},[controller,menu,inventory]);
  useEffect(()=>{
   const keys=(e:KeyboardEvent)=>{if(e.target instanceof HTMLElement&&(e.target.matches('input,textarea,select')||e.target.isContentEditable))return;
@@ -34,6 +33,7 @@ export function GameUI({controller}:{controller:GameController|null}){
  const panel=(children:ReactNode,label:string)=><section className="dialog" role="dialog" aria-modal="true" aria-label={label}>{children}</section>;
  const enter=(id:DungeonId,mode:DungeonMode='normal')=>{setMenu(false);setInventory(false);controller.simulation.enter(id,mode);};
  return <>
+  {status!=='Prêt'&&<p className="world-loading" role="status">{status}</p>}
   {(menu||inventory||s.phase==='victory'||s.phase==='death')&&<div className="dialog-backdrop" aria-hidden="true"/>}
   <footer className="spellbar">
    <div className="player-vitals">
@@ -48,7 +48,7 @@ export function GameUI({controller}:{controller:GameController|null}){
     </div>)}
    </div>
    <div className="adventure-tools">
-   <div className="adventure-status"><span className="adventure-location">{s.dungeon?`${dungeons[s.dungeon].name}${s.mode==='extreme'?' · Extrême':''}`:'Astrub'}</span><strong>{s.kamas.toLocaleString('fr-FR')} kamas</strong><span>{s.buffRemaining>0?`Tir puissant · ${s.buffRemaining.toFixed(1)} s`:s.phase==='combat'?(s.living===0&&s.waveDelay>0?`Prochaine vague · ${s.waveDelay.toFixed(1)} s`:`Vague ${s.wave||1}/${s.totalWaves}${s.boss?' · Boss':''} · ${s.living} ennemi${s.living>1?'s':''}`):'Astrub · Zone de repos'}</span><span className="save-status" title={offline?'Le jeu est disponible hors connexion':'Votre progression est sauvegardée sur cet appareil'}>{offline?'Hors connexion prêt':'Sauvegarde locale'}</span></div>
+   <div className="adventure-status"><span className="adventure-location">{s.dungeon?`${dungeons[s.dungeon].name}${s.mode==='extreme'?' · Extrême':''}`:'Astrub'}</span><strong>{s.kamas.toLocaleString('fr-FR')} kamas</strong><span>{s.buffRemaining>0?`Tir puissant · ${s.buffRemaining.toFixed(1)} s`:s.phase==='combat'?(s.living===0&&s.waveDelay>0?`Prochaine vague · ${s.waveDelay.toFixed(1)} s`:`Vague ${s.wave||1}/${s.totalWaves}${s.boss?' · Boss':''} · ${s.living} ennemi${s.living>1?'s':''}`):'Astrub · Zone de repos'}</span><span className="save-status" title="Votre progression est sauvegardée sur cet appareil">Sauvegarde locale</span></div>
    <nav className="actions" aria-label="Menu du jeu">{s.phase==='hub'&&button('Donjons',()=>{setMenu(true);setInventory(false);setHelp(false);},{className:'primary-action'})}{button('Inventaire (I)',()=>{setInventory(v=>!v);setMenu(false);setHelp(false);})}{s.phase==='combat'&&button('Abandonner',()=>{controller.simulation.returnHub();setMenu(false);setInventory(false);})}{button('Aide',()=>setHelp(v=>!v),{'aria-expanded':help,'aria-controls':'game-help',className:'help-toggle'})}</nav>
    </div>
   </footer>

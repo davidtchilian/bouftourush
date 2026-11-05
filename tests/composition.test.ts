@@ -5,7 +5,7 @@ const identity=[1,0,0,1,0,0];
 function fixture():Manifest{
  const asset={frames:[{path:'piece.png',durationMs:100},{path:'piece.png',durationMs:200}],pivot:[0.5,1],size:[20,30],offset:[0,0],loop:true,provenance:{source:'Dofedex',version:'1.40.13-remastered',originalFile:'clips/sprites/90.swf#staticS',conversion:'export vectoriel local',usageRights:'Usage local'}};
  const assets=Object.fromEntries([...requiredIds,'body','hair','hat','cape','bow'].map(id=>[id,structuredClone(asset)]));
- const accessories=Object.fromEntries([['2411','hat'],['2474','hat'],['8259','hat'],['2414','cape'],['2473','cape'],['8258','cape'],['bow','bow']].map(([id,slot])=>[id,{slot,views:{R:slot}}]));
+ const accessories=Object.fromEntries([['2411','hat'],['2474','hat'],['8259','hat'],['2414','cape'],['2473','cape'],['8258','cape'],['2438','hat'],['2445','cape'],['bow','bow']].map(([id,slot])=>[id,{slot,views:{R:slot}}]));
  const layers=[{slot:'cape',label:'R',matrix:[1,0.2,0.3,1,5,-12]},{assetId:'body',matrix:identity},{assetId:'hair',matrix:identity,hideWithHat:true},{slot:'hat',label:'R',matrix:[1,0,0,1,0,-30]}];
  return parseManifest({version:1,assets,hub:{bounds:[0,0,100,100],spawn:[50,50],cameraHeight:100},composition:{version:1,accessories,actors:{'cra.idle.south':{loop:true,flipX:false,frames:[{durationMs:100,layers},{durationMs:200,layers}]}}}});
 }

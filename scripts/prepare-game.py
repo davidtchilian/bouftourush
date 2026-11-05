@@ -6,6 +6,7 @@ import json
 import re
 import shutil
 import struct
+import sys
 import subprocess
 import xml.etree.ElementTree as ET
 import zlib
@@ -111,13 +112,13 @@ class Builder:
    for direction in ['R','L']:
     self.add(f'mob.{sprite}.{action}.{direction}',relative,symbol=prefix+direction,loop=action=='run')
 
- def map(self,id,source):
+ def map(self,id,source,visual_only=False,layout_script=None):
   destination=CACHE/('map-'+id)
   script=destination/'scripts/frame_1/DoAction.as'
-  if not script.exists():
+  if layout_script is None and not script.exists():
    destination.mkdir(parents=True,exist_ok=True)
    with (destination/'map.log').open('w') as log:subprocess.run(JAVA+['-export','script',str(destination.resolve()),str((DEX/source).resolve())],stdout=log,stderr=subprocess.STDOUT,check=True)
-  text=script.read_text();cells=hub.decode_map(text)
+  text=script.read_text() if layout_script is None else layout_script;cells=hub.decode_map(text)
   background=int(re.search(r'backgroundNum\s*=\s*(\d+)',text)[1])
   needed={'ground':{background} if background else set(),'object':set()}
   for c in cells:
@@ -147,6 +148,8 @@ class Builder:
     rot=c.get(key+'Rotation',0)
     layers.append({'assetId':f'map.{kind}.{c[key]}','position':[c['x'],-c['y']],'order':order+c['id'],'flipX':c.get(key+'Flip',False),
      'rotation':-rot*90,'scale':[0.5185,1.9286] if rot%2 else [1,1]})
+  if visual_only:
+   return {'bounds':[0,-432,742,0],'layers':layers,'mapSource':source+' ; bibliothèques Remastered 1.40.13','navigationReady':False,'preparedOnly':True}
   free=[{'id':c['id'],'position':[c['x'],-c['y']]} for c in cells if c['active'] and c['movement']>1 and not c['object2'] and 20<c['x']<720 and 10<c['y']<425]
   free=map_navigation.apply_navigation_overrides(id,free,layers)
   # Plus grande composante accessible : aucune apparition de l'autre côté d'un mur.
@@ -168,10 +171,18 @@ class Builder:
   return {'bounds':[0,-432,742,0],'spawn':spawn,'cameraHeight':432,'layers':layers,'walkable':free,'enemySpawns':spawns,'mapSource':source+' ; bibliothèques Remastered 1.40.13'}
 
 
+ROYAL_ICONS=[(2438,16,42),(2440,6,30),(2441,9,46),(2442,11,30),(2443,1,50),(2444,10,31),(2445,17,46)]
+
 def main():
+ if "--royal-only" in sys.argv:
+  hub.validate_remastered_client(ROOT)
+  b=Builder.__new__(Builder);b.manifest=json.loads((OUT/"manifest.json").read_text());b.assets=b.manifest["assets"];b.info={}
+  for id,category,gfx in ROYAL_ICONS:b.add(f"item.{id}",f"clips/items/{category}/{gfx}.swf",first=True)
+  (OUT/"manifest.json").write_text(json.dumps(b.manifest,ensure_ascii=False,indent=2))
+  return
  b=Builder()
  # Familles réelles, dont les variantes d'Incarnam partagent les mêmes sprites.
- for sprite in [1566,1570,1571,1573,1574,1581,1014,1009,1474,1481,1483,1484,1485,1487,1488,1546]:b.actor(sprite)
+ for sprite in [1566,1570,1571,1573,1574,1581,1014,1009,1474,1481,1483,1484,1485,1487,1488,1546,1558,1462,1380,1135,1136,1137,1138,1453,1455]:b.actor(sprite)
  for action,prefix in [('cast','anim10'),('buff','anim0'),('hit','hit'),('death','die')]:
   for direction in ['R','L']:b.add(f'cra.{action}.{direction}','clips/sprites/90.swf',symbol=prefix+direction)
  # Correspondances sprite confirmées dans les données Ancestra-Evolutive (sorts 161/165/166/179).
@@ -185,9 +196,9 @@ def main():
  # Tables I.u : type et g du fichier items_fr_450.swf.
  for id,category,gfx in [(2411,16,41),(2414,17,44),(2416,7,23),(2419,9,44),(2422,11,26),(2425,1,48),(2428,10,29),
                          (2473,17,48),(2474,16,44),(2475,9,48),(2476,11,32),(2477,10,33),(2478,1,52),
-                         (8253,1,106),(8254,9,112),(8255,8,44),(8256,11,84),(8257,10,102),(8258,17,109),(8259,16,143)]:
+                         (8253,1,106),(8254,9,112),(8255,8,44),(8256,11,84),(8257,10,102),(8258,17,109),(8259,16,143)]+ROYAL_ICONS+[(int(i['id']),int(i['source'].split('/')[2]),int(Path(i['source']).stem)) for i in json.loads(Path('scripts/tofu-scara-assets.json').read_text())['items']]:
   b.add(f'item.{id}',f'clips/items/{category}/{gfx}.swf',first=True)
- b.manifest['maps']={'incarnam':b.map('incarnam','maps/10360/10360_0703281543.swf'),'bouftou':b.map('bouftou','maps/2073/2073_0505170920.swf'),'ensable':b.map('ensable','maps/10155/10155_0701221531.swf')}
+ b.manifest['maps']={'incarnam':b.map('incarnam','maps/10360/10360_0703281543.swf'),'bouftou':b.map('bouftou','maps/2073/2073_0505170920.swf'),'ensable':b.map('ensable','maps/10155/10155_0701221531.swf'),'tofu':b.map('tofu','maps/9529/9529_0609131545.swf'),'scara':b.map('scara','maps/9782/9782_0610211614.swf')}
  # Les cartes restent figées sur leur première frame, végétation comprise.
  b.manifest['gameplayReady']=True
  (OUT/'manifest.json').write_text(json.dumps(b.manifest,ensure_ascii=False,indent=2))

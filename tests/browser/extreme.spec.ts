@@ -1,10 +1,11 @@
 import {readFileSync} from 'node:fs';
+import {dungeons} from '../../src/data/dungeons';
 import {test,expect} from '@playwright/test';
 test('choisit Extrême, affiche ×5 monstres avec ×1,5 PV et conserve le mode lors d’un nouvel essai',async({page},testInfo)=>{
  await page.addInitScript(()=>localStorage.setItem('bouftourush.help.seen','1'));
  await page.goto('/');await page.getByRole('button',{name:'Donjons',exact:true}).click();
  const dialog=page.getByRole('dialog',{name:'Choisir un donjon'});
- await expect(dialog.getByRole('button',{name:/^Entrer en Extrême/})).toHaveCount(3);
+ await expect(dialog.getByRole('button',{name:/^Entrer en Extrême/})).toHaveCount(Object.keys(dungeons).length);
  await expect(dialog).toContainText('Extrême : monstres ×5, PV ×1,5.');
  await page.setViewportSize({width:390,height:844});expect(await dialog.evaluate(element=>element.scrollWidth<=element.clientWidth+1)).toBe(true);
  await page.screenshot({path:testInfo.outputPath('choix-extreme-mobile.png')});

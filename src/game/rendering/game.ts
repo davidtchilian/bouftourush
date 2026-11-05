@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {parseManifest,type Manifest,type Animation} from '../assets/manifest';
-import {animationFrame} from './animation';
+import {animationFrame,retimedAnimationAge} from './animation';
 import {fitMapView} from './camera';
 import {composeActor,type ComposedLayer} from './composition';
 import {applyCompositionMask} from './compositionMask';
@@ -11,6 +11,10 @@ import type {Point} from '../movement/navigation';
 import {items} from '../../data/items';
 import {monsters} from '../../data/monsters';
 import {balance,spells,type SpellId} from '../../data/balance';
+import {speedBurstActive} from '../ai/speedBurst';
+import {worldTexturePaths} from '../assets/worldTextures';
+import {dungeons} from '../../data/dungeons';
+import type {MonsterId} from '../../data/monsters';
 import {loadProfile,saveProfile,type StorageLike} from '../save/persistence';
 import {finalStats} from '../progression/profile';
 export type ScreenLabel={id:string;x:number;y:number;text:string;kind:'player'|'enemy'|'boss'|'damage'|'reward'|'loot';icon?:string;hp?:number;maxHp?:number};
@@ -22,32 +26,34 @@ export async function mountGame(host:HTMLElement,signal:AbortSignal,onSnapshot:(
  const response=await fetch('/assets/manifest.json',{signal});
  if(!response.ok||!response.headers.get('content-type')?.includes('application/json'))throw new Error('Manifeste absent : lancer pnpm assets:prepare:game puis pnpm assets:import .local-assets/game-runtime. Voir docs/ASSETS.md.');
  const manifest=parseManifest(await response.json()),textures=new Map<string,THREE.Texture>(),geometries=new Map<string,THREE.PlaneGeometry>(),frameTextures=new Map<string,THREE.Texture>();
- let renderer:THREE.WebGLRenderer|undefined,stop=()=>{},removeInput=()=>{},resize=()=>{},save=()=>{};
+ let renderer:THREE.WebGLRenderer|undefined,stop=()=>{},removeInput=()=>{},resize=()=>{},save=()=>{},disposed=false,sceneDirty=true;
  const nodes=new Map<string,Node>(),mapNodes:Node[]=[];let observer:ResizeObserver|undefined;
- const dispose=()=>{stop();removeInput();save();observer?.disconnect();window.removeEventListener('resize',resize);window.removeEventListener('pagehide',save);for(const n of [...nodes.values(),...mapNodes])n.mesh.material.dispose();for(const g of geometries.values())g.dispose();for(const t of frameTextures.values())t.dispose();for(const t of textures.values())t.dispose();renderer?.dispose();renderer?.domElement.remove();};
+ const dispose=()=>{disposed=true;stop();removeInput();save();observer?.disconnect();window.removeEventListener('resize',resize);window.removeEventListener('pagehide',save);for(const n of [...nodes.values(),...mapNodes])n.mesh.material.dispose();for(const g of geometries.values())g.dispose();for(const t of frameTextures.values())t.dispose();for(const t of textures.values())t.dispose();renderer?.dispose();renderer?.domElement.remove();};
  try{
   const loader=new THREE.TextureLoader();
-  const paths=[...new Set(Object.entries(manifest.assets).filter(([id])=>!id.startsWith('ui.')&&!id.startsWith('item.')&&!id.startsWith('preview.')&&(!manifest.composition||!id.startsWith('cra.'))).flatMap(([,a])=>a.frames.map(f=>f.path)))];
-  let cursor=0,completed=0;
-  const loaded=await Promise.allSettled(Array.from({length:Math.min(12,paths.length)},async()=>{
+  const loadTextures=async(paths:string[])=>{
+   let cursor=0;
+   const loaded=await Promise.allSettled(Array.from({length:Math.min(12,paths.length)},async()=>{
    while(cursor<paths.length){
-    const path=paths[cursor++];const texture=await loader.loadAsync('/assets/'+path).catch(()=>{throw new Error(`Texture introuvable ou illisible : /assets/${path}. Relancer assets:import.`);});
-    texture.colorSpace=THREE.SRGBColorSpace;texture.generateMipmaps=false;texture.minFilter=THREE.LinearFilter;textures.set(path,texture);completed++;
-    if(completed%64===0)onStatus(`Chargement des animations : ${completed}/${paths.length}…`);
-    if(signal.aborted)throw new DOMException('Annulé','AbortError');
+    const path=paths[cursor++];if(textures.has(path))continue;
+    const texture=await loader.loadAsync('/assets/'+path).catch(()=>{throw new Error(`Texture introuvable ou illisible : /assets/${path}. Relancer assets:import.`);});
+    if(signal.aborted||disposed){texture.dispose();throw new DOMException('Annulé','AbortError');}
+    texture.colorSpace=THREE.SRGBColorSpace;texture.generateMipmaps=false;texture.minFilter=THREE.LinearFilter;textures.set(path,texture);
    }
-  }));
-  const failed=loaded.find(r=>r.status==='rejected');if(failed?.status==='rejected')throw failed.reason;
+   }));
+   const failed=loaded.find(r=>r.status==='rejected');if(failed?.status==='rejected')throw failed.reason;
+  };
+  await loadTextures(worldTexturePaths(manifest,manifest.hub,[]));
   if(signal.aborted)throw new DOMException('Annulé','AbortError');
   const frameKey=(frame:Animation['frames'][number])=>frame.path+(frame.region?'#'+frame.region.join(','):'');
-  const textureFor=(frame:Animation['frames'][number])=>frameTextures.get(frameKey(frame))??textures.get(frame.path)!;
   // Les variantes UV partagent l'image source et donc le stockage GPU de chaque atlas.
-  for(const asset of Object.values(manifest.assets))for(const frame of asset.frames){
-   if(!frame.region||frameTextures.has(frameKey(frame)))continue;
-   const base=textures.get(frame.path);if(!base)continue;
+  const textureFor=(frame:Animation['frames'][number]):THREE.Texture=>{
+   const cached=frameTextures.get(frameKey(frame));if(cached)return cached;
+   const base=textures.get(frame.path);if(!base)throw new Error(`Texture non chargée : ${frame.path}`);
+   if(!frame.region)return base;
    const texture=base.clone(),[x,y,w,h,pw,ph]=frame.region;
-   texture.repeat.set(w/pw,h/ph);texture.offset.set(x/pw,1-(y+h)/ph);texture.updateMatrix();frameTextures.set(frameKey(frame),texture);
-  }
+   texture.repeat.set(w/pw,h/ph);texture.offset.set(x/pw,1-(y+h)/ph);texture.updateMatrix();frameTextures.set(frameKey(frame),texture);return texture;
+  };
   const loadedProfile=loadProfile(storage);
   const game=new Simulation(manifest,loadedProfile.profile,()=>save());
   let saveWarning=false;
@@ -71,6 +77,7 @@ export async function mountGame(host:HTMLElement,signal:AbortSignal,onSnapshot:(
    node.mesh.position.set(point[0]+asset.offset[0],point[1]+asset.offset[1],0);node.mesh.renderOrder=order;node.mesh.scale.set((flip??asset.flipX)?-1:1,1,1);node.mesh.rotation.z=rotation;
   };
   resize=()=>{
+   sceneDirty=true;
    const [left,bottom,right,top]=game.map.bounds;const width=Math.max(1,host.clientWidth),height=Math.max(1,host.clientHeight);
    const view=fitMapView(game.map,width,height),half=view.halfHeight;
    camera.position.x=view.x;camera.position.y=view.y;camera.left=-half*width/height;camera.right=half*width/height;camera.top=half;camera.bottom=-half;camera.updateProjectionMatrix();renderer!.setSize(width,height);
@@ -81,7 +88,9 @@ export async function mountGame(host:HTMLElement,signal:AbortSignal,onSnapshot:(
   let mapRevision=-1;
   const rebuildMap=()=>{
    for(const node of mapNodes){scene.remove(node.mesh);node.mesh.material.dispose();}mapNodes.length=0;
-   for(const layer of game.map.layers??[]){
+   const background=game.map.backgroundAssetId;
+   const layers=background?[{assetId:background,position:[game.map.bounds[0],game.map.bounds[3]],order:1999,flipX:false,rotation:0,scale:[1,1]},...(game.map.layers??[]).filter(layer=>layer.order>=2000)]:game.map.layers??[];
+   for(const layer of layers){
     const node=create(layer.assetId),a=manifest.assets[layer.assetId];node.mesh.position.set(layer.position[0]+a.offset[0],layer.position[1]+a.offset[1],0);node.mesh.renderOrder=layer.order;
     node.mesh.scale.set(layer.scale[0]*(layer.flipX?-1:1),layer.scale[1],1);node.mesh.rotation.z=layer.rotation*Math.PI/180;mapNodes.push(node);
    }
@@ -114,8 +123,37 @@ export async function mountGame(host:HTMLElement,signal:AbortSignal,onSnapshot:(
   const project=(position:Point,height=0):{x:number;y:number}=>{const p=new THREE.Vector3(position[0],position[1]+height,0).project(camera);return{x:(p.x+1)*50,y:(1-p.y)*50};};
   const side=(actor:Actor)=>{const back=['north','northwest','northeast'].includes(actor.direction);return{suffix:back?'L':'R',flip:back?actor.direction==='northeast':['west','southwest'].includes(actor.direction)};};
   let snapshotTimer=0;
+  let pausedScene='';
+  let readyRevision=game.mapRevision,loading=false,loadFailed=false;
+  const readyKinds=new Set<MonsterId>();
+  const worldReady=()=>{
+   if(loading||loadFailed)return false;
+   if(readyRevision===game.mapRevision&&game.enemies.every(enemy=>readyKinds.has(enemy.kind)))return true;
+   const revision=game.mapRevision;
+   const kinds=new Set(game.enemies.map(enemy=>enemy.kind));
+   if(game.dungeon)for(const kind of [...dungeons[game.dungeon].normalWaves.flat(),...dungeons[game.dungeon].bossWave])kinds.add(kind);
+   const paths=worldTexturePaths(manifest,game.map,kinds).filter(path=>!textures.has(path));
+   if(!paths.length){readyRevision=revision;for(const kind of kinds)readyKinds.add(kind);return true;}
+   loading=true;onStatus('Chargement du donjon…');renderer!.domElement.dataset.loading='true';
+   void loadTextures(paths).then(()=>{
+    if(disposed)return;loading=false;readyRevision=revision;for(const kind of kinds)readyKinds.add(kind);
+    renderer!.domElement.dataset.loading='false';onStatus('Prêt');
+   }).catch(error=>{if(!disposed){loadFailed=true;onStatus(error instanceof Error?error.message:String(error));}});
+   return false;
+  };
   stop=startLoop(dt=>{
-   pointer.tick(dt);game.update(dt);snapshotTimer+=dt;
+   if(!worldReady())return;
+   snapshotTimer+=dt;
+   if(game.paused){
+    const key=JSON.stringify([game.time,game.mapRevision,game.player,game.enemies,game.shots,game.enemyShots,game.effects,game.profile.equipment]);
+    if(key===pausedScene){
+     if(snapshotTimer>=0.1){snapshotTimer=0;onSnapshot(game.snapshot());}
+     return;
+    }
+    pausedScene=key;
+   }else pausedScene='';
+   pointer.tick(dt);game.update(dt);
+   if(!worldReady())return;
    if(game.mapRevision!==mapRevision)rebuildMap();
    for(const node of nodes.values())node.mesh.visible=false;
    const player=game.player;
@@ -139,22 +177,34 @@ export async function mountGame(host:HTMLElement,signal:AbortSignal,onSnapshot:(
     node.mesh.matrix.set(mirror*a,-mirror*c,0,player.position[0]+mirror*tx,-b,d,0,player.position[1]-ty,0,0,1,0,0,0,0,1);
     node.mesh.matrixWorldNeedsUpdate=true;
    });
-   for(const enemy of game.enemies){const facing=side(enemy);draw(`enemy-${enemy.id}`,`mob.${monsters[enemy.kind].sprite}.${enemy.action}.${facing.suffix}`,enemy.position,enemy.animationTime,2000+game.navigation.nearest(enemy.position).id+0.3,facing.flip);}
+   for(const enemy of game.enemies){
+    const facing=side(enemy),data=monsters[enemy.kind],ranged=data.rangedAttack;
+    const throwing=enemy.action==='attack'&&ranged&&game.time<(enemy.rangedAnimationUntil??0);
+    const id=throwing?`${ranged.animation}.${facing.suffix}`:`mob.${data.sprite}.${enemy.action}.${facing.suffix}`;
+    const actionDuration=throwing?ranged.animationDuration:enemy.action==='attack'?balance.enemyAttackAnimation:enemy.action==='hit'?balance.enemyHitAnimation:enemy.action==='death'?balance.enemyDeathAnimation:undefined;
+    const age=actionDuration?retimedAnimationAge(manifest.assets[id],enemy.animationTime,actionDuration):enemy.animationTime;
+    draw(`enemy-${enemy.id}`,id,enemy.position,age,2000+game.navigation.nearest(enemy.position).id+0.3,facing.flip);
+   }
    for(const shot of game.shots){const angle=Math.atan2(shot.target[1]-shot.start[1],shot.target[0]-shot.start[0]);draw(`shot-${shot.id}`,`spell.${shot.spell}.projectile`,shot.spell==='flaming'?shot.start:shot.position,shot.age,5000,false,angle);}
+   for(const shot of game.enemyShots){const angle=Math.atan2(shot.target[1]-shot.start[1],shot.target[0]-shot.start[0]);draw(`enemy-shot-${shot.id}`,shot.asset,shot.position,shot.age,5000,false,angle);}
    for(const effect of game.effects)draw(`effect-${effect.id}`,effect.asset,effect.position,effect.age,5100,false,effect.asset.startsWith('spell.flaming')?effect.angle:0);
-   const alive=new Set([...playerKeys,...game.enemies.map(e=>`enemy-${e.id}`),...game.shots.map(e=>`shot-${e.id}`),...game.effects.map(e=>`effect-${e.id}`)]);
+   const alive=new Set([...playerKeys,...game.enemies.map(e=>`enemy-${e.id}`),...game.shots.map(e=>`shot-${e.id}`),...game.enemyShots.map(e=>`enemy-shot-${e.id}`),...game.effects.map(e=>`effect-${e.id}`)]);
    for(const [key,node] of nodes)if(!alive.has(key)){scene.remove(node.mesh);node.mesh.material.dispose();nodes.delete(key);}
    const canvas=renderer!.domElement;canvas.dataset.playerX=player.position[0].toFixed(2);canvas.dataset.playerY=player.position[1].toFixed(2);canvas.dataset.animation=hat==='none'&&cape==='none'?asset:`appearance.${hat}.${cape}.${asset}`;canvas.dataset.compositionLayers=String(layers.length);canvas.dataset.map=game.mapId;canvas.dataset.phase=game.phase;canvas.dataset.mode=game.mode;
    canvas.dataset.enemies=JSON.stringify(game.enemies.filter(e=>e.hp>0).map(e=>({id:e.id,kind:e.kind,x:e.position[0],y:e.position[1],hp:e.hp})));
    canvas.dataset.projectiles=String(game.shots.length);
+   canvas.dataset.enemyProjectiles=String(game.enemyShots.length);
    if(snapshotTimer>=0.1){
     canvas.dataset.renderStats=JSON.stringify({calls:renderer!.info.render.calls,textures:renderer!.info.memory.textures,geometries:renderer!.info.memory.geometries,quads:nodes.size+mapNodes.length,playerQuads:layers.length});
     snapshotTimer=0;onSnapshot(game.snapshot());
    }
+   sceneDirty=true;
   },()=>{
+   if(loading||loadFailed||!sceneDirty)return;
+   sceneDirty=false;
    renderer!.render(scene,camera);
    // Les étiquettes suivent exactement les positions dessinées, à chaque image.
-   const labels:ScreenLabel[]=game.enemies.filter(e=>e.hp>0).map(e=>({id:`enemy-${e.id}`,...project(e.position,monsters[e.kind].boss?68:45),text:monsters[e.kind].name,hp:e.hp,maxHp:e.maxHp,kind:monsters[e.kind].boss?'boss':'enemy'}));
+   const labels:ScreenLabel[]=game.enemies.filter(e=>e.hp>0).map(e=>({id:`enemy-${e.id}`,...project(e.position,monsters[e.kind].boss?68:45),text:monsters[e.kind].name+(speedBurstActive(monsters[e.kind].speedBurst,game.time-e.spawnedAt)?' · Vitesse ×2':''),hp:e.hp,maxHp:e.maxHp,kind:monsters[e.kind].boss?'boss':'enemy'}));
    if(game.dungeon)labels.push({id:'player-health',...project(game.player.position,58),text:'',hp:game.hp,maxHp:finalStats(game.profile).hp,kind:'player'});
    for(const f of game.floating){const height=f.kind==='loot'?72+f.age*20:48+f.age*20;labels.push({id:`float-${f.id}`,...project(f.position,height),text:f.text,kind:f.kind,icon:f.icon});}
    onLabels(labels);

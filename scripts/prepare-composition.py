@@ -7,6 +7,7 @@ import json
 import re
 import shutil
 import subprocess
+import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -108,12 +109,14 @@ def split_frame(path, attachments, empty_symbol=lambda cid: False):
 
 
 def main():
+ extension_only="--tofu-scara-only" in sys.argv
+ royal_only="--royal-only" in sys.argv or extension_only
  a.game.hub.validate_remastered_client(a.ROOT)
  manifest = json.loads((a.OUT/'manifest.json').read_text())
  # Les références de comparaison restent locales. Aucun ancien atlas n'est publié à nouveau.
  reference = a.CACHE/'reference-manifest.json'
  if not reference.exists(): reference.write_text(json.dumps(manifest))
- manifest['assets'] = {id:asset for id,asset in manifest['assets'].items() if not id.startswith(('appearance.','piece.','preview.appearance.','preview.cra.','preview.piece.'))}
+ if not royal_only: manifest['assets'] = {id:asset for id,asset in manifest['assets'].items() if not id.startswith(('appearance.','piece.','preview.appearance.','preview.cra.','preview.piece.'))}
  source = a.ROOT/'clips/sprites/90.swf'; scripts = a.CACHE/'scripts'
  signature = hashlib.sha256(source.read_bytes()).hexdigest()
  if not (scripts/'done').exists() or (scripts/'done').read_text() != signature:
@@ -135,8 +138,10 @@ def main():
   asset['provenance']['originalFile'] = original
   asset['provenance']['conversion'] = 'JPEXS 26.4.0 ; prepare-composition.py ; pièces vectorielles indépendantes ; densité jeu 3 ; hiérarchie source et matrices GAC'
   manifest['assets'][id] = asset; jobs.append({'id':id,'svgs':svgs,'icon':False,'density':3})
- accessories = {}
- for item, library, symbol, slot in [('2411','a1','16_41','hat'),('2474','a1','16_44','hat'),('8259','a1','16_143','hat'),('2414','a2','17_44','cape'),('2473','a2','17_48','cape'),('8258','a2','17_109','cape'),('bow','a4','2_1','bow')]:
+ accessories = manifest["composition"]["accessories"] if royal_only else {}
+ royal_accessories=[('2438','a1','16_42','hat'),('2445','a2','17_46','cape')]
+ extension_accessories=[('8114','a1','16_128','hat'),('8133','a1','16_132','hat'),('8112','a2','17_97','cape'),('8134','a2','17_100','cape')]
+ for item, library, symbol, slot in (extension_accessories if extension_only else royal_accessories if royal_only else [('2411','a1','16_41','hat'),('2474','a1','16_44','hat'),('8259','a1','16_143','hat'),('2414','a2','17_44','cape'),('2473','a2','17_48','cape'),('8258','a2','17_109','cape'),('bow','a4','2_1','bow')]+royal_accessories+extension_accessories):
   relative = f'clips/sprites/accessories/{library}.swf'; path = a.ROOT/relative
   info = a.game.hub.inspector.inspect_swf(path.read_bytes())['symbols'][symbol]; views = {}
   fps = a.game.Builder.metadata(path,info['characterId'])['fps']
@@ -158,9 +163,9 @@ def main():
    last = ET.parse(a.export(source,cid,1,end)[0]).getroot().find(a.SVG+'g')
    empty_cache[cid] = last is not None and len(last) == 0
   return empty_cache[cid]
- actors = {}; symbols = a.game.hub.inspector.inspect_swf(source.read_bytes())['symbols']
+ actors = manifest['composition']['actors'] if royal_only else {}; symbols = a.game.hub.inspector.inspect_swf(source.read_bytes())['symbols']
  for id, asset in list(manifest['assets'].items()):
-  if not id.startswith('cra.'): continue
+  if royal_only or not id.startswith('cra.'): continue
   symbol = asset['provenance']['originalFile'].split('#')[1].split(' + ')[0]
   frames = a.export(source,symbols[symbol]['characterId'],len(asset['frames']))
   if len(frames) < len(asset['frames']): raise RuntimeError(f'Frames vectorielles du Crâ absentes : {id}')
@@ -204,7 +209,7 @@ def main():
 
  # Les icônes conservent leur recadrage transparent depuis les vecteurs originaux.
  for id in manifest['assets']:
-  if id.startswith('item.'):
+  if id.startswith('item.') and (not royal_only or (extension_only and id.split('.')[1] in ['8108','8109','8110','8111','8112','8113','8114','8132','8133','8134','8136']) or id in {f'item.{item}' for item,_,_ in a.game.ROYAL_ICONS}):
    jobs.append({'id':id,'svgs':[str(next((a.OUT/'_conversion'/id/'svg').rglob('*.svg')))],'icon':True})
  (a.OUT/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
  (a.CACHE/'jobs.json').write_text(json.dumps(jobs))

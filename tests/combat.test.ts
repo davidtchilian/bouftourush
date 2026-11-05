@@ -4,6 +4,7 @@ import {Simulation} from '../src/game/core/simulation';
 import {fixtureManifest,advance} from './helpers/world';
 import {newProfile} from '../src/game/progression/profile';
 import {auditProfile,combatDestination} from '../scripts/combat-audit';
+import {items} from '../src/data/items';
 import {spells,balance} from '../src/data/balance';
 describe('combat déterministe',()=>{
  it('applique Puissance en pourcentage puis buff et résistance, arrondi inférieur',()=>{
@@ -42,7 +43,7 @@ describe('combat déterministe',()=>{
     game.update(1/60);
    }
    expect(game.phase,dungeon).toBe('victory');expect(game.director?.index).toBe(3);expect(profile.completed).toContain(dungeon);
-   expect(profile.inventory.length-owned).toBe(game.kills);expect(profile.level).toBeGreaterThan(1);expect(profile.kamas).toBeGreaterThan(0);
+   expect(profile.inventory.slice(owned).filter(instance=>items[instance.item].set!=='royalBouftou').length).toBe(game.kills);expect(profile.level).toBeGreaterThan(1);expect(profile.kamas).toBeGreaterThan(0);
    const kamas=profile.kamas;advance(game,3);expect(profile.kamas).toBe(kamas);game.returnHub();expect(game.hp).toBe(game.snapshot().maxHp);expect(profile.kamas).toBe(kamas);
   }
  });
@@ -65,4 +66,19 @@ it('ne réutilise pas un identifiant de butin après rechargement avec la même 
  for(let t=0;t<10&&profile.inventory.length===1;t+=1/30){const enemy=game.enemies.find(e=>e.hp>0);if(enemy)game.cast('explosive',enemy.position);game.update(1/30);}
  expect(profile.inventory.length).toBeGreaterThan(1);expect(new Set(profile.inventory.map(i=>i.uid)).size).toBe(profile.inventory.length);
  expect(profile.inventory.slice(1).every(i=>Number(i.uid.split('-').at(-1))>1000)).toBe(true);
+});
+
+it('attribue et sauvegarde le bonus royal une seule fois par mort, en normal et en Extrême',()=>{
+ for(const mode of ['normal','extreme'] as const){
+  const profile=newProfile();let saved=0;
+  const game=new Simulation(fixtureManifest(),profile,()=>{saved++;},42,0);game.enter('bouftou',mode);
+  for(let wave=0;wave<4;wave++){game.update(2);if(wave<3)for(const enemy of game.enemies)enemy.hp=0;}
+  const royal=game.enemies.find(enemy=>enemy.kind==='royal')!;
+  game['random']=()=>0;
+  game['hit'](royal,royal.hp);
+  expect(profile.inventory.map(instance=>items[instance.item].set)).toEqual(['royalBouftou']);
+  const inventory=structuredClone(profile.inventory),kamas=profile.kamas,saves=saved;
+  game['hit'](royal,999999);expect(profile.inventory).toEqual(inventory);expect(profile.kamas).toBe(kamas);expect(saved).toBe(saves);
+  expect(saves).toBeGreaterThan(0);
+ }
 });

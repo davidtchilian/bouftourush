@@ -1,3 +1,4 @@
+import {movementSpeedBonus} from '../progression/profile';
 import {cra,type ClassDefinition} from '../../data/classes';
 import {balance,spells,type SpellId,xpForLevel} from '../../data/balance';
 import {dungeons,dungeonModes,waveMultipliers,type DungeonId,type DungeonMode} from '../../data/dungeons';
@@ -10,11 +11,13 @@ import {WaveDirector} from '../dungeons/waves';
 import {Navigation,type Point} from '../movement/navigation';
 import {awardXp,equip,finalStats,type Profile} from '../progression/profile';
 import {sellDuplicates as sellDuplicateItems} from '../progression/resale';
-import {seededRandom,weightedLoot} from '../progression/loot';
+import {seededRandom,monsterLoot} from '../progression/loot';
+import {enemyMovementSpeed} from '../ai/speedBurst';
 export type Phase='hub'|'combat'|'victory'|'death';
 export type Actor={id:number;position:Point;direction:string;action:'idle'|'run'|'cast'|'buff'|'attack'|'hit'|'death';animationTime:number;actionUntil:number;route:Point[]};
-export type Enemy=Actor&{kind:MonsterId;hp:number;maxHp:number;damage:number;attackAt:number;pathAt:number;deadAt:number;rewarded:boolean};
+export type Enemy=Actor&{kind:MonsterId;hp:number;maxHp:number;damage:number;spawnedAt:number;attackAt:number;pathAt:number;deadAt:number;rewarded:boolean;rangedTarget?:{position:Point;releaseAt:number};rangedAnimationUntil?:number};
 export type Shot={id:number;spell:Exclude<SpellId,'power'>;position:Point;start:Point;target:Point;power:number;buff:number;hit:Set<number>;age:number};
+export type EnemyShot={id:number;asset:string;position:Point;start:Point;target:Point;damage:number;speed:number;radius:number;age:number};
 export type Effect={id:number;asset:string;position:Point;age:number;ttl:number;angle:number;followPlayer?:boolean};
 export type Floating={id:number;position:Point;text:string;age:number;kind:'damage'|'reward'|'loot';icon?:string};
 export type Snapshot={phase:Phase;mode:DungeonMode;dungeon:DungeonId|null;hp:number;maxHp:number;power:number;cooldownReduction:number;level:number;xp:number;nextXp:number;kamas:number;inventory:Profile['inventory'];equipment:Profile['equipment'];completed:string[];wave:number;totalWaves:number;boss:boolean;living:number;waveDelay:number;cooldowns:Record<SpellId,number>;buffRemaining:number;log:string[];paused:boolean;kills:number};
@@ -23,7 +26,7 @@ export function directionFor(dx:number,dy:number):string {return ['east','northe
 /** Simulation pure à pas fixe, sans DOM, Three.js ou React. */
 export class Simulation {
  phase:Phase='hub';mode:DungeonMode='normal';dungeon:DungeonId|null=null;mapId='hub';map:MapDefinition;navigation:Navigation;
- player:Actor;hp:number;enemies:Enemy[]=[];shots:Shot[]=[];effects:Effect[]=[];floating:Floating[]=[];
+ player:Actor;hp:number;enemies:Enemy[]=[];shots:Shot[]=[];enemyShots:EnemyShot[]=[];effects:Effect[]=[];floating:Floating[]=[];
  time=0;paused=false;buffUntil=0;castUntil=0;kills=0;mapRevision=0;
  cooldowns:Record<SpellId,number>={explosive:0,flaming:0,magic:0,power:0};
  director:WaveDirector|null=null;log:string[]=[];private serial=0;private random:()=>number;private saveTimer=0;private lastDestination:Point|null=null;
@@ -52,7 +55,7 @@ export class Simulation {
  private changeMap(id:string,map:MapDefinition){
   this.mapId=id;this.map=map;this.navigation=new Navigation(map.walkable??[]);this.mapRevision++;
   this.player.position=[...map.spawn];this.player.route=[];this.player.action='idle';this.player.actionUntil=0;this.player.animationTime=0;
-  this.enemies=[];this.shots=[];this.effects=[];this.floating=[];this.hp=finalStats(this.profile).hp;this.buffUntil=0;this.castUntil=0;
+  this.enemies=[];this.shots=[];this.enemyShots=[];this.effects=[];this.floating=[];this.hp=finalStats(this.profile).hp;this.buffUntil=0;this.castUntil=0;
   this.cooldowns={explosive:0,flaming:0,magic:0,power:0};this.lastDestination=null;
  }
  move(target:Point){if(this.paused||this.phase==='death'||this.phase==='victory')return;if(this.lastDestination&&distance(this.lastDestination,target)<3&&this.player.route.length)return;this.lastDestination=[...target];this.player.route=this.navigation.route(this.player.position,target);}
@@ -94,15 +97,15 @@ export class Simulation {
  private float(text:string,position:Point,kind:Floating['kind']='damage',icon?:string){this.floating.push({id:++this.serial,text,position:[...position],age:0,kind,icon});}
  private hit(enemy:Enemy,amount:number){
   if(enemy.hp<=0)return;enemy.hp=Math.max(0,enemy.hp-amount);this.float(String(amount),enemy.position);
-  if(enemy.hp>0){this.setAction(enemy,'hit');enemy.actionUntil=this.time+0.16;return;}
-  this.setAction(enemy,'death');enemy.deadAt=this.time;enemy.route=[];
+  if(enemy.hp>0){this.setAction(enemy,'hit');enemy.actionUntil=this.time+balance.enemyHitAnimation;return;}
+  this.setAction(enemy,'death');enemy.deadAt=this.time;enemy.route=[];delete enemy.rangedTarget;
   if(enemy.rewarded)return;enemy.rewarded=true;this.kills++;
   const definition=monsters[enemy.kind],old=this.profile.level;this.hp+=awardXp(this.profile,definition.xp);this.profile.kamas+=definition.kamas;
   this.float(`+${definition.xp} XP · ${definition.kamas} k`,enemy.position,'reward');
   if(this.profile.level>old)this.message(`Niveau ${this.profile.level} ! Vie et Puissance augmentées.`);
   const loot=this.dungeon?dungeons[this.dungeon].loot:{normalChance:balance.lootChance,bossChance:balance.bossLootChance};
-  const drop=weightedLoot(definition.loot,this.testLootChance??(definition.boss?loot.bossChance:loot.normalChance),this.random);
-  if(drop){const item=items[drop];this.float(item.name,enemy.position,'loot',item.icon);this.giveItem(drop);this.message(`Butin : ${item.name}. Ouvrir l’inventaire pour l’équiper.`);}
+  const drops=monsterLoot(definition,this.testLootChance??(definition.boss?loot.bossChance:loot.normalChance),this.random);
+  for(const drop of drops){const item=items[drop];this.float(item.name,enemy.position,'loot',item.icon);this.giveItem(drop);this.message(`Butin : ${item.name}. Ouvrir l’inventaire pour l’équiper.`);}
   this.persist();
  }
  private giveItem(item:string){this.profile.inventory.push({uid:`drop-${this.seed}-${++this.serial}`,item});}
@@ -125,7 +128,7 @@ export class Simulation {
    const point=candidates.find(cell=>this.navigation.clear(anchor,cell.position))?.position??candidates.find(cell=>this.navigation.route(anchor,cell.position).length)?.position??anchor;
    occupied.push(point);
    const maxHp=Math.round(monsters[kind].hp*multipliers.hp),attackDamage=Math.round(monsters[kind].damage*multipliers.damage);
-   this.enemies.push({id:++this.serial,kind,position:[...point],direction:'south',action:'idle',animationTime:0,actionUntil:0,route:[],hp:maxHp,maxHp,damage:attackDamage,attackAt:this.time+0.6+index*0.13,pathAt:0,deadAt:0,rewarded:false});
+   this.enemies.push({id:++this.serial,kind,position:[...point],direction:'south',action:'idle',animationTime:0,actionUntil:0,route:[],hp:maxHp,maxHp,damage:attackDamage,spawnedAt:this.time,attackAt:this.time+0.6+index*0.13,pathAt:0,deadAt:0,rewarded:false});
   });
   this.message(this.director?.boss?`Dernière vague : ${monsters[wave[0]].name} !`:`Vague ${(this.director?.index??0)+1}/${this.director?.total}.`);
  }
@@ -154,25 +157,57 @@ export class Simulation {
   }
   this.shots=survivors;
  }
+ private damagePlayer(amount:number){
+  this.hp=Math.max(0,this.hp-amount);this.float(String(amount),this.player.position);
+  if(this.hp>0){
+   if(this.player.action!=='cast'&&this.player.action!=='buff'){this.setAction(this.player,'hit');this.player.actionUntil=this.time+0.16;}
+   return;
+  }
+  this.phase='death';this.player.route=[];this.setAction(this.player,'death');this.player.actionUntil=Infinity;this.shots=[];this.enemyShots=[];
+  this.message('Vous êtes tombé. Les gains sont conservés ; une nouvelle tentative repart à la première vague.');this.persist();
+ }
+ private updateEnemyShots(dt:number){
+  const survivors:EnemyShot[]=[];
+  for(const shot of this.enemyShots){
+   const old:Point=[...shot.position],remaining=distance(old,shot.target),step=Math.min(shot.speed*dt,remaining);
+   if(remaining>0)shot.position=[old[0]+(shot.target[0]-old[0])/remaining*step,old[1]+(shot.target[1]-old[1])/remaining*step];
+   shot.age+=dt;
+   if(!this.navigation.clear(old,shot.position))continue;
+   if(segmentDistance(this.player.position,old,shot.position)<=shot.radius){
+    this.damagePlayer(shot.damage);if(this.phase==='death')return;
+   }else if(remaining>step+0.1)survivors.push(shot);
+  }
+  this.enemyShots=survivors;
+ }
  private updateEnemies(dt:number){
   for(const enemy of this.enemies){
    if(enemy.hp<=0)continue;
    const data=monsters[enemy.kind],length=distance(enemy.position,this.player.position);
+   if(enemy.rangedTarget&&this.time>=enemy.rangedTarget.releaseAt&&data.rangedAttack){
+    const attack=data.rangedAttack,start:Point=[...enemy.position];
+    this.enemyShots.push({id:++this.serial,asset:attack.asset,start,position:[...start],target:[...enemy.rangedTarget.position],damage:enemy.damage,speed:attack.speed,radius:attack.radius,age:0});
+    delete enemy.rangedTarget;
+   }
+   if(this.time<(enemy.rangedAnimationUntil??0))continue;
    if(length>data.detect){this.setAction(enemy,'idle');continue;}
    enemy.direction=directionFor(this.player.position[0]-enemy.position[0],this.player.position[1]-enemy.position[1]);
-   if(length<=data.range&&this.navigation.clear(enemy.position,this.player.position)){
+   if(length<=(data.rangedAttack?.range??data.range)&&this.navigation.clear(enemy.position,this.player.position)){
     enemy.route=[];
     if(this.time>=enemy.attackAt){
-     enemy.attackAt=this.time+data.interval;enemy.actionUntil=this.time+0.4;this.setAction(enemy,'attack');
-     this.hp=Math.max(0,this.hp-enemy.damage);this.float(String(data.damage),this.player.position);
-     if(this.player.action!=='cast'&&this.player.action!=='buff'){this.setAction(this.player,'hit');this.player.actionUntil=this.time+0.16;}
+     enemy.attackAt=this.time+data.interval;enemy.actionUntil=this.time+balance.enemyAttackAnimation;this.setAction(enemy,'attack');
+     enemy.animationTime=0;
+     if(data.rangedAttack&&length>data.range){
+      enemy.rangedTarget={position:[...this.player.position],releaseAt:this.time+data.rangedAttack.windup};
+      enemy.rangedAnimationUntil=enemy.actionUntil=this.time+data.rangedAttack.animationDuration;
+     }else{delete enemy.rangedAnimationUntil;this.damagePlayer(enemy.damage);}
     }else if(this.time>=enemy.actionUntil)this.setAction(enemy,'idle');
    }else if(this.time>=enemy.actionUntil){
     if(this.time>=enemy.pathAt){
      enemy.route=this.navigation.clear(enemy.position,this.player.position)?[[...this.player.position]]:this.navigation.route(enemy.position,this.player.position);
      enemy.pathAt=this.time+0.65;
     }
-    this.setAction(enemy,this.moveActor(enemy,data.speed,dt)?'run':'idle');
+    const speed=enemyMovementSpeed(data,this.time-dt-enemy.spawnedAt,this.time-enemy.spawnedAt);
+    this.setAction(enemy,this.moveActor(enemy,speed,dt)?'run':'idle');
     for(const other of this.enemies){
      if(other===enemy||other.hp<=0)continue;
      const gap=distance(enemy.position,other.position);if(gap>=17)continue;
@@ -181,27 +216,25 @@ export class Simulation {
      if(this.navigation.clear(enemy.position,next))enemy.position=next;
     }
    }
-   if(this.hp<=0){
-    this.phase='death';this.player.route=[];this.setAction(this.player,'death');this.player.actionUntil=Infinity;this.shots=[];this.message('Vous êtes tombé. Les gains sont conservés ; une nouvelle tentative repart à la première vague.');this.persist();break;
-   }
+   if(this.phase==='death')break;
   }
  }
  update(dt:number){
   if(this.paused)return;
   this.time+=dt;this.saveTimer+=dt;this.player.animationTime+=dt;for(const enemy of this.enemies)enemy.animationTime+=dt;
-  this.enemies=this.enemies.filter(e=>e.hp>0||this.time-e.deadAt<1.6);
+  this.enemies=this.enemies.filter(e=>e.hp>0||this.time-e.deadAt<balance.enemyDeathAnimation);
   if(this.phase!=='death'&&this.phase!=='victory'){
    // Conserve la destination, mais immobilise le Crâ pendant la fenêtre d’incantation.
    const movementDt=Math.min(dt,Math.max(0,this.time-this.castUntil));
-   const moving=movementDt>0&&this.moveActor(this.player,this.playerClass.speed,movementDt);
+   const moving=movementDt>0&&this.moveActor(this.player,this.playerClass.speed*(1+movementSpeedBonus(this.profile)/100),movementDt);
    if(this.time>=this.player.actionUntil)this.setAction(this.player,moving?'run':'idle');
   }
   if(this.phase==='hub')this.updateShots(dt);
   if(this.phase==='combat'){
-   this.updateShots(dt);this.updateEnemies(dt);
+   this.updateShots(dt);this.updateEnemyShots(dt);if(this.phase==='combat')this.updateEnemies(dt);
    if(this.phase==='combat'){
     const wave=this.director?.update(dt,this.enemies.filter(e=>e.hp>0).length);if(wave)this.spawn(wave);
-    if(this.director?.completed){this.phase='victory';this.player.route=[];this.setAction(this.player,'idle');if(this.dungeon&&!this.profile.completed.includes(this.dungeon))this.profile.completed.push(this.dungeon);this.message('Donjon terminé ! Les récompenses sont sauvegardées.');this.rewardCompletion();this.persist();}
+    if(this.director?.completed){this.phase='victory';this.enemyShots=[];this.player.route=[];this.setAction(this.player,'idle');if(this.dungeon&&!this.profile.completed.includes(this.dungeon))this.profile.completed.push(this.dungeon);this.message('Donjon terminé ! Les récompenses sont sauvegardées.');this.rewardCompletion();this.persist();}
    }
   }
   for(const effect of this.effects){effect.age+=dt;if(effect.followPlayer)effect.position=[...this.player.position];}

@@ -46,7 +46,7 @@ class MapNavigationTest(unittest.TestCase):
             navigation.apply_navigation_overrides('ensable', arena['walkable'], arena['layers'])
 
     def test_rejects_stale_runtime(self):
-        self.assertEqual(navigation.validate_manifest_navigation(self.manifest), 4)
+        self.assertEqual(navigation.validate_manifest_navigation(self.manifest), 6)
         for corruption in ('blocked_decoration', 'passable_obstacle', 'wrong_source'):
             with self.subTest(corruption=corruption):
                 manifest = deepcopy(self.manifest)

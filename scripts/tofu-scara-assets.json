@@ -1,0 +1,72 @@
+{
+  "visualVersion": "1.40.13-remastered",
+  "identitySource": "items_fr_450.swf / I.u",
+  "items": [
+    {
+      "id": "8108",
+      "name": "Amulette du Tofu",
+      "set": "tofu",
+      "source": "clips/items/1/95.swf"
+    },
+    {
+      "id": "8109",
+      "name": "Anneau du Tofu",
+      "set": "tofu",
+      "source": "clips/items/9/100.swf"
+    },
+    {
+      "id": "8110",
+      "name": "Baguette du Tofu",
+      "set": "tofu",
+      "source": "clips/items/3/58.swf"
+    },
+    {
+      "id": "8111",
+      "name": "Pantoufles du Tofu",
+      "set": "tofu",
+      "source": "clips/items/11/73.swf"
+    },
+    {
+      "id": "8112",
+      "name": "Cape du Tofu",
+      "set": "tofu",
+      "source": "clips/items/17/97.swf"
+    },
+    {
+      "id": "8113",
+      "name": "Ceinture du Tofu",
+      "set": "tofu",
+      "source": "clips/items/10/89.swf"
+    },
+    {
+      "id": "8114",
+      "name": "Kaskofu",
+      "set": "tofu",
+      "source": "clips/items/16/128.swf"
+    },
+    {
+      "id": "8132",
+      "name": "Scarature Noire",
+      "set": "blackScara",
+      "source": "clips/items/10/93.swf"
+    },
+    {
+      "id": "8133",
+      "name": "Scaracoiffe Noire",
+      "set": "blackScara",
+      "source": "clips/items/16/132.swf"
+    },
+    {
+      "id": "8134",
+      "name": "Scaracape Noire",
+      "set": "blackScara",
+      "source": "clips/items/17/100.swf"
+    },
+    {
+      "id": "8136",
+      "name": "Scaranneau Noir",
+      "set": "blackScara",
+      "source": "clips/items/9/104.swf"
+    }
+  ]
+}

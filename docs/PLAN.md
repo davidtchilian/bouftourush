@@ -62,3 +62,35 @@ Les équipements portés sont exclus de la grille et du compteur du sac, tout en
 Validation : 32 tests TypeScript et 5 tests Python, build Vite/TypeScript et 8 tests navigateur réussis, dont la revente, l’aller-retour sac/équipement et les trois donjons.
 
 Le test hors connexion passe également : rechargement sans réseau, aperçu du gardien, entrée en donjon et aperçu du personnage dans l’inventaire.
+
+### Panoplie Bouftou Royal — 4 novembre 2026
+
+Sept objets royaux authentiques intégrés avec leurs icônes transparentes Remastered, coiffe/cape portées et aperçus HD. Tirage indépendant à 10 % par Royal vaincu, en normal et en Extrême ; conservation du butin ordinaire. PV, Puissance et seuils de panoplie multipliés par 1,5 par rapport à Bouftou, filtre d’inventaire dédié, équipement et persistance existants conservés. Pipeline complet et ajout incrémental `--royal-only` documentés dans `ASSETS.md`. Aucun asset requis manquant pour cet ajout.
+
+### Accélération du Royal et lance de Raul Mops — 4 novembre 2026
+
+Bouftou Royal : vitesse ×2 pendant une seconde, premier départ après cinq secondes de vie puis répétition toutes les cinq secondes, sans cumul ni déplacement à travers les obstacles. Raul Mops : lancer préparé avec le geste Remastered original, projectile de lance authentique, trajectoire esquivable et dégâts à l’impact ; mêlée conservée. Paramètres en données, timers suspendus en pause et nettoyage aux changements de phase. Exports locaux reproductibles et validation du manifeste étendus pour les trois nouvelles séquences.
+
+### Donjons Tofu et Scarafeuille Noir — 5 novembre 2026
+
+Les paliers 4 et 5 utilisent les cartes historiques 9529 et 9782 reconstruites
+avec les graphismes Remastered. Trois vagues puis Batofu ou Scarabosse Doré,
+butin des panoplies, modes Normal/Extrême et sauvegardes sont intégrés aux systèmes
+existants. Les sept objets Tofu et quatre objets Scarafeuille Noir apportent Vie,
+Puissance, vitesse et réduction de recharge, avec seuils de panoplie distincts.
+Les quatre accessoires portés suivent les matrices GAC et acceptent les mélanges
+avec les panoplies précédentes. Les filtres d'inventaire incluent les deux ajouts.
+
+La préparation incrémentale `assets:prepare:tofu-scara` réutilise les sources
+vérifiées, exporte les timelines et les aperçus HD, puis assemble les atlas.
+Le cadrage vectoriel mesure chaque frame isolément pour éviter les collisions
+d'identifiants SVG JPEXS entre frames. Les sources et intermédiaires restent locaux.
+Les contrôles de navigation, de composition, de récompense Extrême et le pilote
+`test:simulation` couvrent désormais les cinq donjons.
+
+
+## Livraison Tofu / Scarafeuille et préparation future — 5 novembre 2026
+
+Tofu et Scarafeuille sont jouables avec leurs quatre vagues, boss, récompenses et équipements. Les deux parcours navigateur complets ont réussi ; leurs profils recommandés réussissent également en simulation. À la reprise : 103 tests TypeScript, 17 tests Python, validation du manifeste actif (2 543 séquences et six cartes) et build de production réussis.
+
+Les six familles restantes de TODO.md disposent d’un lot séparé validé dans `public/assets/prepared/` : 806 séquences, six cartes, 35 icônes, 43 sprites sources, dix accessoires et neuf gardiens ; 426 PNG. Les données de combat, objets, butins et sauvegardes actifs ne les intègrent pas. Les cartes préparées exigent toujours leur revue de navigation avant toute future activation. Sources et limites détaillées dans `PREPARED-ASSETS.md`.

@@ -1,9 +1,14 @@
 import { describe,it,expect } from 'vitest';
 import { parseManifest,requiredIds } from '../src/game/assets/manifest';
-import { animationFrame } from '../src/game/rendering/animation';
+import { animationFrame,retimedAnimationAge } from '../src/game/rendering/animation';
 const animation = {frames:[{path:'a.png',durationMs:100},{path:'b.png',durationMs:200}],pivot:[0.5,1] as [number,number],size:[10,10] as [number,number],offset:[0,0] as [number,number],loop:true,flipX:false,provenance:{source:'source déclarée',version:'1.40.13-remastered' as const,originalFile:'fichier vérifié par le fournisseur',conversion:'export local',usageRights:'usage local déclaré'}};
 function fixture() { return {version:1,assets:Object.fromEntries(requiredIds.map(id=>[id,structuredClone(animation)])),hub:{bounds:[0,0,100,100],spawn:[50,50],cameraHeight:100}}; }
 describe('contrat des exports, sans illustration de remplacement',()=> {
+ it('joue les dernières frames originales dans une fenêtre de combat courte',()=>{
+  const attack={frames:Array.from({length:63},()=>({durationMs:25})),loop:false};
+  expect(animationFrame(attack,retimedAnimationAge(attack,0.399,0.4)*1000)).toBe(62);
+  expect(animationFrame(attack,retimedAnimationAge(attack,0.2,0.4)*1000)).toBe(31);
+ });
  it('refuse les assets absents',()=>expect(()=>parseManifest({version:1,assets:{},hub:{bounds:[0,0,1,1],spawn:[0,0],cameraHeight:1}})).toThrow('map.astrub.zaap'));
  it('accepte les métadonnées complètes',()=>expect(parseManifest(fixture()).version).toBe(1));
  it('refuse les visuels Classic, même dans un manifeste autrement valide',()=> {const f=fixture();const input={...f,assets:Object.fromEntries(Object.entries(f.assets).map(([id,a])=>[id,{...a,provenance:{...a.provenance,version:'1.40.13-classic'}}]))};expect(()=>parseManifest(input)).toThrow('Source visuelle interdite');});

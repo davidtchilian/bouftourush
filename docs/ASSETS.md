@@ -248,3 +248,171 @@ Régénération : `pnpm assets:spells`, puis `pnpm assets:import .local-assets/g
 Sur demande explicite du joueur, les couleurs, fonds, cadres et boutons de l’interface sont maintenant définis en CSS. Cela remplace la contrainte antérieure d’assembler exclusivement les éléments de skin Retro pour l’interface. Les anciens exports `ui.window`, `ui.button`, `ui.slot`, `ui.portrait`, `ui.selection` et variantes de boutons sont conservés dans le manifeste pour compatibilité et régénération, mais ne sont plus appliqués comme habillage dans React. Les icônes de sorts, cœur, objets et aperçus animés restent issus du lot Remastered documenté ci-dessus. Aucun fichier graphique tiers nouveau n’a été importé. Les règles de provenance et de redistribution des illustrations restent inchangées.
 
 Le favicon utilise directement `textures/item-2411/000.png` (Coiffe du Bouftou), déjà déclaré dans le manifeste comme `item.2411`, sans réexport ni copie. Source Remastered : `clips/items/16/41.swf#timeline`.
+
+### Panoplie Bouftou Royal — ajout du 4 novembre 2026
+
+Archive Remastered réacquise et empreinte SHA-256 revérifiée : `aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5`. Identités, noms et couples type/graphisme vérifiés dans `lang/fr/items/items_fr_450.swf` de Dofedex au commit déjà référencé. Aucun graphisme Classic utilisé.
+
+| Objet | Icône Remastered | Accessoire porté |
+| --- | --- | --- |
+| 2438 Boufcoiffe Royale | `clips/items/16/42.swf` | `clips/sprites/accessories/a1.swf#16_42` |
+| 2440 Epée Royale du Bouftou | `clips/items/6/30.swf` | Emplacement arme ; tir avec l’arc original existant |
+| 2441 Anneau Royal du Bouftou | `clips/items/9/46.swf` | — |
+| 2442 Boufbottes Royales | `clips/items/11/30.swf` | — |
+| 2443 Amulette Royale du Bouftou | `clips/items/1/50.swf` | — |
+| 2444 Ceinture Royale du Bouftou | `clips/items/10/31.swf` | — |
+| 2445 Cape Bouffante Royale | `clips/items/17/46.swf` | `clips/sprites/accessories/a2.swf#17_46` |
+
+Exports JPEXS 26.4.0 puis `rasterize-appearance.ts` : icônes recadrées sur le dessin transparent, côté maximal de 192 pixels ; accessoires en pièces indépendantes à densité 3, aperçus d’inventaire à densité 10 depuis les vecteurs. Les directions, durées, matrices d’attache, profondeurs et masques utilisent la composition Crâ existante. Les sorties runtime et leur provenance sont dans `public/assets/manifest.json` et `public/assets/textures/`.
+
+La préparation complète inclut ces fichiers. Pour compléter uniquement un lot runtime existant, recopier ce lot sous `.local-assets/game-runtime/`, puis exécuter :
+
+```sh
+python3 scripts/prepare-game.py --royal-only
+python3 scripts/prepare-composition.py --royal-only
+pnpm exec tsx scripts/rasterize-appearance.ts
+pnpm assets:import .local-assets/game-runtime
+pnpm assets:validate
+```
+
+Les mêmes prérequis locaux et restrictions de redistribution s’appliquent. Aucune nouvelle ressource nécessaire à ces sept pièces ne manque.
+
+### Lance de Raul Mops — 4 novembre 2026
+
+Source : `clips/sprites/1481.swf` du client **Remastered 1.40.13**, comparée octet par octet à l’archive dont le SHA-256 est indiqué plus haut. L’inspection visuelle des SVG confirme : `anim0R/L` est une incantation, `anim2R/L` un coup de lance et **`anim1R/L` le lancer**. Le projectile reprend exclusivement le symbole interne **4**, la lance effectivement tenue dans cette animation (présente jusqu’à la frame 33, retirée à la frame 34). Aucun projectile de remplacement ni graphisme généré.
+
+`prepare-enemy-abilities.py` exporte `mob.1481.throw.R/L` avec les 72 frames natives à 40 images/s et `spell.raulMops.spear` depuis le vecteur original. JPEXS 26.4.0, rasterisation à densité 3, transparence et recadrage commun des timelines ; lance à l’échelle source 0,8, tournée de 90° pour pointer à droite avant orientation par le moteur, pivot centré et décalage visuel vertical de 30 unités au-dessus de sa trajectoire au sol. Le symbole de lance a une seule frame dans le fichier original. Les durées natives restent dans le manifeste ; le jeu adapte le geste à sa fenêtre de 0,9 seconde.
+
+La préparation complète inclut ces exports avant la création des atlas. Pour compléter un lot existant recopié sous `.local-assets/game-runtime/` :
+
+```sh
+pnpm assets:prepare:enemies
+pnpm assets:import .local-assets/game-runtime
+pnpm assets:validate
+```
+
+Le script vérifie les sources locales et n’effectue aucun téléchargement. Les intermédiaires SVG et empreintes de contrôle restent sous `.local-assets/game-runtime/_appearance/`. Le manifeste exige les deux gestes animés et le projectile lorsque le jeu est déclaré prêt. Aucun graphisme supplémentaire n’est nécessaire pour l’accélération du Royal ; son animation de course originale reste utilisée, avec un indicateur textuel.
+
+### Extension Tofu / Scarafeuille Noir — état historique avant intégration
+
+Le catalogue `scripts/tofu-scara-assets.json` relève les identités de la table
+locale `items_fr_450.swf`, export `I.u` : panoplie Tofu (50), objets
+8108–8114 ; panoplie Scarafeuille Noir (49), objets 8132, 8133, 8134 et 8136.
+Les onze chemins `clips/items/<type>/<g>.swf` ont été vérifiés dans le client
+Remastered local. `python3 scripts/prepare-tofu-scara.py` exporte leurs icônes
+avec le préparateur existant (première frame, transparence et cadrage vectoriel),
+après validation de la source Remastered ; le manifeste local conserve les
+chemins et empreintes calculés par ce préparateur. Cela n'active ni butin ni objets.
+
+Constat sur cette installation : `.local-assets/dofedex` et le cache historique
+mentionné plus haut sont absents. Leur présence décrite dans ce document ne vaut
+pas vérification de l'environnement courant. Les dispositions publiques des
+arènes Tofu et Scarafeuille restent à identifier et importer ; ne pas réutiliser
+une arène sans rapport ou déchiffrer les cartes récentes. Il reste à vérifier les
+identités et animations des monstres/boss, exporter les accessoires portés et les
+aperçus, revoir la navigation par cellule, intégrer les vagues et le butin, puis
+implémenter et tester les bonus de vitesse et l'équilibrage du tableau TODO.
+Les donjons et panoplies ne sont donc pas encore livrés dans le jeu.
+
+### Réinstallation locale Dofedex du 4 novembre 2026
+
+Le dépôt au commit `ec4c08459f73f058294c34baa6baa739f9373753` a été téléchargé
+via `https://codeload.github.com/dofera/dofedex/zip/ec4c08459f73f058294c34baa6baa739f9373753`
+et décompressé directement dans `.local-assets/dofedex/` (86 364 entrées,
+3 152 672 207 octets décompressés). L'archive est `.local-assets/dofedex-source.zip` ;
+son empreinte est enregistrée dans `.local-assets/dofedex-provenance.json`.
+Ce constat remplace l'absence locale signalée dans la section précédente.
+Le client graphique reste exclusivement Remastered 1.40.13, archive SHA-256
+`aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5`, revérifiée.
+`.gitignore` exclut `.local-assets/`, toutes les archives ZIP, et protège également
+`/dofedex/` et `/dofedex-*/` en cas d'extraction à la racine.
+
+Dispositions publiques identifiées : Tofu `maps/9529/9529_0609131545.swf`
+(table MA.m, sous-zone 208, salle 8), Scarafeuille
+`maps/9782/9782_0610211614.swf` (groupe Scarabosse Doré dans les données locales
+Ancestra). Les variantes `X` ne sont pas utilisées. Graphismes reconstruits
+uniquement depuis `client-1.40.13-remastered/clips/gfx/`.
+Les sprites 1558 (Tofu), 1462 (Tofu Noir), 1380 (Batofu), 1135–1138
+(Scarafeuilles colorés), 1453 (Noir), 1455 (Scarabosse Doré) existent et exposent
+les animations static/run/anim0/hit/die R et L. Accessoires confirmés :
+`a1.swf#16_128`, `a1.swf#16_132`, `a2.swf#17_97`, `a2.swf#17_100`.
+Leur présence ne constitue pas à elle seule une validation visuelle du runtime.
+
+Empreinte SHA-256 de l’archive Dofedex téléchargée :
+`627b0cd8d92bdc693a30d247e242c5dd40ff5aa7bbb970aacf6fbaad480cf2b9`.
+
+
+### Intégration jouable Tofu / Scarafeuille Noir — 5 novembre 2026
+
+Le lot runtime de cette extension est préparé depuis les sources locales Remastered
+1.40.13 (archive SHA-256
+`aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5`).
+Les constats « non jouable » ci-dessus décrivent l'étape de préparation antérieure.
+Les dispositions publiques restent les fichiers 9529 et 9782 identifiés ci-dessus ;
+aucune donnée protégée n'est déchiffrée. Les bibliothèques `clips/gfx/` Remastered
+fournissent tous les graphismes, figés à leur première frame.
+
+- Tofu : 142 cellules navigables, quatre décisions de décor traversable et six
+  exclusions de bord ; huit positions d'apparition dans la composante du spawn.
+- Scarafeuille : 178 cellules navigables, 24 décisions de décor traversable et 21
+  exclusions de bord ; huit positions d'apparition dans la composante du spawn.
+- La revue de `scripts/map-navigation.json` distingue cages, caisses, piliers,
+  troncs et rochers des herbes, fleurs, paille, petits débris et racines suspendues.
+  Les œufs décoratifs ne créent pas d'obstacle implicite. Les limites source restent
+  fermées. Les mêmes cellules servent au joueur, aux monstres et aux projectiles.
+- Sprites : `clips/sprites/{1558,1462,1380,1135,1136,1137,1138,1453,1455}.swf`,
+  symboles `static`, `run`, `anim0`, `hit`, `die`, directions R/L, timelines complètes.
+  `prepare-dungeon-vectors.py` réexporte les vecteurs à densité 3 pour le jeu,
+  à densité 2 pour les décors. Les portraits des boss sont exportés à densité 6.
+- Les onze icônes suivent les chemins exacts de `scripts/tofu-scara-assets.json`,
+  recadrage transparent au dessin original, dimension maximale de 192 pixels.
+- Accessoires : `clips/sprites/accessories/a1.swf#16_128` (8114), `#16_132`
+  (8133), `a2.swf#17_97` (8112), `#17_100` (8134). Les pièces indépendantes
+  gardent les attaches GAC, les vues directionnelles et les timelines animées,
+  densité 3 en jeu et 10 pour les pièces des portraits.
+
+Le rasteriseur mesure chaque SVG séparément : les identifiants de symboles JPEXS
+réutilisés entre frames ne doivent pas fausser le cadrage commun de l'animation.
+Les sorties sont les séquences `mob.*`, `map.*`, `item.*`, `piece.accessory.*`
+et leurs aperçus ; le manifeste conserve les chemins SWF et symboles originaux.
+Les atlas PNG sont ensuite importés dans `public/assets/`.
+
+Pour compléter un export local existant, avec Java/JPEXS, Chromium et les deux
+sources locales installés comme indiqué plus haut :
+
+```sh
+pnpm assets:prepare:tofu-scara
+pnpm assets:import .local-assets/game-runtime
+pnpm assets:validate
+```
+
+`assets:prepare:game` inclut également l'extension lors d'une reconstruction complète.
+Les sources, SVG et caches restent dans `.local-assets/`, ignoré par Git ; seuls les
+PNG/atlas et le manifeste runtime sont versionnés selon la demande du joueur.
+Cette intégration n'établit aucun droit de redistribution ni accord d'Ankama.
+
+Le lot intégré contient 2 543 séquences : 92 atlas de jeu et 25 atlas d'aperçus,
+plus les icônes et éléments UI séparés. Le moteur charge les pièces du Crâ, les
+sorts et Astrub au démarrage (19 pages utilisées par ce lot), puis les cartes et
+familles nécessaires à l'entrée dans chaque donjon. Une attente de textures
+suspend le pas de simulation, sans avancer les délais de combat ; un échec affiche
+le chemin à réimporter. Les portraits et icônes restent chargés par leur interface.
+
+
+Les six fonds `map.baked.*` sont des compositions PNG à densité 2 des couches
+originales d'ordre inférieur à 2000 (sol et décor de fond). `bake-static-maps.ts`
+conserve positions, pivots, rotations, miroirs et ordre de dessin ; les objets
+`object2` restent indépendants pour leur occlusion avec les personnages. Les
+couches originales restent dans le manifeste et servent toujours à la validation
+et à la navigation. La scène en pause ne redessine que lorsqu'un état visuel ou
+le cadrage change. Il n'y a ni nouveau graphisme ni animation de décor.
+
+La préparation des six panoplies suivantes est décrite dans
+[PREPARED-ASSETS.md](PREPARED-ASSETS.md). Son manifeste est indépendant du jeu actif.
+Le cache ZIP de téléchargement Dofedex a été purgé après vérification de l'extraction
+conservée ; son empreinte reste dans `.local-assets/dofedex-provenance.json`.
+L'archive Remastered et le client source restent locaux.
+
+### Lot préparé indépendant livré le 5 novembre 2026
+
+`public/assets/prepared/` contient les six familles restantes de `TODO.md`, sans activation dans le jeu : 806 séquences Remastered, six cartes graphiques, 35 icônes, 43 sprites sources distincts, dix accessoires et neuf gardiens. Les 426 PNG occupent environ 575 Mio avec le manifeste. Les références temporelles passent de 22 051 à 19 334 par regroupement des pauses consécutives identiques ; aucune pose différente n'est retirée. Le manifeste actif ne référence pas ce lot. Catalogue, sources exactes, paramètres d'export et limites : [PREPARED-ASSETS.md](PREPARED-ASSETS.md).

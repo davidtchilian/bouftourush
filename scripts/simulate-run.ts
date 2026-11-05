@@ -3,8 +3,9 @@ import {readFile} from 'node:fs/promises';
 import {parseManifest} from '../src/game/assets/manifest';
 import {Simulation} from '../src/game/core/simulation';
 import {auditProfile,combatDestination} from './combat-audit';
-const manifest=parseManifest(JSON.parse(await readFile('public/assets/manifest.json','utf8')));
-for(const dungeon of ['incarnam','ensable','bouftou'] as const){
+import {dungeons,type DungeonId} from '../src/data/dungeons';
+const manifest=parseManifest(JSON.parse(await readFile(process.argv[2]??'public/assets/manifest.json','utf8')));
+for(const dungeon of Object.keys(dungeons) as DungeonId[]){
  const profile=auditProfile(dungeon),initialItems=profile.inventory.length,game=new Simulation(manifest,profile,()=>{},42);game.enter(dungeon);
  let nextInput=0;
  while(game.time<240&&game.phase==='combat'){

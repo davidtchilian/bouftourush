@@ -1,6 +1,10 @@
 # Archives et sources locales : ne pas publier.
 *.[zZ][iI][pP]
 .local-assets/
+# Protection supplémentaire si les sources Dofedex sont extraites à la racine.
+/dofedex/
+/dofedex-*/
+.local-auth/
 
 # Dépendances et caches locaux.
 node_modules/

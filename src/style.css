@@ -266,3 +266,6 @@ canvas { display:block; }
  .game-help,.journal { bottom:150px; }
 }
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { transition:none!important; } }
+
+.session-logout{position:fixed;right:12px;bottom:112px;z-index:100}.session-logout button{padding:8px 12px;background:#263440;color:#fff;border:1px solid #8192a1;border-radius:6px;cursor:pointer}
+.world-loading { position:fixed; z-index:100; top:20px; left:50%; transform:translateX(-50%); padding:12px 20px; color:#f5f1e8; background:#19251f; border:1px solid #77a587; border-radius:8px; }

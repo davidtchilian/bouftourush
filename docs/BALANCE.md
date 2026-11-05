@@ -127,3 +127,58 @@ Une victoire après élimination de tous les ennemis de la dernière vague ajout
 Aucune panoplie de fin n’est donnée après mort, abandon, ni avant le dernier ennemi vivant. Les drops classiques gagnés pendant l’essai restent conservés. « Recommencer » conserve le mode de la tentative ; retourner au hub ou recharger le jeu revient au mode Normal. Les entrées restent gratuites et libres, et la sauvegarde de progression garde sa version.
 
 La barre AZER montre les icônes Remastered correspondantes. Un sort prêt utilise le skin orange original et un texte blanc ; pendant sa recharge, il utilise le cadre beige original et un texte noir avec le délai restant. Les infobulles et l’affichage de la durée de Tir puissant restent disponibles.
+
+## Butin Bouftou Royal — 4 novembre 2026
+
+Chaque Bouftou Royal vaincu effectue un tirage supplémentaire indépendant à **10 %** pour une seule pièce de la panoplie royale. Les sept pièces sont équiprobables (10 % / 7 chacune par Royal). Ce tirage s’ajoute au butin Bouftou ordinaire ; les deux peuvent tomber ensemble. Les autres monstres ne donnent aucune pièce royale. En Extrême, chaque Royal a son propre tirage à 10 % ; la récompense de victoire reste la panoplie Bouftou ordinaire. Aucun bonus royal garanti, aucun mécanisme anti-doublon.
+
+La panoplie royale conserve les sept catégories d’équipement de Bouftou. Chaque pièce donne **1,5 fois les PV et la Puissance** de son équivalent Bouftou ; chaque seuil de 2 à 7 pièces donne également 1,5 fois les bonus. L’arme authentique royale est une épée, dans le même emplacement que le marteau Bouftou. Les deux panoplies comptent leurs pièces séparément ; les anneaux identiques ne comptent qu’une fois pour les seuils. Ces valeurs sont propres au fangame, sans prétention aux statistiques officielles.
+
+Les taux précédents et les estimations de collection ci-dessus concernent les panoplies ordinaires. Le bonus royal ajoute 0,1 objet attendu par Royal tué (soit 1,525 objet par Bouftou normal entièrement terminé).
+
+## Capacités des ennemis — 4 novembre 2026
+
+Le **Bouftou Royal** court à 49 unités/s normalement et à **98 unités/s pendant 1 seconde toutes les 5 secondes**. Le premier boost commence 5 secondes après l’apparition de chaque Royal : fenêtres [5,6[, [10,11[, etc. Chaque exemplaire a son propre âge, également en Extrême. La pause suspend ce cycle. Les pas qui chevauchent une frontière sont répartis entre les deux vitesses ; la vitesse de base n’est jamais modifiée ni cumulée. Une mention « Vitesse ×2 » accompagne son nom pendant l’accélération.
+
+**Raul Mops** garde son attaque de mêlée à 29 unités et peut lancer sa lance jusqu’à **220 unités**, avec ligne de vue. Le lancer et la mêlée partagent le délai de 1,8 seconde. Son geste original `anim1R/L` est joué entièrement en 0,9 seconde ; la lance part à 0,4125 seconde, au retrait de la lance à la frame source 34 sur 72. Le projectile vise la position du joueur au début du geste, sans guidage : vitesse 260 unités/s et rayon de contact de 10 unités. Il inflige les dégâts du Raul Mops concerné, avec les multiplicateurs de vague déjà appliqués, uniquement à l’impact et une seule fois. Il est esquivable et disparaît à destination ou contre un obstacle de navigation. Aucune attraction n’est ajoutée.
+
+La mort de Raul Mops annule un lancer encore en préparation ; une lance déjà partie reste dangereuse jusqu’à sa collision ou son expiration. Pause, mort du joueur, victoire et changement de carte traitent aussi les projectiles ennemis. Ces valeurs sont des choix du fangame, configurables dans `src/data/monsters.ts`.
+
+
+## Tofu et Scarafeuille Noir — 5 novembre 2026
+
+Les paliers 4 et 5 sont accessibles librement, en Normal et Extrême, avec trois
+vagues puis Batofu ou Scarabosse Doré et leurs accompagnants. Les valeurs sont
+provisoires, propres au fangame ; le tableau de `TODO.md` indique leurs orientations.
+
+| Donjon | Profil conseillé pour l'audit | Butin normal / boss | Progression par vague PV / dégâts |
+| --- | --- | --- | --- |
+| Tofu | Niveau 24, Bouftou | 3,5 % / 40 % | +12 % / +8 % |
+| Scarafeuille | Niveau 30, Tofu | 3 % / 40 % | +12 % / +8 % |
+
+Chaque donjon contient 38 ennemis en Normal, 190 en Extrême. Une victoire Extrême
+donne les sept objets Tofu ou les quatre objets Scarafeuille Noir, en plus des
+butins habituels. Les règles de mort, de retour au hub et de sauvegarde existantes
+s'appliquent aux deux ajouts.
+
+Tofu privilégie la mobilité : chaque objet donne 16 Vie, 16 Puissance, +4 % de
+vitesse et 1 % de réduction de recharge. Les sept pièces distinctes ajoutent
+56 Vie, 63 Puissance, +21 % de vitesse et 7 % de réduction de recharge.
+Scarafeuille Noir privilégie la résistance et les dégâts : chaque objet donne
+100 Vie, 48 Puissance, +1 % de vitesse et 1 % de réduction de recharge ; les
+quatre pièces distinctes ajoutent 180 Vie, 112 Puissance, +4 % de vitesse et
+4 % de réduction de recharge. Le meilleur seuil atteint est appliqué une fois,
+sans additionner les seuils inférieurs. Deux anneaux identiques ne comptent
+qu'une pièce distincte. La réduction de recharge garde le plafond global.
+
+Avec la graine 42 et les cartes réelles, le pilote `test:simulation` termine
+Tofu en 35,5 s simulées (730 PV restants, trois objets) et Scarafeuille en 56,7 s
+(606 PV restants, deux objets). Cela vérifie un parcours possible avec AZER et
+un déplacement ordinaire, sans garantir la difficulté ressentie par chaque joueur.
+
+Les animations sources complètes sont adaptées à leurs fenêtres temps réel :
+attaque de mêlée 0,4 s, réaction à l'impact 0,16 s et disparition 1,6 s
+(`enemyAttackAnimation`, `enemyHitAnimation`, `enemyDeathAnimation` dans `balance`).
+Le lancer de Raul Mops conserve sa durée spécifique de 0,9 s et son instant de
+libération existant. Les timelines ne sont pas tronquées à leur durée Flash
+native ; les interactions et les récompenses gardent leurs instants de simulation.

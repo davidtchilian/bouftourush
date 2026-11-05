@@ -1,6 +1,6 @@
 # Bouftourush
 
-Fangame solo de dungeon crawler temps réel, gratuit, non affilié à Ankama. **La boucle MVP est jouable avec les assets installés localement** : Astrub, Crâ, sorts AZER, trois donjons, boss, loot, niveaux, inventaire, équipement, panoplies et sauvegarde.
+Fangame solo de dungeon crawler temps réel, gratuit, non affilié à Ankama. **La boucle MVP est jouable avec les assets installés localement** : Astrub, Crâ, sorts AZER, cinq donjons, boss, loot, niveaux, inventaire, équipement, panoplies et sauvegarde.
 
 Les graphismes proviennent du client **Dofus Retro Remastered 1.40.13**, choisi pour cette version du projet. Le lot converti utilisé par le jeu est versionné dans `public/assets/` à la demande du propriétaire du projet. Les graphismes restent la propriété de leurs ayants droit ; aucune autorisation de redistribution n’est établie et la gratuité du projet ne donne aucun droit supplémentaire.
 
@@ -13,6 +13,8 @@ pnpm install
 pnpm dev
 ```
 
+Le serveur exige le fichier privé `.local-auth/account.json` ; le compte demandé est configuré sur cette machine. Ce fichier ne fait pas partie du dépôt. Voir [Authentification](docs/AUTH.md) pour installer une autre instance. Aucune inscription publique.
+
 Ouvrir l’adresse affichée, généralement **http://localhost:5173**. Les assets préparés sont inclus dans Git : un nouveau clone peut lancer le jeu directement après installation des dépendances. Si le manifeste est absent, récupérer le dossier `public/assets/` du dépôt ou le régénérer avec la procédure ci-dessous.
 
 ## Interface
@@ -23,7 +25,7 @@ Le bandeau supérieur donne accès aux donjons, à l’inventaire et à l’aide
 
 - **Clic droit** : aller au point cliqué. **Maintenir le clic droit** : suivre le curseur ; relâcher laisse terminer la dernière destination.
 - **A** Flèche explosive, **Z** Flèche enflammée, **E** Flèche magique, **R** Tir puissant. Visée vers le curseur ; R s’applique immédiatement sur soi. Les sorts peuvent être essayés à Astrub. Chaque incantation immobilise le Crâ pendant 0,12 s, puis le déplacement reprend.
-- **Donjons** : choisir Incarnam, Bouftou ou le Donjon Ensablé, gratuitement et sans clef. Les cartes de sélection montrent les gardiens, animés au survol, et leur butin. Trois vagues puis un boss. Le bouton **Abandonner** retourne au hub.
+- **Donjons** : choisir Incarnam, le Donjon Ensablé, Bouftou, Tofu ou Scarafeuille, gratuitement et sans clef. Les cartes de sélection montrent les gardiens, animés au survol, et leur butin. Trois vagues puis un boss. Le bouton **Abandonner** retourne au hub.
 - **I** : inventaire et équipement. Aperçu du Crâ équipé à gauche du sac, bouton Tourner, filtres par panoplie et détails de l’objet sélectionné. Un clic affiche les stats ; un double-clic équipe directement l’objet. Les objets portés quittent la grille du sac et y reviennent après retrait. « Vendre doublons », en bas à droite, revend les exemplaires libres supplémentaires pour 1 à 4 kamas, en protégeant les équipements portés. **Échap** ferme les fenêtres. L’inventaire met la simulation en pause.
 
 Après mort ou victoire, retour à Astrub ou nouvelle tentative. Les gains acquis sont conservés ; une nouvelle tentative reprend à la première vague avec toute la Vie. Le rechargement du navigateur retrouve le personnage à Astrub.
@@ -39,9 +41,11 @@ pnpm assets:import .local-assets/game-runtime
 pnpm assets:validate
 ```
 
+Pour ajouter uniquement Tofu et Scarafeuille à un export local existant, utiliser `pnpm assets:prepare:tofu-scara`, puis les mêmes commandes d’import et de validation.
+
 La préparation convertit les SWF, reconstruit les cartes et assemble les atlas. L’import valide le manifeste et copie seulement les fichiers utilisés. Sans les sources, il échoue avec le chemin manquant. Les PNG/atlas et le manifeste de `public/assets/` sont versionnés ; les archives clients et `.local-assets/` restent exclus de Git. La procédure de conversion n’exécute pas l’ActionScript du client et ne récupère aucune clé serveur.
 
-## Vérifier et utiliser hors connexion
+## Vérifier et lancer la version compilée
 
 ```sh
 pnpm test
@@ -54,7 +58,7 @@ pnpm preview
 
 Les tests navigateur de combat exigent les assets locaux ; les tests unitaires et le diagnostic sans assets restent utilisables sans eux. Le build ne peut pas rendre jouable un dossier sans assets.
 
-En production (`build` puis `preview`), un premier chargement précharge l’application et les assets. Attendre **« Hors connexion prêt »** dans le HUD avant de couper le réseau. Le serveur de développement n’installe pas de service worker.
+Depuis l’ajout de l’authentification obligatoire, le jeu nécessite une connexion au serveur. Le cache hors connexion historique est retiré. `pnpm dev`, `pnpm preview` et `pnpm start` protègent le jeu et ses assets côté serveur ; ne pas exposer `dist/` ou `public/` directement avec un serveur statique. Voir [Authentification](docs/AUTH.md).
 
 [Balance et règles](docs/BALANCE.md) · [Architecture](docs/ARCHITECTURE.md) · [Assets et provenance](docs/ASSETS.md) · [Avancement et limites](docs/PLAN.md).
 

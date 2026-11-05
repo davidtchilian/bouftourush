@@ -1,11 +1,11 @@
 import {describe,it,expect} from 'vitest';
 import {balance,xpForLevel} from '../src/data/balance';
 import {newProfile,awardXp,equip,finalStats} from '../src/game/progression/profile';
-import {weightedLoot,seededRandom} from '../src/game/progression/loot';
+import {weightedLoot,seededRandom,monsterLoot} from '../src/game/progression/loot';
 import {saveProfile,loadProfile} from '../src/game/save/persistence';
 import {WaveDirector} from '../src/game/dungeons/waves';
 import {dungeons} from '../src/data/dungeons';
-import {items,mousseLoot} from '../src/data/items';
+import {items,mousseLoot,royalUpgrades,royalLoot,sets} from '../src/data/items';
 import {monsters} from '../src/data/monsters';
 describe('progression, équipement et persistance',()=>{
  it('monte plusieurs niveaux et retourne seulement le gain de HP maximum',()=>{
@@ -42,4 +42,36 @@ it('le directeur attend les ennemis vivants et termine seulement après le boss'
  const director=new WaveDirector(dungeons.incarnam);expect(director.update(0.1,0)).toBeNull();expect(director.update(2,0)?.length).toBeGreaterThan(0);expect(director.update(20,1)).toBeNull();
  for(let wave=1;wave<4;wave++)expect(director.update(2,0)?.length).toBeGreaterThan(0);
  expect(director.boss).toBe(true);expect(director.completed).toBe(false);director.update(1,1);expect(director.completed).toBe(false);director.update(1,0);expect(director.completed).toBe(true);
+});
+
+describe('butin et panoplie Bouftou Royal',()=>{
+ it('tire une seule pièce royale à 10 %, indépendamment du butin ordinaire',()=>{
+  const roll=(...values:number[])=>()=>values.shift()!;
+  expect(monsterLoot(monsters.royal,1,roll(0,0,0.099999,0))).toEqual([monsters.royal.loot[0].item,royalLoot[0].item]);
+  expect(monsterLoot(monsters.royal,1,roll(0,0,0.1))).toEqual([monsters.royal.loot[0].item]);
+  expect(monsterLoot(monsters.royal,0,roll(0.9,0,0.999999))).toEqual([royalLoot.at(-1)!.item]);
+  for(const [id,monster] of Object.entries(monsters))if(id!=='royal')expect(monster.bonusLoot).toBeUndefined();
+ });
+ it('répartit les 10 % entre les sept pièces, même en Extrême',()=>{
+  const random=seededRandom(7981),counts=new Map<string,number>();
+  for(let i=0;i<100000;i++)for(const id of monsterLoot(monsters.royal,0,random))counts.set(id,(counts.get(id)??0)+1);
+  expect([...counts.values()].reduce((a,b)=>a+b,0)/100000).toBeCloseTo(0.1,2);
+  expect([...counts.keys()].sort()).toEqual(royalLoot.map(d=>d.item).sort());
+  for(const count of counts.values())expect(count).toBeGreaterThan(1200);
+ });
+ it('améliore chaque pièce et chaque seuil, sans mélanger les bonus des deux panoplies',()=>{
+  const profile=newProfile();
+  for(const [base,id] of royalUpgrades){
+   expect(items[id].category).toBe(items[base].category);
+   expect(items[id].stats.hp).toBe(items[base].stats.hp*1.5);expect(items[id].stats.power).toBe(items[base].stats.power*1.5);
+   profile.inventory.push({uid:id,item:id});expect(equip(profile,id)).toBe(true);
+  }
+  for(const [count,stats] of Object.entries(sets.bouftou.thresholds))expect(sets.royalBouftou.thresholds[Number(count)]).toEqual({hp:stats.hp*1.5,power:stats.power*1.5});
+  const pieceHp=royalUpgrades.reduce((sum,[,id])=>sum+items[id].stats.hp,0),piecePower=royalUpgrades.reduce((sum,[,id])=>sum+items[id].stats.power,0);
+  expect(finalStats(profile)).toEqual({hp:balance.startingHp+pieceHp+270,power:piecePower+165,cooldownReduction:0});
+  let serialized='';const storage={getItem:()=>serialized,setItem:(_key:string,value:string)=>{serialized=value;}};
+  expect(saveProfile(storage,profile)).toBe(true);expect(loadProfile(storage)).toEqual({profile});
+  profile.equipment={hat:'2438'};profile.inventory.push({uid:'normal',item:'2414'});equip(profile,'normal');
+  expect(finalStats(profile).power).toBe(items['2438'].stats.power+items['2414'].stats.power);
+ });
 });

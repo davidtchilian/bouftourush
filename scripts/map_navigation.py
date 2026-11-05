@@ -16,9 +16,9 @@ def object_layout_hash(layers):
                for layer in layers if layer['assetId'].startswith('map.object.')]
     # Les nombres entiers et flottants équivalents ont la même représentation.
     for obj in objects:
-        obj['position'] = [float(v) for v in obj['position']]
+        obj['position'] = [float(v) if v else 0.0 for v in obj['position']]
         obj['scale'] = [float(v) for v in obj['scale']]
-        obj['rotation'] = float(obj['rotation'])
+        obj['rotation'] = float(obj['rotation']) if obj['rotation'] else 0.0
         obj['order'] = float(obj['order'])
     payload = json.dumps(sorted(objects, key=lambda obj: obj['order']), sort_keys=True, separators=(',', ':'))
     return hashlib.sha256(payload.encode()).hexdigest()

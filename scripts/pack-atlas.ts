@@ -1,6 +1,7 @@
 /** Assemble les PNG originaux, y compris les frames déjà découpées d'anciens atlas. */
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
+import {createHash} from 'node:crypto';
 import {chromium} from '@playwright/test';
 const previews=process.argv.includes('--previews'),atlasFolder=previews?'atlases/previews':'atlases/game';
 const root=resolve(process.argv[2]??'.local-assets/game-runtime');
@@ -10,11 +11,19 @@ type Asset={frames:Frame[]};
 const assets=Object.entries(manifest.assets as Record<string,Asset>).filter(([id])=>!id.startsWith('ui.')&&!id.startsWith('item.')&&(previews?id.startsWith('preview.'):!id.startsWith('preview.')));
 const key=(frame:Frame)=>frame.path+(frame.region?'#'+frame.region.join(','):'');
 const frames=[...new Map(assets.flatMap(([,asset])=>asset.frames.map(frame=>[key(frame),frame] as const))).values()];
-const sources=new Map(await Promise.all([...new Set(frames.map(frame=>frame.path))].map(async path=>[path,await readFile(join(root,path))] as const)));
+// Ne conserver que les dimensions et empreintes : les PNG sont lus page par page.
+const sources=new Map<string,{width:number;height:number}>(),hashes=new Map<string,string>();
+for(const path of new Set(frames.map(frame=>frame.path))){
+ const bytes=await readFile(join(root,path));
+ sources.set(path,{width:bytes.readUInt32BE(16),height:bytes.readUInt32BE(20)});
+ hashes.set(path,createHash('sha256').update(bytes).digest('hex'));
+}
+const canonicalKey=(frame:Frame)=>hashes.get(frame.path)+(frame.region?'#'+frame.region.join(','):'');
+const uniqueFrames=[...new Map(frames.map(frame=>[canonicalKey(frame),frame] as const)).values()];
 const size=2048;
-const images=frames.map(frame=>{
- const bytes=sources.get(frame.path)!,region=frame.region??[0,0,bytes.readUInt32BE(16),bytes.readUInt32BE(20)];
- return {key:key(frame),source:frame.path,sx:region[0],sy:region[1],width:region[2],height:region[3]};
+const images=uniqueFrames.map(frame=>{
+ const source=sources.get(frame.path)!,region=frame.region??[0,0,source.width,source.height];
+ return {key:canonicalKey(frame),source:frame.path,sx:region[0],sy:region[1],width:region[2],height:region[3]};
 }).sort((a,b)=>b.height-a.height||b.width-a.width||a.key.localeCompare(b.key));
 const placements=new Map<string,{page:number;x:number;y:number;width:number;height:number}>();
 let page=0,x=1,y=1,row=0;
@@ -24,12 +33,14 @@ for(const image of images){
  if(y+image.height+1>size){page++;x=1;y=1;row=0;}
  placements.set(image.key,{page,x,y,width:image.width,height:image.height});x+=image.width+2;row=Math.max(row,image.height);
 }
-const browser=await chromium.launch({headless:true});
+const browser=await chromium.launch({headless:true,executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH});
 try{
- const tab=await browser.newPage();await tab.goto('about:blank');await mkdir(join(root,atlasFolder),{recursive:true});
+ let tab=await browser.newPage();await tab.goto('about:blank');await mkdir(join(root,atlasFolder),{recursive:true});
  for(let n=0;n<=page;n++){
   const batch=images.filter(image=>placements.get(image.key)!.page===n).map(image=>({...image,...placements.get(image.key)!}));
-  const data=Object.fromEntries([...new Set(batch.map(image=>image.source))].map(path=>[path,sources.get(path)!.toString('base64')]));
+  if(n>0&&n%8===0){await tab.close();tab=await browser.newPage();await tab.goto('about:blank');}
+  const data:Record<string,string>={};
+  for(const path of new Set(batch.map(image=>image.source)))data[path]=(await readFile(join(root,path))).toString('base64');
   const png=await tab.evaluate(async({batch,size,data})=>{
    const canvas=document.createElement('canvas');canvas.width=size;canvas.height=size;const ctx=canvas.getContext('2d')!;
    const decoded=new Map<string,HTMLImageElement>();
@@ -42,8 +53,9 @@ try{
    return canvas.toDataURL('image/png').split(',')[1];
   },{batch,size,data});
   await writeFile(join(root,`${atlasFolder}/page-${n}.png`),Buffer.from(png,'base64'));
+  if(n%8===0||n===page)console.log(`${atlasFolder} : page ${n+1}/${page+1}`);
  }
 }finally{await browser.close();}
-for(const [,asset] of assets)for(const frame of asset.frames){const p=placements.get(key(frame))!;frame.path=`${atlasFolder}/page-${p.page}.png`;frame.region=[p.x,p.y,p.width,p.height,size,size];}
+for(const [,asset] of assets)for(const frame of asset.frames){const p=placements.get(canonicalKey(frame))!;frame.path=`${atlasFolder}/page-${p.page}.png`;frame.region=[p.x,p.y,p.width,p.height,size,size];}
 await writeFile(join(root,'manifest.json'),JSON.stringify(manifest,null,2));
 console.log(`${frames.length} frames originales assemblées dans ${page+1} atlas de ${size} × ${size}.`);

@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {dungeons,waveMultipliers} from '../src/data/dungeons';
+import {dungeons,waveMultipliers,type DungeonId} from '../src/data/dungeons';
 import {items} from '../src/data/items';
 import {monsters} from '../src/data/monsters';
 import {WaveDirector} from '../src/game/dungeons/waves';
@@ -35,8 +35,7 @@ describe('donjons Extrême',()=>{
   for(const enemy of game.enemies){expect(enemy.hp).toBe(Math.round(monsters[enemy.kind].hp*1.5));expect(enemy.damage).toBe(monsters[enemy.kind].damage);}
   expect(new Set(game.enemies.map(enemy=>enemy.position.join(','))).size).toBe(50);
  });
- it('donne la panoplie complète une seule fois par victoire, avec des identifiants uniques et sauvegardables',()=>{
-  for(const id of ['incarnam','ensable','bouftou'] as const){
+ it.each(Object.keys(dungeons) as DungeonId[])('%s : donne la panoplie complète une seule fois par victoire, avec des identifiants uniques et sauvegardables',id=>{
    const profile=newProfile();profile.inventory.push({uid:'owned',item:setIds(id)[0]});let saved='';
    const storage={getItem:()=>saved,setItem:(_key:string,value:string)=>{saved=value;}};
    const game=new Simulation(fixtureManifest(),profile,()=>{saveProfile(storage,profile);},42);game.enter(id,'extreme');
@@ -46,7 +45,6 @@ describe('donjons Extrême',()=>{
    const count=profile.inventory.length;for(let i=0;i<60;i++)game.update(1/60);expect(profile.inventory).toHaveLength(count);
    expect(loadProfile(storage).profile.inventory).toEqual(profile.inventory);
    game.enter(id,'extreme');clearWaves(game);expect(profile.inventory).toHaveLength(1+2*setIds(id).length);
-  }
  });
  it('conserve les drops ordinaires en plus de la récompense de fin',()=>{
   const profile=newProfile(),game=new Simulation(fixtureManifest(),profile,()=>{},42,1);game.enter('incarnam','extreme');game.update(2);

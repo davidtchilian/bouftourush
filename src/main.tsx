@@ -22,7 +22,22 @@ function App(){
   }).catch((error:unknown)=>{if(!abort.signal.aborted)useAppStore.setState({status:'Assets requis',error:error instanceof Error?error.message:String(error)});});
   return()=>{abort.abort();runtime?.dispose();updateLabels([]);};
  },[]);
-  return <main><GameUI controller={controller}/><div className="viewport" ref={host} onContextMenu={e=>e.preventDefault()} aria-label="Scène de jeu"><div className="labels" ref={labelsHost} aria-hidden="true"/></div>{!controller&&<aside aria-live="polite"><h1>Bouftourush</h1><p>{status}</p>{error&&<><p>{error}</p><p>Installer les sources locales avec assets:prepare:game et assets:import. Voir docs/ASSETS.md.</p></>}</aside>}</main>;
+  return <main><form className="session-logout" method="post" action="/auth/logout"><button type="submit">Déconnexion</button></form><GameUI controller={controller}/><div className="viewport" ref={host} onContextMenu={e=>e.preventDefault()} aria-label="Scène de jeu"><div className="labels" ref={labelsHost} aria-hidden="true"/></div>{!controller&&<aside aria-live="polite"><h1>Bouftourush</h1><p>{status}</p>{error&&<><p>{error}</p><p>Installer les sources locales avec assets:prepare:game et assets:import. Voir docs/ASSETS.md.</p></>}</aside>}</main>;
 }
-createRoot(document.getElementById('root')!).render(<App/>);
-if(import.meta.env.PROD&&'serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{});});
+const appRoot=createRoot(document.getElementById('root')!);
+appRoot.render(<App/>);
+let locked=false;
+function requireLogin(){
+ if(locked)return;
+ locked=true;appRoot.unmount();
+ document.body.textContent='Connexion au serveur requise. Rechargez la page pour vous reconnecter.';
+ location.replace('/login');
+}
+// Toute session expirée ou révoquée ferme le jeu, y compris dans un onglet déjà ouvert.
+async function checkSession(){
+ try{const response=await fetch('/auth/session',{cache:'no-store'});if(!response.ok)requireLogin();}
+ catch{requireLogin();}
+}
+window.setInterval(()=>{void checkSession();},15000);
+window.addEventListener('focus',()=>{void checkSession();});
+window.addEventListener('offline',requireLogin);

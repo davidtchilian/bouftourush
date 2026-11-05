@@ -1,4 +1,5 @@
-export type Stats={hp:number;power:number;cooldownReduction?:number};
+import {tofuScaraItems,tofuScaraSets} from './tofuScara';
+export type Stats={hp:number;power:number;cooldownReduction?:number;movementSpeed?:number};
 export const slots=['hat','cape','amulet','ring1','ring2','belt','boots','weapon'] as const;
 export type Slot=typeof slots[number];
 export const slotNames:Record<Slot,string>={hat:'Coiffe',cape:'Cape',amulet:'Amulette',ring1:'Anneau 1',ring2:'Anneau 2',belt:'Ceinture',boots:'Bottes',weapon:'Arme'};
@@ -37,3 +38,23 @@ Object.assign(items,{
 } satisfies Record<string,ItemDefinition>);
 sets.mousse={name:'Panoplie en Mousse',thresholds:{2:{hp:18,power:8,cooldownReduction:2},3:{hp:32,power:15,cooldownReduction:3},4:{hp:48,power:24,cooldownReduction:4},5:{hp:66,power:34,cooldownReduction:6},6:{hp:86,power:44,cooldownReduction:7},7:{hp:110,power:55,cooldownReduction:9}}};
 export const mousseLoot=[{item:'8253',weight:4},{item:'8254',weight:4},{item:'8256',weight:3},{item:'8257',weight:3},{item:'8258',weight:2},{item:'8259',weight:2},{item:'8255',weight:2}];
+
+// Panoplie royale : mêmes emplacements que Bouftou, PV/Puissance et seuils multipliés par 1,5.
+// Identités et graphismes vérifiés dans I.u, items_fr_450.swf ; équilibre du fangame.
+export const royalUpgrades=[
+ ['2411','2438','Boufcoiffe Royale'],['2414','2445','Cape Bouffante Royale'],
+ ['2416','2440','Epée Royale du Bouftou'],['2419','2441','Anneau Royal du Bouftou'],
+ ['2422','2442','Boufbottes Royales'],['2425','2443','Amulette Royale du Bouftou'],
+ ['2428','2444','Ceinture Royale du Bouftou'],
+] as const;
+for(const [base,id,name] of royalUpgrades){
+ const original=items[base];
+ items[id]={...original,id,name,set:'royalBouftou',icon:`item.${id}`,stats:{hp:original.stats.hp*1.5,power:original.stats.power*1.5}};
+}
+sets.royalBouftou={name:'Panoplie du Bouftou Royal',thresholds:Object.fromEntries(Object.entries(sets.bouftou.thresholds).map(([count,stats])=>[count,{hp:stats.hp*1.5,power:stats.power*1.5}]))};
+export const royalLoot=royalUpgrades.map(([,item])=>({item,weight:1}));
+
+Object.assign(items,tofuScaraItems);
+Object.assign(sets,tofuScaraSets);
+export const tofuLoot=Object.values(tofuScaraItems).filter(i=>i.set==='tofu').map(i=>({item:i.id,weight:1}));
+export const scaraLoot=Object.values(tofuScaraItems).filter(i=>i.set==='blackScara').map(i=>({item:i.id,weight:1}));

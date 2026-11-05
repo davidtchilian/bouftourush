@@ -1,13 +1,24 @@
-import {familyLoot,incarnamLoot,mousseLoot} from './items';
-export type MonsterId='bouftou'|'white'|'black'|'chief'|'royal'|'milimilou'|'chafer'|'youngWhite'|'youngBlack'|'smallBouftou'|'crabe'|'pichonBlanc'|'pichonBleu'|'pichonVert'|'pichonOrange'|'pichonKloune'|'raulMops'|'etoileMer'|'sponge';
-export type MonsterDefinition={name:string;sprite:string;hp:number;speed:number;detect:number;range:number;damage:number;interval:number;xp:number;kamas:number;boss?:boolean;loot:typeof familyLoot};
+import {familyLoot,incarnamLoot,mousseLoot,royalLoot,tofuLoot,scaraLoot} from './items';
+export type MonsterId='tofu'|'blackTofu'|'batofu'|'blueScara'|'redScara'|'greenScara'|'whiteScara'|'blackScara'|'goldScara'|'bouftou'|'white'|'black'|'chief'|'royal'|'milimilou'|'chafer'|'youngWhite'|'youngBlack'|'smallBouftou'|'crabe'|'pichonBlanc'|'pichonBleu'|'pichonVert'|'pichonOrange'|'pichonKloune'|'raulMops'|'etoileMer'|'sponge';
+export type SpeedBurst={interval:number;duration:number;multiplier:number};
+export type RangedAttack={range:number;speed:number;radius:number;windup:number;animationDuration:number;asset:string;animation:string};
+export type MonsterDefinition={name:string;sprite:string;hp:number;speed:number;detect:number;range:number;damage:number;interval:number;xp:number;kamas:number;boss?:boolean;loot:typeof familyLoot;bonusLoot?:{chance:number;table:typeof familyLoot};speedBurst?:SpeedBurst;rangedAttack?:RangedAttack};
 /** Valeurs propres à cette adaptation temps réel. Graphismes confirmés dans les sources locales. */
 export const monsters:Record<MonsterId,MonsterDefinition>={
+ tofu:{name:'Tofu',sprite:'1558',hp:160,speed:78,detect:720,range:24,damage:24,interval:1.7,xp:24,kamas:8,boss:false,loot:tofuLoot},
+ blackTofu:{name:'Tofu Noir',sprite:'1462',hp:250,speed:85,detect:720,range:24,damage:30,interval:1.7,xp:24,kamas:8,boss:false,loot:tofuLoot},
+ batofu:{name:'Batofu',sprite:'1380',hp:1800,speed:76,detect:720,range:30,damage:50,interval:1.7,xp:180,kamas:90,boss:true,loot:tofuLoot},
+ blueScara:{name:'Scarafeuille Bleu',sprite:'1135',hp:300,speed:48,detect:720,range:24,damage:32,interval:1.7,xp:24,kamas:8,boss:false,loot:scaraLoot},
+ redScara:{name:'Scarafeuille Rouge',sprite:'1136',hp:300,speed:48,detect:720,range:24,damage:32,interval:1.7,xp:24,kamas:8,boss:false,loot:scaraLoot},
+ greenScara:{name:'Scarafeuille Vert',sprite:'1137',hp:300,speed:48,detect:720,range:24,damage:32,interval:1.7,xp:24,kamas:8,boss:false,loot:scaraLoot},
+ whiteScara:{name:'Scarafeuille Blanc',sprite:'1138',hp:300,speed:48,detect:720,range:24,damage:32,interval:1.7,xp:24,kamas:8,boss:false,loot:scaraLoot},
+ blackScara:{name:'Scarafeuille Noir',sprite:'1453',hp:450,speed:52,detect:720,range:24,damage:40,interval:1.7,xp:24,kamas:8,boss:false,loot:scaraLoot},
+ goldScara:{name:'Scarabosse Doré',sprite:'1455',hp:2400,speed:45,detect:720,range:30,damage:62,interval:1.7,xp:180,kamas:90,boss:true,loot:scaraLoot},
  white:{name:'Boufton Blanc',sprite:'1570',hp:95,speed:54,detect:700,range:21,damage:16,interval:1.6,xp:7,kamas:3,loot:familyLoot},
  black:{name:'Boufton Noir',sprite:'1571',hp:105,speed:56,detect:700,range:21,damage:18,interval:1.7,xp:8,kamas:3,loot:familyLoot},
  bouftou:{name:'Bouftou',sprite:'1566',hp:150,speed:51,detect:700,range:24,damage:22,interval:1.6,xp:11,kamas:5,loot:familyLoot},
  chief:{name:'Chef de Guerre Bouftou',sprite:'1573',hp:280,speed:64,detect:700,range:27,damage:32,interval:1.6,xp:20,kamas:10,loot:familyLoot},
- royal:{name:'Bouftou Royal',sprite:'1574',hp:1400,speed:49,detect:700,range:32,damage:52,interval:1.8,xp:110,kamas:70,boss:true,loot:familyLoot},
+ royal:{name:'Bouftou Royal',sprite:'1574',hp:1400,speed:49,detect:700,range:32,damage:52,interval:1.8,xp:110,kamas:70,boss:true,loot:familyLoot,bonusLoot:{chance:0.1,table:royalLoot},speedBurst:{interval:5,duration:1,multiplier:2}},
  milimilou:{name:'Milimilou',sprite:'1581',hp:480,speed:64,detect:700,range:28,damage:22,interval:1.7,xp:90,kamas:55,boss:true,loot:incarnamLoot},
  chafer:{name:'Chafer Prépubère',sprite:'1014',hp:90,speed:48,detect:700,range:24,damage:15,interval:1.7,xp:12,kamas:5,loot:incarnamLoot},
  youngWhite:{name:'Jeune Boufton Blanc',sprite:'1570',hp:42,speed:51,detect:700,range:20,damage:7,interval:1.8,xp:6,kamas:2,loot:incarnamLoot},
@@ -21,6 +32,6 @@ export const monsters:Record<MonsterId,MonsterDefinition>={
  pichonVert:{name:'Pichon Vert',sprite:'1484',hp:104,speed:51,detect:680,range:24,damage:17,interval:1.8,xp:10,kamas:4,loot:mousseLoot},
  pichonOrange:{name:'Pichon Orange',sprite:'1488',hp:104,speed:51,detect:680,range:28,damage:16,interval:1.8,xp:10,kamas:4,loot:mousseLoot},
  pichonKloune:{name:'Pichon Kloune',sprite:'1483',hp:210,speed:53,detect:700,range:25,damage:23,interval:1.7,xp:20,kamas:9,loot:mousseLoot},
- raulMops:{name:'Raul Mops',sprite:'1481',hp:460,speed:55,detect:720,range:29,damage:30,interval:1.8,xp:60,kamas:28,loot:mousseLoot},
+ raulMops:{name:'Raul Mops',sprite:'1481',hp:460,speed:55,detect:720,range:29,damage:30,interval:1.8,xp:60,kamas:28,loot:mousseLoot,rangedAttack:{range:220,speed:260,radius:10,windup:0.4125,animationDuration:0.9,asset:'spell.raulMops.spear',animation:'mob.1481.throw'}},
  sponge:{name:'Mob l’Éponge',sprite:'1546',hp:850,speed:48,detect:720,range:30,damage:36,interval:1.8,xp:130,kamas:75,boss:true,loot:mousseLoot},
 };

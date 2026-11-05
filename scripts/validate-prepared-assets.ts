@@ -1,0 +1,2 @@
+import {inspectPreparedAssets} from './prepared-assets';
+try{const {bundle}=await inspectPreparedAssets(process.argv[2]??'public/assets/prepared');console.log(`Lot Remastered préparé valide : ${Object.keys(bundle.assets).length} séquences ; aucun ajout aux données du jeu.`);for(const f of bundle.catalog.families)if(!f.map.source)console.log(`${f.id} : ${f.map.reason}`);}catch(error){console.error(error instanceof Error?error.message:error);process.exitCode=1;}

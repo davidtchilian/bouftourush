@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import {items} from '../../data/items';
 import {monsters} from '../../data/monsters';
 const positive = z.number().finite().positive();
 const point = z.tuple([z.number().finite(), z.number().finite()]);
@@ -15,7 +16,7 @@ const layerSchema=z.object({assetId:z.string(),position:point,order:z.number().f
 export const mapSchema=z.object({
  bounds:z.tuple([z.number().finite(),z.number().finite(),z.number().finite(),z.number().finite()]),spawn:point,cameraHeight:positive,
  layers:z.array(layerSchema).optional(),walkable:z.array(z.object({id:z.number().int().nonnegative(),position:point})).optional(),
- enemySpawns:z.array(point).optional(),mapSource:z.string().optional(),
+ enemySpawns:z.array(point).optional(),mapSource:z.string().optional(),backgroundAssetId:z.string().optional(),
 });
 export type MapDefinition=z.infer<typeof mapSchema>;
 const affine=z.tuple([z.number().finite(),z.number().finite(),z.number().finite(),z.number().finite(),z.number().finite(),z.number().finite()]);
@@ -28,15 +29,24 @@ export const manifestSchema=z.object({version:z.literal(1),composition:compositi
   for (const id of requiredIds) if (!m.assets[id]) ctx.addIssue({ code: 'custom', message: `Asset absent : ${id}`, path: ['assets', id] });
   for (const [id, a] of Object.entries(m.assets)) if (id.startsWith('cra.run.') && a.frames.length < 2) ctx.addIssue({code: 'custom', message: `Animation de course aplatie : ${id}`, path: ['assets', id]});
   for (const layer of [m.hub,...Object.values(m.maps??{})].flatMap(map=>map.layers??[])) if (!m.assets[layer.assetId]) ctx.addIssue({code:'custom',message:`Couche absente : ${layer.assetId}`,path:['hub','layers']});
+  for(const map of [m.hub,...Object.values(m.maps??{})])if(map.backgroundAssetId&&!m.assets[map.backgroundAssetId])ctx.addIssue({code:'custom',message:`Fond composé absent : ${map.backgroundAssetId}`,path:['maps']});
   if(m.gameplayReady){
-    for(const id of ['incarnam','bouftou','ensable']) if(!m.maps?.[id]?.enemySpawns?.length || !m.maps[id].walkable?.length)ctx.addIssue({code:'custom',message:`Carte de donjon incomplète : ${id}`,path:['maps',id]});
+    for(const id of ['incarnam','bouftou','ensable','tofu','scara']) if(!m.maps?.[id]?.enemySpawns?.length || !m.maps[id].walkable?.length)ctx.addIssue({code:'custom',message:`Carte de donjon incomplète : ${id}`,path:['maps',id]});
     const required=['ui.spell.explosive','ui.spell.flaming','ui.spell.magic','ui.spell.power','ui.button.hover','ui.button.down','ui.portrait','ui.selection','ui.window','ui.button','ui.slot','ui.heart','spell.magic.projectile','spell.magic.impact','spell.explosive.projectile','spell.explosive.impact','spell.flaming.projectile','spell.flaming.impact','spell.power.cast'];
-    for(const sprite of ['1566','1570','1571','1573','1574','1581','1014','1009','1474','1481','1483','1484','1485','1487','1488','1546'])for(const action of ['idle','run','attack','hit','death'])for(const direction of ['R','L'])required.push(`mob.${sprite}.${action}.${direction}`);
+    for(const sprite of new Set(Object.values(monsters).map(monster=>monster.sprite)))for(const action of ['idle','run','attack','hit','death'])for(const direction of ['R','L'])required.push(`mob.${sprite}.${action}.${direction}`);
     for(const action of ['cast','buff','hit','death'])for(const direction of ['R','L'])required.push(`cra.${action}.${direction}`);
-    for(const id of ['2411','2414','2416','2419','2422','2425','2428','2473','2474','2475','2476','2477','2478','8253','8254','8255','8256','8257','8258','8259'])required.push(`item.${id}`);
+    for(const monster of Object.values(monsters))if(monster.rangedAttack){
+     required.push(monster.rangedAttack.asset);
+     for(const direction of ['R','L']){
+      const id=`${monster.rangedAttack.animation}.${direction}`;required.push(id);
+      if(m.assets[id]?.frames.length===1)ctx.addIssue({code:'custom',message:`Animation de lancer aplatie : ${id}`,path:['assets',id]});
+     }
+    }
+    for(const id of Object.keys(items))required.push(`item.${id}`);
     const actors=[...directions.flatMap(direction=>[`cra.idle.${direction}`,`cra.run.${direction}`]),...['cast','buff','hit','death'].flatMap(action=>['R','L'].map(direction=>`cra.${action}.${direction}`))];
     if(!m.composition)ctx.addIssue({code:'custom',message:'Composition Crâ absente : lancer assets:prepare:game',path:['composition']});
     for(const actor of actors)if(!m.composition?.actors[actor])ctx.addIssue({code:'custom',message:`Composition absente : ${actor}`,path:['composition','actors',actor]});
+    for(const [item,slot] of [['8114','hat'],['8133','hat'],['8112','cape'],['8134','cape']])if(m.composition?.accessories[item]?.slot!==slot)ctx.addIssue({code:'custom',message:`Accessoire requis absent : ${item}`,path:['composition','accessories',item]});
     const previewActors=Object.values(monsters).filter(monster=>monster.boss).flatMap(monster=>['idle','attack'].map(action=>`mob.${monster.sprite}.${action}.R`));
     for(const actor of previewActors)required.push(`preview.${actor}`);
     for(const id of required)if(!m.assets[id])ctx.addIssue({code:'custom',message:`Asset de jeu absent : ${id}`,path:['assets',id]});
@@ -59,7 +69,7 @@ export const manifestSchema=z.object({version:z.literal(1),composition:compositi
      const [a,b,c,d]=layer.matrix;if(Math.abs(a*d-b*c)<1e-10)issue(`Matrice d’attache singulière : ${id}`);
     }
    }
-   for(const [item,slot] of [['2411','hat'],['2474','hat'],['8259','hat'],['2414','cape'],['2473','cape'],['8258','cape'],['bow','bow']])if(m.composition.accessories[item]?.slot!==slot)issue(`Accessoire requis absent : ${item} (${slot})`);
+   for(const [item,slot] of [['2411','hat'],['2474','hat'],['8259','hat'],['2414','cape'],['2473','cape'],['8258','cape'],['2438','hat'],['2445','cape'],['bow','bow']])if(m.composition.accessories[item]?.slot!==slot)issue(`Accessoire requis absent : ${item} (${slot})`);
   }
   for(const [id,asset] of Object.entries(m.assets))for(const frame of asset.frames)if(frame.region){const [x,y,w,h,pw,ph]=frame.region;if(x+w>pw||y+h>ph)ctx.addIssue({code:'custom',message:`Frame hors atlas : ${id}`,path:['assets',id]});}
   const [left, bottom, right, top] = m.hub.bounds;
