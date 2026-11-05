@@ -3,7 +3,7 @@ import {items,slots} from '../../data/items';
 import {xpForLevel} from '../../data/balance';
 import {newProfile,type Profile} from '../progression/profile';
 const key='bouftourush.save.v1';
-const profileSchema=z.object({level:z.number().int().min(1).max(100),xp:z.number().finite().nonnegative().max(1e8),kamas:z.number().int().nonnegative().max(1e10),inventory:z.array(z.object({uid:z.string().min(1).max(120),item:z.string().refine(id=>Object.hasOwn(items,id))})).max(10000),equipment:z.record(z.string(),z.string()),completed:z.array(z.enum(['incarnam','bouftou','ensable','tofu','scara','chefBwork','blopMulti'])).max(7)});
+const profileSchema=z.object({classId:z.enum(['cra','sacrier','iop','feca']).optional(),level:z.number().int().min(1).max(100),xp:z.number().finite().nonnegative().max(1e8),kamas:z.number().int().nonnegative().max(1e10),inventory:z.array(z.object({uid:z.string().min(1).max(120),item:z.string().refine(id=>Object.hasOwn(items,id))})).max(10000),equipment:z.record(z.string(),z.string()),completed:z.array(z.enum(['incarnam','bouftou','ensable','tofu','scara','chefBwork','blopMulti'])).max(7)});
 export type StorageLike=Pick<Storage,'getItem'|'setItem'>;
 export function loadProfile(storage:StorageLike):{profile:Profile;warning?:string} {
  try {

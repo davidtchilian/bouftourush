@@ -1,7 +1,7 @@
 import {balance,xpForLevel} from '../../data/balance';
 import {items,sets,slots,type Slot,type Stats} from '../../data/items';
 export type InventoryItem={uid:string;item:string};
-export type Profile={level:number;xp:number;kamas:number;inventory:InventoryItem[];equipment:Partial<Record<Slot,string>>;completed:string[]};
+export type Profile={classId?:import('../../data/classes').ClassId;level:number;xp:number;kamas:number;inventory:InventoryItem[];equipment:Partial<Record<Slot,string>>;completed:string[]};
 export const newProfile=():Profile=>({level:1,xp:0,kamas:0,inventory:[],equipment:{},completed:[]});
 export function finalStats(profile:Profile):Stats&{cooldownReduction:number} {
  const stats={hp:balance.startingHp+(profile.level-1)*balance.hpPerLevel,power:(profile.level-1)*balance.powerPerLevel,cooldownReduction:0};

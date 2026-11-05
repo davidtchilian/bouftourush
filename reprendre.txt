@@ -1,0 +1,364 @@
+
+implemente ces 3 personnages :
+
+Sacrieur — se jeter dans la mêlée et survivre grâce aux ennemis autour de lui. C’est mon premier choix : il apporterait immédiatement une autre expérience.
+
+- A — Dissolution : frappe autour de lui et récupère des PV selon les dégâts infligés. Le soin augmente avec les cibles touchées.
+- Z — Chatiment : Si le sacrieur subit des degats dans les 5 secondes apres avoir lancé ce sort, il gagne de la puissance pour toute la durée du combat.
+- E — Transposition : Change de position avec le personnage le plus proche du curseur, allié comme ennemi. # il n'y a pas d'alliés dans le jeu pour le moment mais il y en aura plus tard
+- R — Punition : gros coup au contact, particulièrement puissant lorsque sa vie est autour de la moitié.
+- Mécanique : Plus le sacrieur est bas en points de vie et plus il fais de degats avec un bonus jusqu'a 50% des degats finaux quand il est a 10% de pv.
+
+Iop — entrer dans le tas, préparer un gros coup et ressortir.
+
+- A — Épée de Iop : frappe en cône devant lui.
+- Z — Bond : saute vers le curseur. Portée correcte mais pas toute la map non plus. Si on vise trop loin, ca nous fais sauter a la distance max dans la direction du curseur.
+- E — Intimidation : repousse les ennemis proches pour se dégager.
+- R — Colère de Iop : énorme frappe qui fait super mal en zone juste devant le iop (corps a corps), le cooldown est bien plus long que les autres sorts, augmente les degats de ce sort pour toute la durée du combat d'un facteur 1.5
+- Intérêt : un corps-à-corps explosif, plus mobile que le Sacrieur mais sans sa régénération.
+
+Féca — construire une zone favorable et y faire combattre les monstres.
+
+- A — Glyphe enflammé : pose une zone qui inflige des dégâts régulièrement. reste toute la durée du combat.
+- Z — Attaque nuageuse : degats fixe monocible. pas besoin de ligne de vue (on clique et ca fait direct des degats, peu importe ou est la cible)
+- E — Téléportation : déplacement court pour se repositionner autour des glyphes.
+- R — Trêve : très courte fenêtre pendant laquelle les dégâts reçus et infligés sont suspendus ; les glyphes restent posés.
+- Intérêt : un gameplay de placement, très différent du tir à distance et du combat au contact.
+
+Je vais examiner le combat, la sélection de personnage et les assets Remastered disponibles, puis intégrer les trois classes avec leurs sorts, leur progression sauvegardée et des tests ciblés.
+• Ran pwd; rg --files -g 'AGENTS.md' -g 'package.json' -g '*combat*' -g '*abilities*' -g '*class*' -g '*Simulation*' -g '*manifest*' -g '*balance*' -g '*store*' -g '*ASSETS*'
+  └ public/assets/prepared/manifest.json
+    public/assets/dev-hat/manifest.json
+    dist/assets/prepared/manifest.json
+• Ran cat package.json; cat src/data/classes.ts; cat src/data/balance.ts; rg --files src; git status --short
+  └ src/game/core/loop.ts
+    src/game/core/simulation.ts
+     D reprendre.md
+• Explored
+  └ Read simulation.ts
+• Ran cat src/ui/GameUI.tsx; cat src/game/progression/profile.ts; rg -n 'cra|spells|playerClass' src/game/rendering/game.ts src/ui/CharacterSprite.tsx src/app/store.ts; ls scripts/*class* scripts/*appearance*;…
+  └  composition.main()
+    
+    if __name__=='__main__':main()
+• Explored · 1 nonzero exit
+  └ Search cra|class|breed in prepare-game.py
+    Read persistence.ts
+    Read navigation.ts
+Le moteur est encore centré sur le Crâ, et l’archive source .local-assets/client-1.40.13-remastered/ n’est pas présente dans cet environnement. Je vais intégrer les mécaniques et la sélection des classes, mais bloquer leur activation tant que leurs visuels Remastered ne sont pas importés, pour éviter d’afficher un Crâ à leur place.
+
+Je retiens « durée du combat » comme le donjon entier, vagues comprises : Châtiment, les glyphes et le renforcement cumulatif de Colère seront réinitialisés à la sortie ou à la nouvelle tentative.
+• Ran ls -a .local-assets; sed -n '1,70p' src/game/rendering/composition.ts; head -50 tests/combat.test.ts; sed -n '100,116p' src/game/rendering/game.ts; cat src/game/combat/cooldowns.ts; rg -n 'cra|CharacterS…
+  └      }
+        }
+        for(const id of Object.keys(items))required.push(`item.${id}`);
+• Ran python3 - <<'PY' …
+  └ (no output)
+
+une fois implementés, on peut swap de classe en bas dans l'interface, a coté des kamas
+
+Oui, je place le sélecteur à côté des kamas. Le changement sera possible à Astrub en conservant niveau, équipement et progression ; il sera désactivé pendant le donjon pour éviter de cumuler les mécaniques de plusieurs classes.
+• Exited (status 2) cat > /tmp/add_classes.py <<'PY' …
+  └ src/ui/GameUI.tsx(10,7): error TS2740: Type '{ explosive: string; flaming: string; magic: string; power: string; }' is missing the following properties from type 'Record<"chastisement" | "punishment" | "te…
+
+s'il manque des assets télécharge et extrait https://github.com/dofera/dofedex/releases/tag/1.40.13
+
+Je vais consulter cette release, identifier l’archive Remastered et la télécharger pour vérifier les animations des trois classes et les effets de leurs sorts.
+• Ran curl -L --fail -s https://api.github.com/repos/dofera/dofedex/releases/tags/1.40.13 -o /tmp/dofedex-release.json …
+  └ [Changelog](https://www.dofus.com/fr/forum/1751-dofus-retro/2390456-dofus-retro-mise-jour-1-40?page=1#entry13225821)
+    dofus-1.40.13-classic.zip 239372174 https://github.com/dofera/dofedex/releases/download/1.40.13/dofus-1.40.13-classic.zip
+    dofus-1.40.13-remastered.zip 474901966 https://github.com/dofera/dofedex/releases/download/1.40.13/dofus-1.40.13-remastered.zip
+• Ran sed -n '1,110p' scripts/prepare-game.py; sed -n '110,205p' scripts/prepare-composition.py; head -65 scripts/prepare-hub.py; sed -n '155,196p' src/game/rendering/game.ts
+  └    for(const [key,node] of nodes)if(!alive.has(key)){scene.remove(node.mesh);node.mesh.material.dispose();nodes.delete(key);}
+       const canvas=renderer!.domElement;canvas.dataset.playerX=player.position[0].toFixed(2);canvas.dataset.playerY=player.position[1].toFixed(2);canvas.dataset.animation=hat==='none'&&cape==='none'?asset:`ap…
+       canvas.dataset.projectiles=String(game.shots.length);
+• Ran mkdir -p .local-assets …
+  └ (no output)
+• Ran python3 - <<'PY' …
+  └ /usr/bin/java
+    -rwxrwxrwx 1 david david 453M Nov  5 22:37 .local-assets/dofus-1.40.13-remastered.zip
+• Ran cat scripts/prepare-spell-icons.py; head -85 scripts/rasterize-appearance.ts; sed -n '65,110p' scripts/prepare-hub.py; sed -n '205,240p' scripts/prepare-composition.py; cat tests/helpers/world.ts | head …
+  └  return {version:1,assets:{},hub:map,maps:{incarnam:map,bouftou:map,ensable:map,tofu:map,scara:map,chefBwork:map,blopMulti:map},gameplayReady:true};
+    }
+    export function advance(game:Simulation,seconds:number){for(let t=0;t<seconds;t+=1/60)game.update(1/60);}
+• Exited (status 2) ls .local-assets/client-1.40.13-remastered; rg -n 'direction|cra|walk' scripts/prepare-hub.py | tail -22; head -70 scripts/prepare-composition.py; cat .gitignore; ls /tmp/ffdec-release.json
+  └ __pycache__/
+    *.pyc
+    ls: cannot access '/tmp/ffdec-release.json': No such file or directory
+• Ran curl -Ls --fail https://api.github.com/repos/jindrapetrik/jpexs-decompiler/releases/tags/version26.4.0 -o /tmp/ffdec-release.json …
+  └ 
+    
+    if __name__=='__main__':main()
+• Ran ls .local-assets/client-1.40.13-remastered/clips/sprites/{10,80,110}.swf; ls .local-assets/client-1.40.13-remastered/data; rg -n 'spell|Ancestra' docs/ASSETS.md | head -16; cat /tmp/ffdec-release.json | …
+  └ {
+      "url": "https://api.github.com/repos/jindrapetrik/jpexs-decompiler/releases/417626387",
+      "asset
+• Ran curl -Ls --fail https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.4.0/ffdec_26.4.0.zip -o /tmp/ffdec.zip …
+  └ (no output)
+• Ran curl -Ls --fail https://raw.githubusercontent.com/Romain-P/Ancestra-Evolutive/master/sql/ancestra-evolutive-full.sql -o .local-assets/ancestra.sql
+  └ (no output)
+• Ran ls .local-assets/tools/ffdec/ffdec.jar; python3 - <<'PY' …
+  └ 4992:INSERT INTO `item_template` VALUES ('1454', '43', 'Potion d\'oubli : \'Punition\'', '1', '268#0#0#1be#0d0+0,2c6#0#0#0#0d0+0', '1', '-1', '0', '', '', '0', '0');
+    41592:INSERT INTO `sorts` VALUES ('9', 'Attaque Nuageuse', '111', '11,1,1', '99;2;13;-1;0;0;1d12+1,99;11;-1;-1;0;0;0d0+11, 5, 1, 1, 50, 100, true, true, false, true, 0, 0, 0, 0, PaPa,-1,18; 19; 3; 1; 41, 1…
+    41593:INSERT INTO `sorts` VALUES ('10', 'Glyphe Enflamm?® ', '0', '0,1,1', '401;351;1;4;2;0,-1, 4, 1, 3, 0, 100, true, false, true, false, 0, 0, 0, 3, Cb,-1,18; 19; 3; 1; 41, 70, false', '401;351;2;4;2;0,-…
+• Ran python3 - <<'PY' …
+  └ 10 ['walkS', 'walkR', 'walkL', 'walkF', 'walkB', 'staticS', 'staticR', 'staticL', 'staticF', 'staticB', 'runS', 'runR', 'runL', 'runF', 'runB', 'hitR', 'hitL', 'emoteStatic21R', 'emoteStatic21L', 'emoteSta…
+    80 ['walkS', 'walkR', 'walkL', 'walkF', 'walkB', 'staticS', 'staticR', 'staticL', 'staticF', 'staticB', 'runS', 'runR', 'runL', 'runF', 'runB', 'hitR', 'hitL', 'emoteStatic21R', 'emoteStatic21L', 'emoteSta…
+    110 ['walk_CR', 'walk_CL', 'static_CR', 'static_CL', 'carringR', 'walkS', 'walkR', 'walkL', 'walkF', 'walkB', 'staticS', 'staticR', 'staticL', 'staticF', 'staticB', 'runS', 'runR', 'runL', 'runF', 'runB', …
+• Ran python3 - <<'PY' …
+  └ ['clips/artworks/breeds/', 'clips/artworks/breeds/10.swf', 'clips/artworks/breeds/slide/', 'clips/artworks/breeds/slide/30.swf', 'clips/artworks/breeds/slide/10.swf', 'clips/artworks/breeds/slide/100.swf',…
+• Ran java -Xmx2g -Djava.awt.headless=true -jar .local-assets/tools/ffdec/ffdec.jar -onerror abort -export script .local-assets/class-inspection .local-assets/client-1.40.13-remastered/clips/sprites/110.swf
+  └ Exported script 254/258 /mnt/c/Users/David/Desktop/Linux/bouftourush/.local-assets/class-inspection/scripts/DefineSprite_630/frame_58/DoAction.as, 00:00.032
+    Export finished. Total export time: 00:00.907
+    OK
+L’archive Remastered est téléchargée. Les fichiers des trois personnages sont présents, avec leurs directions, courses et animations de combat. Les mécaniques sont codées et le sélecteur est placé à côté des kamas ; je travaille maintenant sur les exports, les attaches de coiffes/capes et les effets, puis je vérifierai les sorts en jeu.
+• Ran python3 - <<'PY' …
+  └ 809 {'fps': 60.0, 'mainFrames': 1, 'labels': [], 'symbols': {'goutte': {'characterId': 1, 'frameCount': 1, 'labels': [], 'children': [], 'stopFrames': [1], 'maxNestedFrames': 1, 'playbackFrames': 1}, 'shoo…
+    1051 {'fps': 40.0, 'mainFrames': 48, 'labels': [], 'symbols': {}}
+    1055 {'fps': 60.0, 'mainFrames': 2, 'labels': [], 'symbols': {'spire': {'characterId': 3, 'frameCount': 1, 'labels': [], 'children': [2], 'stopFrames': [], 'maxNestedFrames': 2, 'playbackFrames': 2}}}
+• Ran python3 -u - <<'PY' …
+  └ []
+    ['clips/extra/10.swf', 'clips/jobs/10.swf', 'clips/emotes/10.swf', 'clips/spells/icons/up/10.swf', 'clips/challenges/10.swf', 'clips/evenementials/temporis/2/tower/illus/10.swf', 'clips/emblems/up/10.swf',…
+    ['clips/sprites/90.swf']
+• Ran python3 - <<'PY' …
+  └ DefineSprite_132
+    DefineSprite_138
+    DefineSprite_142
+• Ran python3 - <<'PY' …
+  └ ffdec_26.4.0_macosx.zip https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.4.0/ffdec_26.4.0_macosx.zip
+    ffdec_lib_26.4.0.zip https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.4.0/ffdec_lib_26.4.0.zip
+    ffdec_lib_javadoc_26.4.0.zip https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.4.0/ffdec_lib_javadoc_26.4.0.zip
+• Ran python3 - <<'PY' …
+  └ ['ConquestZonesViewer', 'UI_PayZoneDialog2', 'UI_PayZoneDialog', 'UI_PayZone', 'UI_PayZoneIcon_DoubleFramerate', 'UI_PayZoneIcon', 'UI_AskPayZoneInfosContent', 'ConquestZonesViewerVillageItem', 'ConquestZo…
+• Ran java -Xmx2g -Djava.awt.headless=true -jar .local-assets/tools/ffdec/ffdec.jar -onerror abort -export script .local-assets/spell-inspection .local-assets/client-1.40.13-remastered/clips/spells/111.swf
+  └ Exported script 6/6 /mnt/c/Users/David/Desktop/Linux/bouftourush/.local-assets/spell-inspection/scripts/DefineSprite_14/frame_67/DoAction.as, 00:00.073
+    Export finished. Total export time: 00:00.272
+    OK
+• Ran python3 - <<'PY' …
+  └ INSERT INTO `sorts` VALUES ('351', 'Sort enflamm?® ', '-1', '0,0,0', '99;19;27;-1;0;0;1d9+18,99;24;32;-1;0;0;1d9+23, 8, 0, 2, 50, 50, true, true, false, false, 1, 0, 0, 0, PaPa,-1,18; 19; 3; 1; 41, 1, true…
+    cells {'fps': 20.0, 'mainFrames': 1, 'labels': [], 'symbols': {'[export]': {'characterId': 2, 'frameCount': 1, 'labels': [], 'children': [1], 'stopFrames': [], 'maxNestedFrames': 1, 'playbackFrames': 1}}}
+    ground {'fps': 12.0, 'mainFrames': 1, 'labels': [], 'symbols': {'[export]': {'characterId': 3, 'frameCount': 1, 'labels': [], 'children': [1, 2], 'stopFrames': [], 'maxNestedFrames': 1, 'playbackFrames': 1…
+• Ran python3 - <<'PY' …
+  └ 809 [((1, 1), 1), ((3, 1), 1), ((4, 1), 1), ((6, 190), 190), ((8, 1), 1), ((9, 166), 166), ((14, 10), 10), ((15, 1), 10), ((35, 51), 49), ((38, 33), 31), ((39, 210), 210)] root [(26, '2601002700c5fa5efd2f2…
+    1051 [((1, 1), 1), ((6, 40), 39), ((7, 1), 39), ((8, 1), 39)] root [(26, '86010001001400c5c0000002'), (26, '0603000800140045e0')]
+    1055 [((2, 2), 2), ((3, 1), 2), ((7, 1), 1), ((8, 117), 117), ((9, 27), 27)] root [(26, '96010008001e94f471580100'), (26, '96060008001c84a19ea00100'), (26, '160b0009001ca8b956800100')]
+• Ran tail -8 /tmp/prepare-classes.log; tail -30 /tmp/classes-tests.log; git diff --stat; cat playwright.config.ts
+  └ import {prepareBrowserAccount,testAccountFile} from './scripts/browser-auth';
+    prepareBrowserAccount();
+    export default defineConfig({timeout:60000,testDir:'tests/browser',globalSetup:'./tests/browser-setup.ts',webServer:{command:'npm run dev -- --port 4173 --strictPort',url:'http://127.0.0.1:4173/login',reus…
+• Exited (status 1) python3 - <<'PY' …
+  └ (no output)
+• Ran tail -12 /tmp/prepare-classes.log; tail -32 /tmp/classes-tests.log; rg -n 'window|simulation' tests/browser/combat.spec.ts tests/browser/enemy-abilities.spec.ts | head -15; ls ~/.cache/ms-playwright
+  └ chromium-1248
+    chromium_headless_shell-1248
+    ffmpeg-1013
+• Ran pnpm exec tsc --noEmit > /tmp/typecheck.log 2>&1
+  └ (no output)
+• Exited (status 1) cat > scripts/prepare-classes.py <<'PY' …
+  └ (no output)
+• Ran cat > src/data/spellDescriptions.ts <<'TS' …
+  └    ✓ 8133/8134 : compose les accessoires avec chaque panoplie et chaque frame du Crâ  464ms
+     ✓ tests/developer-hat.test.ts (4 tests) 564ms
+       ✓ utilise le Champion Remastered pour l’icône et toutes les attaches du Crâ, y compris avec des capes mixtes  556ms
+• Ran tail -35 /tmp/prepare-classes.log; ls -td .local-assets/classes-runtime/_appearance/*/ | head -7; tail -25 /tmp/all-tests.log
+  └    ✓ utilise le Champion Remastered pour l’icône et toutes les attaches du Crâ, y compris avec des capes mixtes  556ms
+     ✓ tests/bwork-blop.test.ts (5 tests) 107ms
+     ✓ tests/server-profile.test.ts (4 tests) 19ms
+• Ran python3 - <<'PY' …
+  └ .local-assets/classes-runtime/_appearance/10-237-1-1/DefineSprite_237_staticB/1.svg:12:      <use ffdec:characterId="154" height="9.8" transform="matrix(-0.9939, -0.1188, -0.0375, 0.9969, -3.75, -29.3)" wi…
+    .local-assets/classes-runtime/_appearance/10-237-1-1/DefineSprite_237_staticB/1.svg:13:      <use ffdec:characterId="85" height="10.7" transform="matrix(-0.9546, -0.3434, -0.3793, 0.9115, -0.45, -16.9)" wi…
+    .local-assets/classes-runtime/_appearance/10-237-1-1/DefineSprite_237_staticB/1.svg:14:      <use ffdec:characterId="224" height="7.6" transform="matrix(-0.9896, -0.11
+• Ran python3 - <<'PY' …
+  └ (no output)
+• Ran java -Xmx1g -Djava.awt.headless=true -jar .local-assets/tools/ffdec/ffdec.jar -selectid 185 -format shape:svg -export shape .local-assets/shape-inspection .local-assets/client-1.40.13-remastered/clips/sp…
+  └ Exported shape 1/1 DefineShape (chid: 185)
+    Export finished. Total export time: 00:00.433
+    OK
+• Ran cat .local-assets/shape-inspection/*.svg; sed -n '96,108p' scripts/prepare-composition.py; tail -12 /tmp/all-tests.log
+  └ Ran 17 tests in 1.245s
+    
+    OK
+Les 139 tests TypeScript et les 17 tests Python passent, dont les nouveaux tests de régénération, Châtiment, Transposition, Colère et Trêve. L’archive téléchargée a bien l’empreinte Remastered attendue. L’export a aussi révélé une forme vide dans le Féca : j’ai vérifié qu’elle est réellement vide dans le fichier source et adapté l’exporteur pour la traiter correctement.
+• Ran cat > scripts/import-classes.ts <<'TS' …
+  └ iop.cast.L 42
+    iop.buff.R 51
+    iop.buff.L 42
+• Ran tail -8 /tmp/prepare-classes.log; cat /tmp/typecheck.log; rg -n 'composition|preview' src/game/assets/manifest.ts | tail -12; cat tests/browser/combat.spec.ts | head -52; head -65 tests/browser/enemy-abi…
+  └  expect(speeds[0]).toBeCloseTo(9.8);expect(speeds[1]).toBeCloseTo(4.9);expect(errors).toEqual([]);
+     await page.evaluate(()=>(window as unknown as {enemyGame:GameController}).enemyGame.dispose());
+    });
+• Ran sed -n '54,73p' src/game/assets/manifest.ts; head -58 src/ui/CharacterSprite.tsx; tail -5 /tmp/prepare-classes.log; rg -n 'pausedScene|const key' src/game/rendering/game.ts
+  └ 155:    pausedScene=key;
+    156:   }else pausedScene='';
+    172:    const key=`player-${index}`;playerKeys.push(key);
+• Ran cat > scripts/prepare-class-previews.py <<'PY' …
+  └ feca.hit.L 36
+    feca.death.R 118
+    feca.death.L 79
+• Ran tail -10 /tmp/prepare-classes.log; ls .local-assets/classes-runtime/_appearance/icon-* 2>/dev/null | tail -4; git status --short | head -25
+  └ ?? scripts/prepare-classes.py
+    ?? src/data/spellDescriptions.ts
+    ?? tests/classes.test.ts
+• Ran cat tests/browser/fixtures.ts; sed -n '1,55p' src/game/rendering/game.ts; tail -7 /tmp/prepare-classes.log
+  └ feca.hit.L 36
+    feca.death.R 118
+    feca.death.L 79
+• Ran pnpm exec tsc --noEmit > /tmp/typecheck.log 2>&1 …
+  └ (no output)
+• Ran cat src/game/assets/worldTextures.ts; rg -n 'worldTexturePaths|worldReady|texture' src/game/rendering/game.ts | head -27; tail -3 /tmp/prepare-classes.log
+  └ feca.hit.L 36
+    feca.death.R 118
+    feca.death.L 79
+• Ran head -65 scripts/pack-atlas.ts; tail -3 /tmp/prepare-classes.log; cat /tmp/typecheck.log
+  └ feca.hit.L 36
+    feca.death.R 118
+    feca.death.L 79
+⚠ Heads up, you have less than 50% of your 5h limit left. Run /status for a breakdown.
+• Ran python3 - <<'PY' …
+  └ feca.hit.L 36
+    feca.death.R 118
+    feca.death.L 79
+• Ran ps -eo pid,etime,pcpu,args | rg 'prepare-classes|ffdec.jar' | head -8; ls -td .local-assets/classes-runtime/_appearance/*/ | head -5; du -sh .local-assets/classes-runtime/_appearance
+  └ .local-assets/classes-runtime/_appearance/807-5-1-67/
+    .local-assets/classes-runtime/_appearance/805-8-1-87/
+    107M    .local-assets/classes-runtime/_appearance
+• Ran python3 - <<'PY' …
+  └ (no output)
+• Ran cat scripts/validate-assets.ts | head -60; cat tests/browser/browser* 2>/dev/null | head; tail -3 /tmp/prepare-classes.log
+  └ feca.death.R 118
+    feca.death.L 79
+    5101 exports vectoriels
+Les trois corps animés et les attaches d’équipement sont exportés ; la rasterisation des vecteurs est en cours, y compris les aperçus d’inventaire en haute définition. Les sorts sans effet autonome dans les données originales utiliseront le geste du personnage. Les glyphes seront délimités avec la cellule originale du client, sans effet de flammes inventé.
+
+comment tu fais pour lire les swf ?
+
+J’utilise JPEXS Free Flash Decompiler pour ouvrir les SWF et exporter leurs dessins vectoriels en SVG, image par image.
+
+Les scripts du projet lisent aussi leur structure : noms d’animations (runR, dieL…), cadence, images clés et symboles imbriqués. Pour les coiffes et capes, je récupère les appels GAC.applyAccessory et leurs matrices de placement.
+
+Ensuite, Chromium transforme les SVG en PNG transparents à haute définition. Le jeu affiche ces images en respectant les durées et les attaches d’origine : il ne lit pas directement les SWF et n’exécute pas leur ActionScript. Je poursuis les exports et la vérification des trois classes.
+• Ran cat /tmp/typecheck.log; tail -6 /tmp/raster-classes.log; rg -n 'name:' src/data/dungeons.ts | head -8; rg -n 'SpellId|Object.values\(spells|Object.entries\(spells' src scripts --glob '*.ts' | head -25
+  └ src/game/core/simulation.ts:84: cast(id:SpellId,target:Point):boolean{
+    src/game/combat/cooldowns.ts:1:import {balance,spells,type SpellId} from '../../data/balance';
+    src/game/combat/cooldowns.ts:3:export function cooldownFor(spell:SpellId,reduction:number,maximum:number=balance.maxCooldownReduction):number{
+• Ran cat > tests/browser/classes.spec.ts <<'TS' …
+  └ Composition : 1456/5180
+    Composition : 1472/5180
+    Composition : 1488/5180
+• Exited (status 1) python3 scripts/prepare-class-previews.py …
+  └ (no output)
+• Ran tail -5 /tmp/raster-classes.log; cat /tmp/typecheck.log; ps -eo etime,pcpu,args | rg 'rasterize-appearance.ts|headless_shell' | head -4
+  └ Node.js v22.14.0
+          00:00  0.0 /usr/bin/zsh -c tail -5 /tmp/raster-classes.log; cat /tmp/typecheck.log; ps -eo etime,pcpu,args | rg 'rasterize-appearance.ts|headless_shell' | head -4
+          00:00  0.0 rg rasterize-appearance.ts|headless_shell
+• Ran tail -28 /tmp/raster-classes.log
+  └     at async <anonymous> (/mnt/c/Users/David/Desktop/Linux/bouftourush/scripts/rasterize-appearance.ts:85:16)
+    
+    Node.js v22.14.0
+• Ran python3 - <<'PY' …
+  └ (no output)
+• Ran head -15 .local-assets/classes-runtime/_appearance/1055-8-1-117/DefineSprite_8/1.svg; python3 - <<'PY' …
+  └ head: cannot open '.local-assets/classes-runtime/_appearance/1055-8-1-117/DefineSprite_8/1.svg' for reading: No such file or directory
+    [PosixPath('.local-assets/classes-runtime/_appearance/1055-9-1-27/DefineSprite_9/1/1.svg'), PosixPath('.local-assets/classes-runtime/_appearance/1055-9-1-27/DefineSprite_9/1/2.svg'), PosixPath('.local-asse…
+• Ran rg --files .local-assets/classes-runtime/_appearance/1055-8-1-117 | head; java -Xmx1g -Djava.awt.headless=true -jar .local-assets/tools/ffdec/ffdec.jar -export script .local-assets/transposition-script .…
+  └ .local-assets/classes-runtime/_appearance/1055-8-1-117/DefineSprite_8/1/54.svg
+    .local-assets/classes-runtime/_appearance/1055-8-1-117/DefineSprite_8/1/53.svg
+    .local-assets/classes-runtime/_appearance/1055-8-1-117/DefineSprite_8/1/52.svg
+• Ran head -12 .local-assets/classes-runtime/_appearance/1055-8-1-117/DefineSprite_8/1/1.svg; rg -n '.' .local-assets/transposition-script/scripts | head -40; head -12 .local-assets/classes-runtime/_appearance…
+  └ <svg xmlns:ffdec="https://www.free-decompiler.com/flash" xmlns:xlink="http://www.w3.org/1999/xlink" ffdec:objectType="frame" height="0.0px" width="0.0px" xmlns="http://www.w3.org/2000/svg">
+      <g transform="matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)"/>
+    </svg>
+• Explored
+  └ Read CLIPACTIONRECORD onClipEvent(load).as, CLIPACTIONRECORD onClipEvent(enterFrame).as
+• Exited (status 2) tail -12 /tmp/raster-classes.log; cat /tmp/typecheck.log; ls .local-assets/classes-runtime/textures/spell-glyph-zone 2>/dev/null
+  └ Composition : 416/5180
+    Composition : 432/5180
+    Composition : 448/5180
+• Exited (status 1) cat > scripts/prepare-class-effects.py <<'PY' …
+  └ (no output)
+• Ran python3 - <<'PY' …
+  └ Composition : 4288/5180
+    Composition : 4304/5180
+    Composition : 4320/5180
+• Ran tail -10 /tmp/raster-classes.log; cat /tmp/typecheck.log; ls .local-assets/classes-runtime/textures/spell-* 2>/dev/null | tail -5
+  └ 084.png
+    085.png
+    086.png
+Deux effets de sorts reposent sur des particules créées par ActionScript : l’export vectoriel seul les rend vides. Je corrige leur conversion à partir des symboles et transformations du client. Les tests de gameplay passent déjà ; ce contrôle évite de livrer des sorts fonctionnels mais invisibles.
+• Ran python3 - <<'PY' …
+  └ spell.chastisement.cast 296 296 39
+    spell.sword.cast 107 93 87
+    spell.transposition.cast 22 143 87
+• Ran cat > tests/class-assets.test.ts <<'TS' …
+  └       00:23 java -Xmx2g -Djava.awt.headless=true -jar /mnt/c/Users/David/Desktop/Linux/bouftourush/.local-assets/tools/ffdec/ffdec.jar -onerror abort -selectid 14 -format sprite:svg -export sprite /mnt/c/U…
+          00:00 /usr/bin/zsh -c cat > tests/class-assets.test.ts <<'TS' import {readFileSync} from 'node:fs'; import {describe,it,expect} from 'vitest'; import {parseManifest} from '../src/game/assets/manifest…
+          00:00 rg ffdec.jar|prepare-class-effects
+• Ran cat > scripts/class_exports.py <<'PY' …
+  └ (no output)
+• Ran tail -4 /tmp/class-effects.log; ps -eo etime,args | rg '^ +[0-9:]+ java .*ffdec.jar' | head -2; pnpm exec tsc --noEmit > /tmp/typecheck.log 2>&1
+  └       00:39 java -Xmx2g -Djava.awt.headless=true -jar /mnt/c/Users/David/Desktop/Linux/bouftourush/.local-assets/tools/ffdec/ffdec.jar -onerror abort -selectid 14 -format sprite:svg -export sprite /mnt/c/U…
+• Ran python3 - <<'PY' …
+  └ (no output)
+⚠ Heads up, you have less than 25% of your 5h limit left. Run /status for a breakdown.
+• Ran cat .local-assets/classes-runtime/_appearance/cells-2-1-1/DefineSprite_2_\[export\]/1.svg 2>/dev/null | head -22; rg --files .local-assets/classes-runtime/_appearance/cells-2-1-1; tail -5 /tmp/raster-cla…
+  └ Composition : 1264/5180
+    Composition : 1280/5180
+    63    12    src/game/core/simulation.ts
+• Ran python3 - <<'PY' …
+  └ [PosixPath('.local-assets/classes-runtime/_appearance/ground-3-1-1/DefineSprite_3_[export]/1.svg')]
+• Ran head -22 '.local-assets/classes-runtime/_appearance/ground-3-1-1/DefineSprite_3_[export]/1.svg'; rg -n '.' .local-assets/cells-script/scripts | head -35; python3 - <<'PY' …
+  └ </svg>
+    clips/circle.swf {'fps': 25.0, 'mainFrames': 1, 'labels': [], 'symbols': {'circle': {'characterId': 4, 'frameCount': 1, 'labels': [], 'children': [2, 3], 'stopFrames': [], 'maxNestedFrames': 1, 'playbackFr…
+    clips/highlight.swf {'fps': 60.0, 'mainFrames': 1, 'labels': [], 'symbols': {'mcHighlight': {'characterId': 3, 'frameCount': 48, 'labels': [], 'children': [2], 'stopFrames': [], 'maxNestedFrames': 48, 'pla…
+• Ran java -Xmx1g -Djava.awt.headless=true -jar .local-assets/tools/ffdec/ffdec.jar -selectid 1 -format shape:svg -export shape .local-assets/cell-shape .local-assets/client-1.40.13-remastered/clips/cells.swf …
+  └ zsh:2: no matches found: .local-assets/cell-shape/*.svg
+• Exited (status 1) pnpm exec tsx scripts/rasterize-appearance.ts --root=.local-assets/classes-runtime --workers=2 --batch-jobs=64 > /tmp/raster-classes.log 2>&1
+  └ (no output)
+• Ran python3 - <<'PY' …
+  └ cells [(9, b'\xff\xff\xff'), (57, b'clips/gfx/cell.swf\x00\x01\x00\x01\x00[Link_cell-objects]\x00'), (39, b'\x02\x00\x01\x00\x89\x06\x06\x01\x00\x01\x00\x14\x8cg\x00@\x00\x00\x00'), (56, b'\x01\x00\x02\x00…
+    ground [(9, b'\xff\xff\xff'), (57, b'clips/gfx/g1.swf\x00\x01\x00\x01\x00[Link_g1-ground]\x00'), (57, b'clips/gfx/g2.swf\x00\x01\x00\x02\x00[Link_g2-ground]\x00'), (39, b'\x03\x00\x01\x00\x89\x06\x06\x01\x…
+    circle [(9, b'\xff\xff\xff'), (2, b'\x01\x00X\x00O`\x00\xa2\x00\x01\x00\xff\xff\xff\x00\x10\x15I\xea\x89\x9e\xf9\xff\xd2tf\xa3\xd1\x00\xbd\x98\x02\xf5wFr\xe7A\x08\x00\x9d\x08\x00.\x8c&\\/\x01C\x9b\xfd\x0e\…
+• Ran python3 - <<'PY' …
+  └ {'fps': 20.0, 'mainFrames': 1, 'labels': [], 'symbols': {'i1': {'characterId': 2, 'frameCount': 1, 'labels': [], 'children': [1], 'stopFrames': [], 'maxNestedFrames': 1, 'playbackFrames': 1}, 'i2': {'chara…
+• Ran tail -5 /tmp/raster-classes.log
+  └     at async <anonymous> (/mnt/c/Users/David/Desktop/Linux/bouftourush/scripts/rasterize-appearance.ts:85:16)
+    
+    Node.js v22.14.0
+• Ran java -Xmx1g -Djava.awt.headless=true -jar .local-assets/tools/ffdec/ffdec.jar -format sprite:png -export sprite .local-assets/cell-preview .local-assets/client-1.40.13-remastered/clips/gfx/cell.swf > /tm…
+  └ (no output)
+• Explored
+  └ Search Error: Raster in raster-classes.log
+    List cell-preview
+• Viewed image 1.png
+• Viewed image 1.png
+• Viewed image 1.png
+• Ran tail -6 /tmp/raster-classes.log; python3 - <<'PY' …
+  └ spell.transposition.cast 22 143 87
+    spell.truce.cast 49 34 189
+    spell.wrath.cast 215 172 210
+• Ran pnpm exec tsc --noEmit > /tmp/typecheck.log 2>&1 …
+  └ (no output)
+⚠ Heads up, you have less than 10% of your 5h limit left. Run /status for a breakdown.
+Les effets s’exportent maintenant correctement, y compris les particules de Transposition. J’ai aussi retrouvé la vraie cellule graphique derrière le fichier de glyphes, qui ne contenait qu’une référence à une autre bibliothèque. Je termine les atlas, puis je contrôle le changement de classe et les personnages équipés sur ordinateur et écran étroit.
+• Ran python3 - <<'PY' …
+  └ (no output)
+• Ran tail -6 /tmp/raster-classes.log; cat /tmp/typecheck.log; git diff --check
+  └ Composition : 5120/5180
+    Composition : 5136/5180
+    Composition : 5152/5180
+• Ran python3 - <<'PY' …
+  └ (no output)
+⚠ Heads up, you have less than 5% of your 5h limit left. Run /status for a breakdown.
+• Ran pnpm exec tsx scripts/pack-atlas.ts .local-assets/classes-runtime --jobs=_appearance/jobs.json --folder=atlases/classes > /tmp/atlas-classes.log 2>&1 …
+  └ (no output)
+• Ran tail -8 /tmp/atlas-classes.log; tail -12 /tmp/gameplay-tests.log; du -sh .local-assets/classes-runtime/textures .local-assets/classes-runtime/atlases 2>/dev/null
+  └ 
+    78M    .local-assets/classes-runtime/textures
+    64M    .local-assets/classes-runtime/atlases
+• Ran sed -n '128,148p' src/game/rendering/game.ts; tail -10 /tmp/atlas-classes.log; cat tests/world-textures.test.ts | head -70
+  └  expect(worldTexturePaths(manifest,map,[]).sort()).toEqual(['baked.png','front.png']);
+     expect(map.layers).toHaveLength(2);
+    });
+• Ran tail -12 /tmp/browser-classes.log; tail -6 /tmp/validate-classes.log; tail -8 /tmp/class-assets-tests.log; du -sh public/assets/atlases/classes
+  └ 
+    tail: cannot open '/tmp/class-assets-tests.log' for reading: No such file or directory
+    63M    public/assets/atlases/classes

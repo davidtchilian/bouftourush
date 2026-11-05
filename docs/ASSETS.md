@@ -473,3 +473,44 @@ pnpm assets:validate
 Le lot de travail est `.local-assets/dev-hat-runtime/`. Les préparations du jeu
 réintègrent le lot versionné via `activate-bwork-blop.ts` ; l’import conserve
 le dossier `dev-hat/` comme le dossier préparé des familles.
+
+### Classes supplémentaires — 5 novembre 2026
+
+Source téléchargée explicitement à la demande du joueur :
+[release Dofedex 1.40.13](https://github.com/dofera/dofedex/releases/tag/1.40.13),
+`dofus-1.40.13-remastered.zip` (474 901 966 octets), SHA-256
+`aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5`.
+Archive et extraction dans `.local-assets/`, jamais publiées. Chaque fichier
+utilisé est comparé à son entrée dans cette archive avant export.
+
+| Classe | Corps original | Icônes des sorts AZER |
+|---|---|---|
+| Sacrieur | `clips/sprites/110.swf` | `clips/spells/icons/up/{439,431,438,446}.swf` |
+| Iop | `clips/sprites/80.swf` | `clips/spells/icons/up/{160,142,143,159}.swf` |
+| Féca | `clips/sprites/10.swf` | `clips/spells/icons/up/{10,9,11,5}.swf` |
+
+`prepare-classes.py` exporte `staticS/R/F/L/B`, `runS/R/F/L/B`,
+`anim0R/L`, `hitR/L`, `dieR/L`, avec les miroirs du client. Les gestes sont
+adaptés au combat temps réel. Les couches originales et attaches
+`GAC.applyAccessory` sont conservées pour toutes les coiffes et capes existantes.
+JPEXS 26.4.0 produit les SVG ; Chromium rasterise les pièces à densité 6,
+les effets à densité 3 et les aperçus d’inventaire à densité 10. Les icônes sont
+recadrées au dessin, jusqu’à 192 pixels. Les durées natives restent au manifeste.
+
+Effets : Châtiment `clips/spells/1051.swf#8`, Transposition `1055.swf#spire` (particules du sprite 8, transformations ActionScript transcrites avec graine 1055),
+Épée de Iop `805.swf#8`, Bond `807.swf#5`, Intimidation `804.swf#13`,
+Colère `809.swf#39`, Nuageuse `111.swf#14`, Trêve `101.swf#14`.
+Les correspondances sont relevées dans la table `sorts` du dump Ancestra cité
+plus haut ; tous les graphismes viennent exclusivement de l’archive Remastered.
+Dissolution, Punition et Téléportation n’ont pas de sprite autonome dans cette
+table : le jeu conserve le geste du personnage, sans effet emprunté à un autre
+sort. La délimitation persistante du glyphe emploie `clips/gfx/cell.swf#s1` ;
+aucune flamme de substitution n’est ajoutée.
+
+Régénérer : `pnpm assets:prepare:classes`, puis `pnpm assets:validate`.
+Le préparateur part du manifeste runtime existant, ajoute les trois classes,
+puis importe uniquement les PNG/atlas et les compositions. Les sources SWF,
+SVG et caches restent locaux. Les atlas supplémentaires sont séparés sous
+`atlases/classes/` et `atlases/class-previews/`. Le validateur contrôle aussi les
+attaches et les aperçus de ces classes. Cette publication du runtime à la demande
+du joueur ne constitue pas une autorisation de redistribution d’Ankama.

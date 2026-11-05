@@ -3,12 +3,14 @@ import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
 import {createHash} from 'node:crypto';
 import {chromium} from '@playwright/test';
-const previews=process.argv.includes('--previews'),atlasFolder=previews?'atlases/previews':'atlases/game';
+const previews=process.argv.includes('--previews'),atlasFolder=process.argv.find(arg=>arg.startsWith('--folder='))?.slice(9)??(previews?'atlases/previews':'atlases/game');
 const root=resolve(process.argv[2]??'.local-assets/game-runtime');
 const manifest=JSON.parse(await readFile(join(root,'manifest.json'),'utf8'));
 type Frame={path:string;durationMs:number;region?:[number,number,number,number,number,number]};
 type Asset={frames:Frame[]};
-const assets=Object.entries(manifest.assets as Record<string,Asset>).filter(([id])=>!id.startsWith('ui.')&&!id.startsWith('item.')&&(previews?id.startsWith('preview.'):!id.startsWith('preview.')));
+const jobsFile=process.argv.find(arg=>arg.startsWith('--jobs='))?.slice(7);
+const selected=jobsFile?new Set((JSON.parse(await readFile(join(root,jobsFile),'utf8')) as {id:string}[]).map(job=>job.id)):null;
+const assets=Object.entries(manifest.assets as Record<string,Asset>).filter(([id])=>(!selected||selected.has(id))&&!id.startsWith('ui.')&&!id.startsWith('item.')&&(previews?id.startsWith('preview.'):!id.startsWith('preview.')));
 const key=(frame:Frame)=>frame.path+(frame.region?'#'+frame.region.join(','):'');
 const frames=[...new Map(assets.flatMap(([,asset])=>asset.frames.map(frame=>[key(frame),frame] as const))).values()];
 // Ne conserver que les dimensions et empreintes : les PNG sont lus page par page.

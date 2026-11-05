@@ -271,3 +271,8 @@ canvas { display:block; }
 .world-loading { position:fixed; z-index:100; top:20px; left:50%; transform:translateX(-50%); padding:12px 20px; color:#f5f1e8; background:#19251f; border:1px solid #77a587; border-radius:8px; }
 
 .session-logout{display:flex;align-items:center;gap:8px}.session-logout a{color:#edf2f7;background:#263440;padding:8px 12px;border:1px solid #8192a1;border-radius:6px;text-decoration:none}
+
+.adventure-status label { display: flex; align-items: center; gap: .5rem; color: var(--text, #eee); }
+.adventure-status select { max-width: 200px; min-height: 30px; padding: 3px 8px; color: #f5f1e8; background: #202b34; border: 1px solid #65717a; border-radius: 5px; }
+.adventure-status select:focus-visible { outline: 2px solid #f3ba65; outline-offset: 2px; }
+.adventure-status select:disabled { opacity: .6; }

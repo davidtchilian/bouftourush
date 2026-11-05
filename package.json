@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": {"node": ">=22.13.0"},
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "packageManager": "pnpm@10.28.2",
   "scripts": {
     "account:grant-dev-hat": "tsx scripts/grant-dev-hat.ts",
@@ -31,7 +33,8 @@
     "assets:prepare:tofu-scara": "python3 scripts/prepare-tofu-scara.py --monsters && python3 scripts/prepare-dungeon-maps.py && python3 scripts/prepare-composition.py --tofu-scara-only && tsx scripts/rasterize-appearance.ts && python3 scripts/prepare-dungeon-vectors.py && tsx scripts/rasterize-appearance.ts --dungeon-vectors && python3 scripts/prepare-ui-previews.py && tsx scripts/rasterize-appearance.ts --previews && tsx scripts/pack-atlas.ts .local-assets/game-runtime && tsx scripts/pack-atlas.ts .local-assets/game-runtime --previews && tsx scripts/activate-bwork-blop.ts .local-assets/game-runtime && tsx scripts/bake-static-maps.ts",
     "assets:prepare:future": "python3 scripts/prepare-future-assets.py && tsx scripts/rasterize-appearance.ts --root=.local-assets/future-dungeons-runtime --workers=2 --batch-jobs=8 && tsx scripts/prepare-map-previews.ts && tsx scripts/pack-atlas.ts .local-assets/future-dungeons-runtime && tsx scripts/pack-atlas.ts .local-assets/future-dungeons-runtime --previews && tsx scripts/import-prepared-assets.ts",
     "assets:validate:future": "tsx scripts/validate-prepared-assets.ts",
-    "assets:activate:bwork-blop": "tsx scripts/activate-bwork-blop.ts"
+    "assets:activate:bwork-blop": "tsx scripts/activate-bwork-blop.ts",
+    "assets:prepare:classes": "python3 scripts/prepare-classes.py && python3 scripts/prepare-class-effects.py && python3 scripts/prepare-class-previews.py && tsx scripts/rasterize-appearance.ts --root=.local-assets/classes-runtime --workers=2 && tsx scripts/pack-atlas.ts .local-assets/classes-runtime --jobs=_appearance/jobs.json --folder=atlases/classes && tsx scripts/pack-atlas.ts .local-assets/classes-runtime --jobs=_appearance/jobs.json --previews --folder=atlases/class-previews && tsx scripts/import-classes.ts"
   },
   "dependencies": {
     "react": "^19.0.0",

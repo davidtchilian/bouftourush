@@ -11,7 +11,7 @@ import {bindPointer} from '../input/pointer';
 import type {Point} from '../movement/navigation';
 import {items} from '../../data/items';
 import {monsters} from '../../data/monsters';
-import {balance,spells,type SpellId} from '../../data/balance';
+import {balance,spells} from '../../data/balance';
 import {speedBurstActive} from '../ai/speedBurst';
 import {worldTexturePaths} from '../assets/worldTextures';
 import {dungeons} from '../../data/dungeons';
@@ -108,7 +108,7 @@ export async function mountGame(host:HTMLElement,signal:AbortSignal,onSnapshot:(
   const pointer=bindPointer(renderer.domElement,(x,y)=>{const p=ground(x,y);if(p)game.move(p);},(x,y)=>{cursorPoint=[x,y];const p=ground(x,y);if(p)aim=p;});
   const keyboard=(event:KeyboardEvent)=>{
    if(event.repeat||event.ctrlKey||event.altKey||event.metaKey||(event.target instanceof HTMLElement&&(event.target.matches('input,textarea,select')||event.target.isContentEditable)))return;
-   const id=(Object.entries(spells) as [SpellId,typeof spells[SpellId]][]).find(([,spell])=>spell.key===event.key.toLowerCase())?.[0];
+   const id=game.playerClass.abilities.find(id=>spells[id].key===event.key.toLowerCase());
    if(id){
     event.preventDefault();let target=cursorPoint?ground(...cursorPoint)??aim:aim;
     // La silhouette survolée cible les pieds logiques : viser la tête ne doit pas faire tirer au-dessus.
@@ -189,8 +189,9 @@ export async function mountGame(host:HTMLElement,signal:AbortSignal,onSnapshot:(
    }
    for(const shot of game.shots){const angle=Math.atan2(shot.target[1]-shot.start[1],shot.target[0]-shot.start[0]);draw(`shot-${shot.id}`,`spell.${shot.spell}.projectile`,shot.spell==='flaming'?shot.start:shot.position,shot.age,5000,false,angle);}
    for(const shot of game.enemyShots){const angle=Math.atan2(shot.target[1]-shot.start[1],shot.target[0]-shot.start[0]);draw(`enemy-shot-${shot.id}`,shot.asset,shot.position,shot.age,5000,false,angle);}
+   for(const [index,glyph] of game.glyphs.entries())for(const [cellIndex,point] of glyph.cells.entries()){const key=`glyph-${index}-${cellIndex}`;draw(key,'spell.glyph.zone',point,game.time,1900);nodes.get(key)!.mesh.material.opacity=0.35;}
    for(const effect of game.effects)draw(`effect-${effect.id}`,effect.asset,effect.position,effect.age,5100,false,effect.asset.startsWith('spell.flaming')?effect.angle:0);
-   const alive=new Set([...playerKeys,...game.enemies.map(e=>`enemy-${e.id}`),...game.shots.map(e=>`shot-${e.id}`),...game.enemyShots.map(e=>`enemy-shot-${e.id}`),...game.effects.map(e=>`effect-${e.id}`)]);
+   const alive=new Set([...game.glyphs.flatMap((glyph,index)=>glyph.cells.map((_,cellIndex)=>`glyph-${index}-${cellIndex}`)),...playerKeys,...game.enemies.map(e=>`enemy-${e.id}`),...game.shots.map(e=>`shot-${e.id}`),...game.enemyShots.map(e=>`enemy-shot-${e.id}`),...game.effects.map(e=>`effect-${e.id}`)]);
    for(const [key,node] of nodes)if(!alive.has(key)){scene.remove(node.mesh);node.mesh.material.dispose();nodes.delete(key);}
    const canvas=renderer!.domElement;canvas.dataset.playerX=player.position[0].toFixed(2);canvas.dataset.playerY=player.position[1].toFixed(2);canvas.dataset.animation=hat==='none'&&cape==='none'?asset:`appearance.${hat}.${cape}.${asset}`;canvas.dataset.compositionLayers=String(layers.length);canvas.dataset.map=game.mapId;canvas.dataset.phase=game.phase;canvas.dataset.mode=game.mode;
    canvas.dataset.projectiles=String(game.shots.length);

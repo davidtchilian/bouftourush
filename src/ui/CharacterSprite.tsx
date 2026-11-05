@@ -55,5 +55,5 @@ export function CharacterSprite({manifest,actorId,equipment,width,height}:{manif
  },[manifest,actorId,actor,hat,cape,width,height]);
  const appearance=hat==='none'&&cape==='none'?actorId:`appearance.${hat}.${cape}.${actorId}`;
  if(!actor)return <p className="asset-diagnostic">Composition Remastered absente : {actorId}.</p>;
- return <div className="sprite-preview" role="img" aria-label="Aperçu du Crâ équipé" data-asset={appearance} data-render-asset={`composition.${actorId}`} style={{width,height}}><div className="atlas-sprite" ref={ref} style={{position:'relative',width,height}}/></div>;
+ return <div className="sprite-preview" role="img" aria-label="Aperçu du personnage équipé" data-asset={appearance} data-render-asset={`composition.${actorId}`} style={{width,height}}><div className="atlas-sprite" ref={ref} style={{position:'relative',width,height}}/></div>;
 }

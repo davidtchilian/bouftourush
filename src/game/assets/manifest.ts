@@ -59,7 +59,7 @@ export const manifestSchema=z.object({version:z.literal(1),composition:compositi
     if(m.assets[id]?.frames.length!==actor.frames.length)issue(`Timeline de composition désynchronisée : ${id}`);
     for(const frame of actor.frames)for(const layer of frame.layers){
      if(layer.maskAssetId&&!m.assets[layer.maskAssetId])issue(`Masque source absent : ${id} → ${layer.maskAssetId}`);
-     if(m.gameplayReady&&id.startsWith('cra.idle.')){
+     if(m.gameplayReady&&/^(cra|sacrier|iop|feca)\.idle\./.test(id)){
       const pieces=layer.assetId?[layer.assetId]:Object.values(m.composition.accessories).filter(a=>a.slot===layer.slot).map(a=>a.views[layer.label!]);
       if(layer.maskAssetId)pieces.push(layer.maskAssetId);
       for(const piece of pieces)if(piece&&!m.assets[`preview.${piece}`])issue(`Pièce d’aperçu HD absente : ${piece}`);

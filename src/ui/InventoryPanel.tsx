@@ -20,7 +20,7 @@ export function InventoryPanel({controller,s,onClose}:{controller:GameController
  const image=(id:string)=>assetImage(manifest,id);
  const worn=(slot:Slot)=>s.inventory.find(item=>item.uid===s.equipment[slot]);
  const hat=worn('hat')?.item??'none',cape=worn('cape')?.item??'none';
- const actor=`cra.idle.${views[view]}`;
+ const actor=`${controller.simulation.playerClass.sprite}.idle.${views[view]}`;
  const visible=bag.filter(instance=>activeFilter==='all'||items[instance.item].set===activeFilter);
  const instance=visible.find(item=>item.uid===selected)??(selected?visible[0]:undefined),definition=instance&&items[instance.item];
  const countSet=(id:string)=>new Set(Object.values(s.equipment).flatMap(uid=>{const item=s.inventory.find(item=>item.uid===uid);return item&&items[item.item].set===id?[item.item]:[];})).size;
