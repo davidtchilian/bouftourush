@@ -1,4 +1,4 @@
-import {test,expect} from '@playwright/test';
+import {test,expect} from './fixtures';
 import {newProfile} from '../../src/game/progression/profile';
 import {royalUpgrades} from '../../src/data/items';
 

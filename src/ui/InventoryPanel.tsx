@@ -1,5 +1,5 @@
 import {movementSpeedBonus} from '../game/progression/profile';
-import {useState} from 'react';
+import {useEffect,useState} from 'react';
 import type {GameController} from '../game/rendering/game';
 import type {Snapshot} from '../game/core/simulation';
 import {items,sets,slotNames,type Slot} from '../data/items';
@@ -14,11 +14,14 @@ const leftSlots:Slot[]=['hat','cape','amulet','weapon'],rightSlots:Slot[]=['ring
 export function InventoryPanel({controller,s,onClose}:{controller:GameController;s:Snapshot;onClose:()=>void}){
  const equippedUids=new Set(Object.values(s.equipment)),bag=s.inventory.filter(instance=>!equippedUids.has(instance.uid));
  const manifest=controller.manifest,[selected,setSelected]=useState<string|null>(bag[0]?.uid??null),[view,setView]=useState(0),[filter,setFilter]=useState('all'),[saleMessage,setSaleMessage]=useState('');
+ const bagSets=new Set(bag.map(instance=>items[instance.item].set));
+ const activeFilter=filter==='all'||bagSets.has(filter)?filter:'all';
+ useEffect(()=>{if(filter!==activeFilter){setFilter('all');setSelected(null);}},[filter,activeFilter]);
  const image=(id:string)=>assetImage(manifest,id);
  const worn=(slot:Slot)=>s.inventory.find(item=>item.uid===s.equipment[slot]);
  const hat=worn('hat')?.item??'none',cape=worn('cape')?.item??'none';
  const actor=`cra.idle.${views[view]}`;
- const visible=bag.filter(instance=>filter==='all'||items[instance.item].set===filter);
+ const visible=bag.filter(instance=>activeFilter==='all'||items[instance.item].set===activeFilter);
  const instance=visible.find(item=>item.uid===selected)??(selected?visible[0]:undefined),definition=instance&&items[instance.item];
  const countSet=(id:string)=>new Set(Object.values(s.equipment).flatMap(uid=>{const item=s.inventory.find(item=>item.uid===uid);return item&&items[item.item].set===id?[item.item]:[];})).size;
  const equipmentColumn=(slots:Slot[])=><div className="equipment-column">{slots.map(slot=>{
@@ -37,7 +40,7 @@ export function InventoryPanel({controller,s,onClose}:{controller:GameController
    </section>
    <section className="inventory-items" aria-label="Sac et détails des objets">
     <div className="bag-heading"><h3>Votre sac <span className="muted">{bag.length} objet{bag.length>1?'s':''}</span></h3><span className="muted">Double-cliquez sur un objet pour l’équiper.</span></div>
-    <div className="inventory-filters" aria-label="Filtrer les objets">{[['all','Tous'],['adventurer','Aventurier'],['mousse','Mousse'],['bouftou','Bouftou'],['royalBouftou','Bouftou Royal'],['tofu','Tofu'],['blackScara','Scarafeuille Noir']].map(([id,label])=><button type="button" key={id} aria-pressed={filter===id} onClick={()=>{setFilter(id);setSelected(null);}}>{label}</button>)}</div>
+    <div className="inventory-filters" aria-label="Filtrer les objets">{[['all','Tous'],['adventurer','Aventurier'],['mousse','Mousse'],['bouftou','Bouftou'],['royalBouftou','Bouftou Royal'],['tofu','Tofu'],['blackScara','Scarafeuille Noir'],['chefBwork','Chef Bwork'],['blopMulti','Blop Multicolore'],['developer','Développeur']].filter(([id])=>id==='all'||bagSets.has(id)).map(([id,label])=><button type="button" key={id} aria-pressed={activeFilter===id} onClick={()=>{setFilter(id);setSelected(null);}}>{label}</button>)}</div>
     <div className="item-grid">
      {visible.map(instance=>{const item=items[instance.item],equipped=Object.values(s.equipment).includes(instance.uid);return <button className="item-cell" type="button" key={instance.uid} aria-pressed={selected===instance.uid} aria-label={`${item.name}${equipped?' équipé':''}`} title={`${item.name} — double-cliquer pour équiper`} onClick={()=>setSelected(instance.uid)} onDoubleClick={()=>{if(!Object.values(controller.simulation.profile.equipment).includes(instance.uid))controller.simulation.equipItem(instance.uid);}}><img src={image(item.icon)} alt=""/><span>{equipped?'Équipé':item.name}</span></button>;})}
      {visible.length>0&&Array.from({length:Math.max(0,18-visible.length)},(_,index)=><span key={`empty-${index}`} className="empty-item-slot" aria-hidden="true"/>)}
@@ -48,7 +51,7 @@ export function InventoryPanel({controller,s,onClose}:{controller:GameController
     </div>
    </section>
   </div>
-  <footer className="set-bonuses">{Object.entries(sets).filter(([id])=>countSet(id)>0||definition?.set===id).map(([id,set])=>{
+  <footer className="set-bonuses">{Object.entries(sets).filter(([id,set])=>Object.keys(set.thresholds).length>0&&(countSet(id)>0||definition?.set===id)).map(([id,set])=>{
    const count=countSet(id),thresholds=Object.keys(set.thresholds).map(Number).sort((a,b)=>a-b),active=thresholds.filter(n=>n<=count).at(-1),next=thresholds.find(n=>n>count),bonus=active?set.thresholds[active]:{hp:0,power:0};
    return <div className="set-summary" key={id}><strong>{set.name} <span>{count}/{thresholds.at(-1)}</span></strong><span>{active?`Bonus actif : +${bonus.hp} Vie · +${bonus.power} Puissance${recharge(bonus.cooldownReduction)}${speed(bonus.movementSpeed)}`:'Rassemblez les pièces pour activer les bonus.'}</span>{next&&<span className="muted">À {next} pièces : +{set.thresholds[next].hp} Vie · +{set.thresholds[next].power} Puissance{recharge(set.thresholds[next].cooldownReduction)}{speed(set.thresholds[next].movementSpeed)}</span>}</div>;
   })}</footer>

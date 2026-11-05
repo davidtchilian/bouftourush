@@ -1,4 +1,4 @@
-import {movementSpeedBonus} from '../progression/profile';
+import {movementSpeedBonus,equipmentLimits} from '../progression/profile';
 import {cra,type ClassDefinition} from '../../data/classes';
 import {balance,spells,type SpellId,xpForLevel} from '../../data/balance';
 import {dungeons,dungeonModes,waveMultipliers,type DungeonId,type DungeonMode} from '../../data/dungeons';
@@ -61,7 +61,7 @@ export class Simulation {
  move(target:Point){if(this.paused||this.phase==='death'||this.phase==='victory')return;if(this.lastDestination&&distance(this.lastDestination,target)<3&&this.player.route.length)return;this.lastDestination=[...target];this.player.route=this.navigation.route(this.player.position,target);}
  cast(id:SpellId,target:Point):boolean{
   if(!this.playerClass.abilities.includes(id)||this.paused||!this.manifest.gameplayReady||this.phase==='death'||this.phase==='victory'||(id!=='power'&&this.time<this.castUntil)||this.time<this.cooldowns[id])return false;
-  const spell=spells[id];this.cooldowns[id]=this.time+cooldownFor(id,finalStats(this.profile).cooldownReduction);this.castUntil=this.time+balance.castLock;
+  const spell=spells[id];this.cooldowns[id]=this.time+cooldownFor(id,finalStats(this.profile).cooldownReduction,equipmentLimits(this.profile).cooldownReduction);this.castUntil=this.time+balance.castLock;
   this.player.actionUntil=this.time+balance.castAnimation;this.setAction(this.player,id==='power'?'buff':'cast');this.player.animationTime=0;
   if(id==='power'){
    this.buffUntil=this.time+balance.buffDuration;this.effect(spell.effect,[...this.player.position],0,true);this.message('Tir puissant : dégâts augmentés pendant 8 s.');return true;

@@ -1,4 +1,4 @@
-import {test,expect} from '@playwright/test';
+import {test,expect} from './fixtures';
 import {auditProfile} from '../../scripts/combat-audit';
 test('Mousse affiche sa réduction, modifie les quatre sorts et suit équipement et sauvegarde',async({page},testInfo)=>{
  const profile=auditProfile('bouftou');

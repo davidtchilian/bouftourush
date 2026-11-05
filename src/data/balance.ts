@@ -1,5 +1,5 @@
 /** Équilibrage MVP provisoire, aucune prétention de fidélité aux chiffres Dofus. */
-export const balance = { maxLevel:100, startingHp:180, hpPerLevel:12, powerPerLevel:4, baseDamage:16, playerSpeed:95, waveDelay:1.8, castLock:0.12, castAnimation:0.4, enemyAttackAnimation:0.4, enemyHitAnimation:0.16, enemyDeathAnimation:1.6, buffMultiplier:1.6, buffDuration:8, maxCooldownReduction:30, lootChance:0.05, bossLootChance:0.4 } as const;
+export const balance = { maxLevel:100, startingHp:180, hpPerLevel:12, powerPerLevel:4, baseDamage:16, playerSpeed:95, waveDelay:1.8, castLock:0.12, castAnimation:0.4, enemyAttackAnimation:0.4, enemyHitAnimation:0.16, enemyDeathAnimation:1.6, buffMultiplier:1.6, buffDuration:8, maxCooldownReduction:30, maxMovementSpeedBonus:60, lootChance:0.05, bossLootChance:0.4 } as const;
 export const xpForLevel = (level:number):number => Math.floor(25*Math.pow(level,1.4));
 export const spells = {
  explosive:{key:'a',name:'Flèche explosive',coefficient:2.3,cooldown:3.2,range:260,speed:310,radius:63,kind:'area',effect:'spell.explosive.impact'},

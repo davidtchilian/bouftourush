@@ -1,6 +1,6 @@
 import {readFileSync} from 'node:fs';
 import {dungeons} from '../../src/data/dungeons';
-import {test,expect} from '@playwright/test';
+import {test,expect} from './fixtures';
 test('choisit Extrême, affiche ×5 monstres avec ×1,5 PV et conserve le mode lors d’un nouvel essai',async({page},testInfo)=>{
  await page.addInitScript(()=>localStorage.setItem('bouftourush.help.seen','1'));
  await page.goto('/');await page.getByRole('button',{name:'Donjons',exact:true}).click();
@@ -18,7 +18,7 @@ test('choisit Extrême, affiche ×5 monstres avec ×1,5 PV et conserve le mode l
  await page.screenshot({path:testInfo.outputPath('premiere-vague-extreme.png')});
  // Ne pas attaquer : une défaite n'accorde pas la panoplie de victoire.
  await expect(page.getByRole('dialog',{name:'Défaite',exact:true})).toBeVisible({timeout:30000});
- const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('bouftourush.save.v1')??'null'));expect(saved.profile.inventory).toHaveLength(0);
+ const saved=await page.evaluate(()=>fetch('/api/profile').then(response=>response.json()));expect(saved.profile.inventory).toHaveLength(0);
  await page.getByRole('button',{name:'Recommencer',exact:true}).click();await expect(canvas).toHaveAttribute('data-mode','extreme');await expect(canvas).toHaveAttribute('data-phase','combat');
  await page.getByRole('button',{name:'Abandonner',exact:true}).click();await expect(canvas).toHaveAttribute('data-mode','normal');await expect(canvas).toHaveAttribute('data-phase','hub');
  const manifest=JSON.parse(readFileSync('public/assets/manifest.json','utf8'));expect(manifest.assets['ui.spell.explosive'].provenance.version).toBe('1.40.13-remastered');

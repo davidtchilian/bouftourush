@@ -74,6 +74,9 @@ def validate_manifest_navigation(manifest):
         source = rules['maps'].get(map_id, {}).get('source')
         if not source or source not in arena.get('mapSource', ''):
             raise ValueError(f'Source de navigation modifiée : {map_id}')
+        review = rules['maps'][map_id]
+        if 'walkable' in review and arena['walkable'] != review['walkable']:
+            raise ValueError(f'Navigation périmée : {map_id} ; cellules revues modifiées')
         expected = apply_navigation_overrides(map_id, arena['walkable'], arena['layers'])
         if expected != sorted(arena['walkable'], key=lambda cell: cell['id']):
             raise ValueError(f'Navigation périmée : {map_id} ; régénérer le manifeste')

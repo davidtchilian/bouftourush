@@ -154,11 +154,11 @@
     },
     "map.object.1712": {
       "kind": "decoration",
-      "name": "Stalactite suspendue au plafond"
+      "name": "Stalactite suspendue"
     },
     "map.object.1713": {
       "kind": "decoration",
-      "name": "Stalactite suspendue au plafond"
+      "name": "Stalactite suspendue"
     },
     "map.object.1714": {
       "kind": "decoration",
@@ -166,11 +166,11 @@
     },
     "map.object.1717": {
       "kind": "obstacle",
-      "name": "Groupe de stalagmites au sol"
+      "name": "Stalagmites au sol"
     },
     "map.object.1721": {
       "kind": "decoration",
-      "name": "Mousse basse"
+      "name": "Buisson sans tronc"
     },
     "map.object.1722": {
       "kind": "decoration",
@@ -474,11 +474,11 @@
     },
     "map.object.1105": {
       "kind": "decoration",
-      "name": "Décor au sol ou élément suspendu, revue Remastered"
+      "name": "Texture de sol"
     },
     "map.object.1106": {
       "kind": "decoration",
-      "name": "Décor au sol ou élément suspendu, revue Remastered"
+      "name": "Texture de sol"
     },
     "map.object.2897": {
       "kind": "decoration",
@@ -498,11 +498,11 @@
     },
     "map.object.729": {
       "kind": "decoration",
-      "name": "Décor au sol ou élément suspendu, revue Remastered"
+      "name": "Paille au sol"
     },
     "map.object.1115": {
       "kind": "decoration",
-      "name": "Décor au sol ou élément suspendu, revue Remastered"
+      "name": "Texture de sol"
     },
     "map.object.2899": {
       "kind": "decoration",
@@ -526,7 +526,7 @@
     },
     "map.object.1109": {
       "kind": "decoration",
-      "name": "Décor au sol ou élément suspendu, revue Remastered"
+      "name": "Texture de sol"
     },
     "map.object.145": {
       "kind": "decoration",
@@ -558,7 +558,7 @@
     },
     "map.object.1108": {
       "kind": "decoration",
-      "name": "Décor au sol ou élément suspendu, revue Remastered"
+      "name": "Texture de sol"
     },
     "map.object.3258": {
       "kind": "decoration",
@@ -574,7 +574,7 @@
     },
     "map.object.1112": {
       "kind": "decoration",
-      "name": "Décor au sol ou élément suspendu, revue Remastered"
+      "name": "Texture de sol"
     },
     "map.object.1348": {
       "kind": "decoration",
@@ -582,7 +582,7 @@
     },
     "map.object.1107": {
       "kind": "decoration",
-      "name": "Décor au sol ou élément suspendu, revue Remastered"
+      "name": "Texture de sol"
     },
     "map.object.3270": {
       "kind": "decoration",
@@ -626,7 +626,7 @@
     },
     "map.object.1111": {
       "kind": "decoration",
-      "name": "Décor au sol ou élément suspendu, revue Remastered"
+      "name": "Texture de sol"
     },
     "map.object.3264": {
       "kind": "decoration",
@@ -659,6 +659,274 @@
     "map.object.1104": {
       "kind": "decoration",
       "name": "Décor au sol ou élément suspendu, revue Remastered"
+    },
+    "map.object.1789": {
+      "kind": "obstacle",
+      "name": "Mur rocheux"
+    },
+    "map.object.3120": {
+      "kind": "obstacle",
+      "name": "Torche sur pied"
+    },
+    "map.object.1787": {
+      "kind": "obstacle",
+      "name": "Mur rocheux"
+    },
+    "map.object.1113": {
+      "kind": "decoration",
+      "name": "Texture de sol"
+    },
+    "map.object.1786": {
+      "kind": "obstacle",
+      "name": "Mur rocheux"
+    },
+    "map.object.1802": {
+      "kind": "decoration",
+      "name": "Peau au sol"
+    },
+    "map.object.1102": {
+      "kind": "obstacle",
+      "name": "Trépied de lances"
+    },
+    "map.object.3074": {
+      "kind": "obstacle",
+      "name": "Hutte"
+    },
+    "map.object.1110": {
+      "kind": "decoration",
+      "name": "Texture de sol"
+    },
+    "map.object.1088": {
+      "kind": "obstacle",
+      "name": "Poteau"
+    },
+    "map.object.3064": {
+      "kind": "obstacle",
+      "name": "Mur"
+    },
+    "map.object.1034": {
+      "kind": "decoration",
+      "name": "Ossements au sol"
+    },
+    "map.object.1784": {
+      "kind": "obstacle",
+      "name": "Pilier"
+    },
+    "map.object.1089": {
+      "kind": "decoration",
+      "name": "Crâne au sol"
+    },
+    "map.object.1715": {
+      "kind": "obstacle",
+      "name": "Stalagmite au sol"
+    },
+    "map.object.1087": {
+      "kind": "obstacle",
+      "name": "Poteau à crâne"
+    },
+    "map.object.1716": {
+      "kind": "obstacle",
+      "name": "Stalagmite au sol"
+    },
+    "map.object.732": {
+      "kind": "decoration",
+      "name": "Petit récipient au sol"
+    },
+    "map.object.986": {
+      "kind": "decoration",
+      "name": "Rayon de lumière"
+    },
+    "map.object.4720": {
+      "kind": "obstacle",
+      "name": "Mur"
+    },
+    "map.object.4707": {
+      "kind": "decoration",
+      "name": "Herbes"
+    },
+    "map.object.4737": {
+      "kind": "decoration",
+      "name": "Feuillage au sol"
+    },
+    "map.object.4713": {
+      "kind": "obstacle",
+      "name": "Mur"
+    },
+    "map.object.4676": {
+      "kind": "obstacle",
+      "name": "Arbuste avec tronc"
+    },
+    "map.object.4708": {
+      "kind": "obstacle",
+      "name": "Mur"
+    },
+    "map.object.4692": {
+      "kind": "obstacle",
+      "name": "Grand seau"
+    },
+    "map.object.4712": {
+      "kind": "obstacle",
+      "name": "Mur"
+    },
+    "map.object.4705": {
+      "kind": "decoration",
+      "name": "Herbes"
+    },
+    "map.object.4694": {
+      "kind": "decoration",
+      "name": "Outil posé au sol"
+    },
+    "map.object.4711": {
+      "kind": "obstacle",
+      "name": "Mur"
+    },
+    "map.object.4726": {
+      "kind": "obstacle",
+      "name": "Souche"
+    },
+    "map.object.4730": {
+      "kind": "obstacle",
+      "name": "Socle au sol"
+    },
+    "map.object.4695": {
+      "kind": "decoration",
+      "name": "Fourche posée au sol"
+    },
+    "map.object.4743": {
+      "kind": "decoration",
+      "name": "Feuilles suspendues"
+    },
+    "map.object.4731": {
+      "kind": "obstacle",
+      "name": "Socle au sol"
+    },
+    "map.object.4719": {
+      "kind": "obstacle",
+      "name": "Mur"
+    },
+    "map.object.4736": {
+      "kind": "decoration",
+      "name": "Feuillage au sol"
+    },
+    "map.object.4709": {
+      "kind": "obstacle",
+      "name": "Mur"
+    },
+    "map.object.4725": {
+      "kind": "decoration",
+      "name": "Planche au sol"
+    },
+    "map.object.4742": {
+      "kind": "decoration",
+      "name": "Feuilles suspendues"
+    },
+    "map.object.4728": {
+      "kind": "decoration",
+      "name": "Lanterne suspendue"
+    },
+    "map.object.4741": {
+      "kind": "decoration",
+      "name": "Feuilles suspendues"
+    },
+    "map.object.4696": {
+      "kind": "decoration",
+      "name": "Grille affleurante"
+    },
+    "map.object.4734": {
+      "kind": "decoration",
+      "name": "Herbes"
+    },
+    "map.object.4675": {
+      "kind": "decoration",
+      "name": "Petits débris"
+    },
+    "map.object.4703": {
+      "kind": "obstacle",
+      "name": "Banc"
+    },
+    "map.object.4680": {
+      "kind": "decoration",
+      "name": "Fleurs"
+    },
+    "map.object.4636": {
+      "kind": "decoration",
+      "name": "Fleurs au sol"
+    },
+    "map.object.4690": {
+      "kind": "obstacle",
+      "name": "Pot de fleur sur pied"
+    },
+    "map.object.4693": {
+      "kind": "obstacle",
+      "name": "Puits"
+    },
+    "map.object.4686": {
+      "kind": "obstacle",
+      "name": "Barrière"
+    },
+    "map.object.4635": {
+      "kind": "decoration",
+      "name": "Fleurs au sol"
+    },
+    "map.object.4718": {
+      "kind": "obstacle",
+      "name": "Mur"
+    },
+    "map.object.4702": {
+      "kind": "obstacle",
+      "name": "Banc"
+    },
+    "map.object.4667": {
+      "kind": "obstacle",
+      "name": "Fleur sur socle"
+    },
+    "map.object.4722": {
+      "kind": "obstacle",
+      "name": "Mur"
+    },
+    "map.object.4732": {
+      "kind": "decoration",
+      "name": "Herbes"
+    },
+    "map.object.4691": {
+      "kind": "obstacle",
+      "name": "Pot de fleur sur pied"
+    },
+    "map.object.4688": {
+      "kind": "obstacle",
+      "name": "Pilier"
+    },
+    "map.object.4704": {
+      "kind": "decoration",
+      "name": "Herbes"
+    },
+    "map.object.4672": {
+      "kind": "decoration",
+      "name": "Planches au sol"
+    },
+    "map.object.4673": {
+      "kind": "decoration",
+      "name": "Planches au sol"
+    },
+    "map.object.4671": {
+      "kind": "decoration",
+      "name": "Débris au sol"
+    },
+    "map.object.4689": {
+      "kind": "obstacle",
+      "name": "Pilier"
+    },
+    "map.object.4687": {
+      "kind": "obstacle",
+      "name": "Lampadaire"
+    },
+    "map.object.4724": {
+      "kind": "obstacle",
+      "name": "Mur"
+    },
+    "map.object.4717": {
+      "kind": "obstacle",
+      "name": "Mur"
     }
   },
   "maps": {
@@ -1981,6 +2249,3364 @@
         }
       ],
       "layoutSha256": "50bbd7c21c113909e11bee8bd963fa71974c5ca5c81a25a58baff474b200d6a1"
+    },
+    "chefBwork": {
+      "source": "maps/9760/9760_0701291449.swf",
+      "layoutSha256": "78326d9b47945b5a5501ad61d83f3886a938c37e6b1b9f759be136607c690c3f",
+      "publicCellDataSha256": "99b07031684e5902c80a89b8bd8be692a758a51086c83eebdd81c502518bf063",
+      "review": "Premières frames Remastered et salle complète examinées ; sol, frondaisons, ombres et stalactites traversables ; emprises physiques bloquées ; limites source préservées.",
+      "passable": [
+        {
+          "id": 257,
+          "assetId": "map.object.1721",
+          "position": [
+            556.5,
+            -229.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 346,
+          "assetId": "map.object.1713",
+          "position": [
+            662.5,
+            -310.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 395,
+          "assetId": "map.object.986",
+          "position": [
+            185.5,
+            -364.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        }
+      ],
+      "outside": [
+        {
+          "id": 165,
+          "assetId": "map.object.1712",
+          "position": [
+            291.5,
+            -148.5
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 264,
+          "assetId": "map.object.1089",
+          "position": [
+            159,
+            -243
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 330,
+          "assetId": "map.object.1712",
+          "position": [
+            583,
+            -297
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 384,
+          "assetId": "map.object.732",
+          "position": [
+            371,
+            -351
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        }
+      ],
+      "walkable": [
+        {
+          "id": 152,
+          "position": [
+            371,
+            -135.0
+          ]
+        },
+        {
+          "id": 166,
+          "position": [
+            344.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 167,
+          "position": [
+            397.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 180,
+          "position": [
+            318,
+            -162.0
+          ]
+        },
+        {
+          "id": 181,
+          "position": [
+            371,
+            -162.0
+          ]
+        },
+        {
+          "id": 182,
+          "position": [
+            424,
+            -162.0
+          ]
+        },
+        {
+          "id": 183,
+          "position": [
+            477,
+            -162.0
+          ]
+        },
+        {
+          "id": 193,
+          "position": [
+            238.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 194,
+          "position": [
+            291.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 195,
+          "position": [
+            344.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 196,
+          "position": [
+            397.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 197,
+          "position": [
+            450.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 208,
+          "position": [
+            265,
+            -189.0
+          ]
+        },
+        {
+          "id": 209,
+          "position": [
+            318,
+            -189.0
+          ]
+        },
+        {
+          "id": 210,
+          "position": [
+            371,
+            -189.0
+          ]
+        },
+        {
+          "id": 211,
+          "position": [
+            424,
+            -189.0
+          ]
+        },
+        {
+          "id": 212,
+          "position": [
+            477,
+            -189.0
+          ]
+        },
+        {
+          "id": 213,
+          "position": [
+            530,
+            -189.0
+          ]
+        },
+        {
+          "id": 221,
+          "position": [
+            185.5,
+            -202.5
+          ]
+        },
+        {
+          "id": 222,
+          "position": [
+            238.5,
+            -202.5
+          ]
+        },
+        {
+          "id": 224,
+          "position": [
+            344.5,
+            -202.5
+          ]
+        },
+        {
+          "id": 225,
+          "position": [
+            397.5,
+            -202.5
+          ]
+        },
+        {
+          "id": 226,
+          "position": [
+            450.5,
+            -202.5
+          ]
+        },
+        {
+          "id": 227,
+          "position": [
+            503.5,
+            -202.5
+          ]
+        },
+        {
+          "id": 236,
+          "position": [
+            212,
+            -216.0
+          ]
+        },
+        {
+          "id": 237,
+          "position": [
+            265,
+            -216.0
+          ]
+        },
+        {
+          "id": 238,
+          "position": [
+            318,
+            -216.0
+          ]
+        },
+        {
+          "id": 240,
+          "position": [
+            424,
+            -216.0
+          ]
+        },
+        {
+          "id": 241,
+          "position": [
+            477,
+            -216.0
+          ]
+        },
+        {
+          "id": 250,
+          "position": [
+            185.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 251,
+          "position": [
+            238.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 252,
+          "position": [
+            291.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 254,
+          "position": [
+            397.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 255,
+          "position": [
+            450.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 256,
+          "position": [
+            503.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 257,
+          "position": [
+            556.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 265,
+          "position": [
+            212,
+            -243.0
+          ]
+        },
+        {
+          "id": 266,
+          "position": [
+            265,
+            -243.0
+          ]
+        },
+        {
+          "id": 267,
+          "position": [
+            318,
+            -243.0
+          ]
+        },
+        {
+          "id": 268,
+          "position": [
+            371,
+            -243.0
+          ]
+        },
+        {
+          "id": 269,
+          "position": [
+            424,
+            -243.0
+          ]
+        },
+        {
+          "id": 270,
+          "position": [
+            477,
+            -243.0
+          ]
+        },
+        {
+          "id": 271,
+          "position": [
+            530,
+            -243.0
+          ]
+        },
+        {
+          "id": 272,
+          "position": [
+            583,
+            -243.0
+          ]
+        },
+        {
+          "id": 273,
+          "position": [
+            636,
+            -243.0
+          ]
+        },
+        {
+          "id": 277,
+          "position": [
+            79.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 279,
+          "position": [
+            185.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 280,
+          "position": [
+            238.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 281,
+          "position": [
+            291.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 282,
+          "position": [
+            344.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 283,
+          "position": [
+            397.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 284,
+          "position": [
+            450.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 285,
+          "position": [
+            503.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 286,
+          "position": [
+            556.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 287,
+          "position": [
+            609.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 292,
+          "position": [
+            106,
+            -270.0
+          ]
+        },
+        {
+          "id": 293,
+          "position": [
+            159,
+            -270.0
+          ]
+        },
+        {
+          "id": 294,
+          "position": [
+            212,
+            -270.0
+          ]
+        },
+        {
+          "id": 295,
+          "position": [
+            265,
+            -270.0
+          ]
+        },
+        {
+          "id": 296,
+          "position": [
+            318,
+            -270.0
+          ]
+        },
+        {
+          "id": 297,
+          "position": [
+            371,
+            -270.0
+          ]
+        },
+        {
+          "id": 298,
+          "position": [
+            424,
+            -270.0
+          ]
+        },
+        {
+          "id": 299,
+          "position": [
+            477,
+            -270.0
+          ]
+        },
+        {
+          "id": 300,
+          "position": [
+            530,
+            -270.0
+          ]
+        },
+        {
+          "id": 301,
+          "position": [
+            583,
+            -270.0
+          ]
+        },
+        {
+          "id": 302,
+          "position": [
+            636,
+            -270.0
+          ]
+        },
+        {
+          "id": 303,
+          "position": [
+            689,
+            -270.0
+          ]
+        },
+        {
+          "id": 305,
+          "position": [
+            26.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 306,
+          "position": [
+            79.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 307,
+          "position": [
+            132.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 308,
+          "position": [
+            185.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 310,
+          "position": [
+            291.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 311,
+          "position": [
+            344.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 315,
+          "position": [
+            556.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 316,
+          "position": [
+            609.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 317,
+          "position": [
+            662.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 320,
+          "position": [
+            53,
+            -297.0
+          ]
+        },
+        {
+          "id": 321,
+          "position": [
+            106,
+            -297.0
+          ]
+        },
+        {
+          "id": 322,
+          "position": [
+            159,
+            -297.0
+          ]
+        },
+        {
+          "id": 323,
+          "position": [
+            212,
+            -297.0
+          ]
+        },
+        {
+          "id": 325,
+          "position": [
+            318,
+            -297.0
+          ]
+        },
+        {
+          "id": 326,
+          "position": [
+            371,
+            -297.0
+          ]
+        },
+        {
+          "id": 329,
+          "position": [
+            530,
+            -297.0
+          ]
+        },
+        {
+          "id": 331,
+          "position": [
+            636,
+            -297.0
+          ]
+        },
+        {
+          "id": 335,
+          "position": [
+            79.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 336,
+          "position": [
+            132.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 337,
+          "position": [
+            185.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 338,
+          "position": [
+            238.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 339,
+          "position": [
+            291.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 340,
+          "position": [
+            344.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 341,
+          "position": [
+            397.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 342,
+          "position": [
+            450.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 343,
+          "position": [
+            503.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 344,
+          "position": [
+            556.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 345,
+          "position": [
+            609.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 346,
+          "position": [
+            662.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 350,
+          "position": [
+            106,
+            -324.0
+          ]
+        },
+        {
+          "id": 351,
+          "position": [
+            159,
+            -324.0
+          ]
+        },
+        {
+          "id": 352,
+          "position": [
+            212,
+            -324.0
+          ]
+        },
+        {
+          "id": 353,
+          "position": [
+            265,
+            -324.0
+          ]
+        },
+        {
+          "id": 354,
+          "position": [
+            318,
+            -324.0
+          ]
+        },
+        {
+          "id": 355,
+          "position": [
+            371,
+            -324.0
+          ]
+        },
+        {
+          "id": 356,
+          "position": [
+            424,
+            -324.0
+          ]
+        },
+        {
+          "id": 357,
+          "position": [
+            477,
+            -324.0
+          ]
+        },
+        {
+          "id": 358,
+          "position": [
+            530,
+            -324.0
+          ]
+        },
+        {
+          "id": 359,
+          "position": [
+            583,
+            -324.0
+          ]
+        },
+        {
+          "id": 360,
+          "position": [
+            636,
+            -324.0
+          ]
+        },
+        {
+          "id": 361,
+          "position": [
+            689,
+            -324.0
+          ]
+        },
+        {
+          "id": 365,
+          "position": [
+            132.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 366,
+          "position": [
+            185.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 367,
+          "position": [
+            238.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 368,
+          "position": [
+            291.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 370,
+          "position": [
+            397.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 371,
+          "position": [
+            450.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 372,
+          "position": [
+            503.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 373,
+          "position": [
+            556.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 374,
+          "position": [
+            609.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 375,
+          "position": [
+            662.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 380,
+          "position": [
+            159,
+            -351.0
+          ]
+        },
+        {
+          "id": 381,
+          "position": [
+            212,
+            -351.0
+          ]
+        },
+        {
+          "id": 382,
+          "position": [
+            265,
+            -351.0
+          ]
+        },
+        {
+          "id": 383,
+          "position": [
+            318,
+            -351.0
+          ]
+        },
+        {
+          "id": 385,
+          "position": [
+            424,
+            -351.0
+          ]
+        },
+        {
+          "id": 386,
+          "position": [
+            477,
+            -351.0
+          ]
+        },
+        {
+          "id": 387,
+          "position": [
+            530,
+            -351.0
+          ]
+        },
+        {
+          "id": 388,
+          "position": [
+            583,
+            -351.0
+          ]
+        },
+        {
+          "id": 389,
+          "position": [
+            636,
+            -351.0
+          ]
+        },
+        {
+          "id": 395,
+          "position": [
+            185.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 396,
+          "position": [
+            238.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 397,
+          "position": [
+            291.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 398,
+          "position": [
+            344.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 399,
+          "position": [
+            397.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 400,
+          "position": [
+            450.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 401,
+          "position": [
+            503.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 402,
+          "position": [
+            556.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 403,
+          "position": [
+            609.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 410,
+          "position": [
+            212,
+            -378.0
+          ]
+        },
+        {
+          "id": 411,
+          "position": [
+            265,
+            -378.0
+          ]
+        },
+        {
+          "id": 412,
+          "position": [
+            318,
+            -378.0
+          ]
+        },
+        {
+          "id": 413,
+          "position": [
+            371,
+            -378.0
+          ]
+        },
+        {
+          "id": 414,
+          "position": [
+            424,
+            -378.0
+          ]
+        },
+        {
+          "id": 415,
+          "position": [
+            477,
+            -378.0
+          ]
+        },
+        {
+          "id": 416,
+          "position": [
+            530,
+            -378.0
+          ]
+        },
+        {
+          "id": 417,
+          "position": [
+            583,
+            -378.0
+          ]
+        },
+        {
+          "id": 425,
+          "position": [
+            238.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 426,
+          "position": [
+            291.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 427,
+          "position": [
+            344.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 428,
+          "position": [
+            397.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 429,
+          "position": [
+            450.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 430,
+          "position": [
+            503.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 431,
+          "position": [
+            556.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 440,
+          "position": [
+            265,
+            -405.0
+          ]
+        },
+        {
+          "id": 441,
+          "position": [
+            318,
+            -405.0
+          ]
+        },
+        {
+          "id": 442,
+          "position": [
+            371,
+            -405.0
+          ]
+        },
+        {
+          "id": 443,
+          "position": [
+            424,
+            -405.0
+          ]
+        },
+        {
+          "id": 444,
+          "position": [
+            477,
+            -405.0
+          ]
+        },
+        {
+          "id": 445,
+          "position": [
+            530,
+            -405.0
+          ]
+        }
+      ],
+      "spawn": [
+        371,
+        -324.0
+      ],
+      "enemySpawns": [
+        [
+          26.5,
+          -283.5
+        ],
+        [
+          689,
+          -270.0
+        ],
+        [
+          689,
+          -324.0
+        ],
+        [
+          79.5,
+          -256.5
+        ],
+        [
+          79.5,
+          -310.5
+        ],
+        [
+          636,
+          -243.0
+        ],
+        [
+          636,
+          -297.0
+        ],
+        [
+          636,
+          -351.0
+        ]
+      ]
+    },
+    "blopMulti": {
+      "source": "Ancestra-Evolutive/sql/ancestra-evolutive-full.sql#maps/11892@0712071740",
+      "layoutSha256": "530500a2ff083ce8751e6646f2e097b6172adcf37b58ad9e57803b747c8d5ec1",
+      "publicCellDataSha256": "dd77797e7abb72b6beb5e6e891de3f7d7a00cb30ff6a554e382c67bb44f8f5d6",
+      "review": "Premières frames Remastered et salle complète examinées ; sol, frondaisons, ombres et stalactites traversables ; emprises physiques bloquées ; limites source préservées.",
+      "passable": [
+        {
+          "id": 78,
+          "assetId": "map.object.4707",
+          "position": [
+            291.5,
+            -67.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 83,
+          "assetId": "map.object.4705",
+          "position": [
+            556.5,
+            -67.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 123,
+          "assetId": "map.object.4742",
+          "position": [
+            371,
+            -108
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 125,
+          "assetId": "map.object.4728",
+          "position": [
+            477,
+            -108
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 132,
+          "assetId": "map.object.4741",
+          "position": [
+            79.5,
+            -121.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 160,
+          "assetId": "map.object.4734",
+          "position": [
+            26.5,
+            -148.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 194,
+          "assetId": "map.object.4680",
+          "position": [
+            291.5,
+            -175.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 195,
+          "assetId": "map.object.4636",
+          "position": [
+            344.5,
+            -175.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 209,
+          "assetId": "map.object.4636",
+          "position": [
+            318,
+            -189
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 221,
+          "assetId": "map.object.4635",
+          "position": [
+            185.5,
+            -202.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 256,
+          "assetId": "map.object.4635",
+          "position": [
+            503.5,
+            -229.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 258,
+          "assetId": "map.object.4707",
+          "position": [
+            609.5,
+            -229.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 303,
+          "assetId": "map.object.4742",
+          "position": [
+            689,
+            -270
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 305,
+          "assetId": "map.object.4743",
+          "position": [
+            26.5,
+            -283.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 318,
+          "assetId": "map.object.4732",
+          "position": [
+            715.5,
+            -283.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 326,
+          "assetId": "map.object.4636",
+          "position": [
+            371,
+            -297
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 334,
+          "assetId": "map.object.4635",
+          "position": [
+            26.5,
+            -310.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 341,
+          "assetId": "map.object.4680",
+          "position": [
+            397.5,
+            -310.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 342,
+          "assetId": "map.object.4704",
+          "position": [
+            450.5,
+            -310.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 351,
+          "assetId": "map.object.4743",
+          "position": [
+            159,
+            -324
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 371,
+          "assetId": "map.object.4636",
+          "position": [
+            450.5,
+            -337.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 419,
+          "assetId": "map.object.4741",
+          "position": [
+            689,
+            -378
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 433,
+          "assetId": "map.object.4732",
+          "position": [
+            662.5,
+            -391.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 451,
+          "assetId": "map.object.4707",
+          "position": [
+            79.5,
+            -418.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        },
+        {
+          "id": 454,
+          "assetId": "map.object.4635",
+          "position": [
+            238.5,
+            -418.5
+          ],
+          "reason": "Décor traversable sur terrain source accessible"
+        }
+      ],
+      "outside": [
+        {
+          "id": 48,
+          "assetId": "map.object.4707",
+          "position": [
+            238.5,
+            -40.5
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 69,
+          "assetId": "map.object.4707",
+          "position": [
+            583,
+            -54
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 84,
+          "assetId": "map.object.4694",
+          "position": [
+            609.5,
+            -67.5
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 97,
+          "assetId": "map.object.4695",
+          "position": [
+            530,
+            -81
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 104,
+          "assetId": "map.object.4743",
+          "position": [
+            132.5,
+            -94.5
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 118,
+          "assetId": "map.object.4725",
+          "position": [
+            106,
+            -108
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 131,
+          "assetId": "map.object.4695",
+          "position": [
+            26.5,
+            -121.5
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 146,
+          "assetId": "map.object.4695",
+          "position": [
+            53,
+            -135
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 292,
+          "assetId": "map.object.4707",
+          "position": [
+            106,
+            -270
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 350,
+          "assetId": "map.object.4680",
+          "position": [
+            106,
+            -324
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 405,
+          "assetId": "map.object.4680",
+          "position": [
+            715.5,
+            -364.5
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 410,
+          "assetId": "map.object.4680",
+          "position": [
+            212,
+            -378
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 447,
+          "assetId": "map.object.4680",
+          "position": [
+            636,
+            -405
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 457,
+          "assetId": "map.object.4707",
+          "position": [
+            397.5,
+            -418.5
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        },
+        {
+          "id": 475,
+          "assetId": "map.object.4734",
+          "position": [
+            583,
+            -432
+          ],
+          "reason": "Limite ou cellule infranchissable dans la disposition publique"
+        }
+      ],
+      "walkable": [
+        {
+          "id": 77,
+          "position": [
+            238.5,
+            -67.5
+          ]
+        },
+        {
+          "id": 78,
+          "position": [
+            291.5,
+            -67.5
+          ]
+        },
+        {
+          "id": 83,
+          "position": [
+            556.5,
+            -67.5
+          ]
+        },
+        {
+          "id": 91,
+          "position": [
+            212,
+            -81.0
+          ]
+        },
+        {
+          "id": 92,
+          "position": [
+            265,
+            -81.0
+          ]
+        },
+        {
+          "id": 98,
+          "position": [
+            583,
+            -81.0
+          ]
+        },
+        {
+          "id": 99,
+          "position": [
+            636,
+            -81.0
+          ]
+        },
+        {
+          "id": 105,
+          "position": [
+            185.5,
+            -94.5
+          ]
+        },
+        {
+          "id": 106,
+          "position": [
+            238.5,
+            -94.5
+          ]
+        },
+        {
+          "id": 107,
+          "position": [
+            291.5,
+            -94.5
+          ]
+        },
+        {
+          "id": 111,
+          "position": [
+            503.5,
+            -94.5
+          ]
+        },
+        {
+          "id": 112,
+          "position": [
+            556.5,
+            -94.5
+          ]
+        },
+        {
+          "id": 113,
+          "position": [
+            609.5,
+            -94.5
+          ]
+        },
+        {
+          "id": 114,
+          "position": [
+            662.5,
+            -94.5
+          ]
+        },
+        {
+          "id": 119,
+          "position": [
+            159,
+            -108.0
+          ]
+        },
+        {
+          "id": 120,
+          "position": [
+            212,
+            -108.0
+          ]
+        },
+        {
+          "id": 121,
+          "position": [
+            265,
+            -108.0
+          ]
+        },
+        {
+          "id": 122,
+          "position": [
+            318,
+            -108.0
+          ]
+        },
+        {
+          "id": 123,
+          "position": [
+            371,
+            -108
+          ]
+        },
+        {
+          "id": 124,
+          "position": [
+            424,
+            -108.0
+          ]
+        },
+        {
+          "id": 125,
+          "position": [
+            477,
+            -108
+          ]
+        },
+        {
+          "id": 126,
+          "position": [
+            530,
+            -108.0
+          ]
+        },
+        {
+          "id": 127,
+          "position": [
+            583,
+            -108.0
+          ]
+        },
+        {
+          "id": 128,
+          "position": [
+            636,
+            -108.0
+          ]
+        },
+        {
+          "id": 129,
+          "position": [
+            689,
+            -108.0
+          ]
+        },
+        {
+          "id": 132,
+          "position": [
+            79.5,
+            -121.5
+          ]
+        },
+        {
+          "id": 133,
+          "position": [
+            132.5,
+            -121.5
+          ]
+        },
+        {
+          "id": 134,
+          "position": [
+            185.5,
+            -121.5
+          ]
+        },
+        {
+          "id": 135,
+          "position": [
+            238.5,
+            -121.5
+          ]
+        },
+        {
+          "id": 137,
+          "position": [
+            344.5,
+            -121.5
+          ]
+        },
+        {
+          "id": 138,
+          "position": [
+            397.5,
+            -121.5
+          ]
+        },
+        {
+          "id": 139,
+          "position": [
+            450.5,
+            -121.5
+          ]
+        },
+        {
+          "id": 140,
+          "position": [
+            503.5,
+            -121.5
+          ]
+        },
+        {
+          "id": 141,
+          "position": [
+            556.5,
+            -121.5
+          ]
+        },
+        {
+          "id": 142,
+          "position": [
+            609.5,
+            -121.5
+          ]
+        },
+        {
+          "id": 143,
+          "position": [
+            662.5,
+            -121.5
+          ]
+        },
+        {
+          "id": 144,
+          "position": [
+            715.5,
+            -121.5
+          ]
+        },
+        {
+          "id": 147,
+          "position": [
+            106,
+            -135.0
+          ]
+        },
+        {
+          "id": 148,
+          "position": [
+            159,
+            -135.0
+          ]
+        },
+        {
+          "id": 149,
+          "position": [
+            212,
+            -135.0
+          ]
+        },
+        {
+          "id": 151,
+          "position": [
+            318,
+            -135.0
+          ]
+        },
+        {
+          "id": 152,
+          "position": [
+            371,
+            -135.0
+          ]
+        },
+        {
+          "id": 153,
+          "position": [
+            424,
+            -135.0
+          ]
+        },
+        {
+          "id": 154,
+          "position": [
+            477,
+            -135.0
+          ]
+        },
+        {
+          "id": 155,
+          "position": [
+            530,
+            -135.0
+          ]
+        },
+        {
+          "id": 156,
+          "position": [
+            583,
+            -135.0
+          ]
+        },
+        {
+          "id": 157,
+          "position": [
+            636,
+            -135.0
+          ]
+        },
+        {
+          "id": 158,
+          "position": [
+            689,
+            -135.0
+          ]
+        },
+        {
+          "id": 160,
+          "position": [
+            26.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 161,
+          "position": [
+            79.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 162,
+          "position": [
+            132.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 163,
+          "position": [
+            185.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 164,
+          "position": [
+            238.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 166,
+          "position": [
+            344.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 167,
+          "position": [
+            397.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 168,
+          "position": [
+            450.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 169,
+          "position": [
+            503.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 170,
+          "position": [
+            556.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 171,
+          "position": [
+            609.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 172,
+          "position": [
+            662.5,
+            -148.5
+          ]
+        },
+        {
+          "id": 175,
+          "position": [
+            53,
+            -162.0
+          ]
+        },
+        {
+          "id": 176,
+          "position": [
+            106,
+            -162.0
+          ]
+        },
+        {
+          "id": 177,
+          "position": [
+            159,
+            -162.0
+          ]
+        },
+        {
+          "id": 178,
+          "position": [
+            212,
+            -162.0
+          ]
+        },
+        {
+          "id": 179,
+          "position": [
+            265,
+            -162.0
+          ]
+        },
+        {
+          "id": 180,
+          "position": [
+            318,
+            -162.0
+          ]
+        },
+        {
+          "id": 181,
+          "position": [
+            371,
+            -162.0
+          ]
+        },
+        {
+          "id": 182,
+          "position": [
+            424,
+            -162.0
+          ]
+        },
+        {
+          "id": 183,
+          "position": [
+            477,
+            -162.0
+          ]
+        },
+        {
+          "id": 184,
+          "position": [
+            530,
+            -162.0
+          ]
+        },
+        {
+          "id": 185,
+          "position": [
+            583,
+            -162.0
+          ]
+        },
+        {
+          "id": 186,
+          "position": [
+            636,
+            -162.0
+          ]
+        },
+        {
+          "id": 189,
+          "position": [
+            26.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 190,
+          "position": [
+            79.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 191,
+          "position": [
+            132.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 192,
+          "position": [
+            185.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 193,
+          "position": [
+            238.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 194,
+          "position": [
+            291.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 195,
+          "position": [
+            344.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 197,
+          "position": [
+            450.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 198,
+          "position": [
+            503.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 199,
+          "position": [
+            556.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 200,
+          "position": [
+            609.5,
+            -175.5
+          ]
+        },
+        {
+          "id": 204,
+          "position": [
+            53,
+            -189.0
+          ]
+        },
+        {
+          "id": 205,
+          "position": [
+            106,
+            -189.0
+          ]
+        },
+        {
+          "id": 207,
+          "position": [
+            212,
+            -189.0
+          ]
+        },
+        {
+          "id": 209,
+          "position": [
+            318,
+            -189
+          ]
+        },
+        {
+          "id": 211,
+          "position": [
+            424,
+            -189.0
+          ]
+        },
+        {
+          "id": 212,
+          "position": [
+            477,
+            -189.0
+          ]
+        },
+        {
+          "id": 213,
+          "position": [
+            530,
+            -189.0
+          ]
+        },
+        {
+          "id": 214,
+          "position": [
+            583,
+            -189.0
+          ]
+        },
+        {
+          "id": 218,
+          "position": [
+            26.5,
+            -202.5
+          ]
+        },
+        {
+          "id": 219,
+          "position": [
+            79.5,
+            -202.5
+          ]
+        },
+        {
+          "id": 221,
+          "position": [
+            185.5,
+            -202.5
+          ]
+        },
+        {
+          "id": 225,
+          "position": [
+            397.5,
+            -202.5
+          ]
+        },
+        {
+          "id": 227,
+          "position": [
+            503.5,
+            -202.5
+          ]
+        },
+        {
+          "id": 228,
+          "position": [
+            556.5,
+            -202.5
+          ]
+        },
+        {
+          "id": 233,
+          "position": [
+            53,
+            -216.0
+          ]
+        },
+        {
+          "id": 236,
+          "position": [
+            212,
+            -216.0
+          ]
+        },
+        {
+          "id": 239,
+          "position": [
+            371,
+            -216.0
+          ]
+        },
+        {
+          "id": 242,
+          "position": [
+            530,
+            -216.0
+          ]
+        },
+        {
+          "id": 243,
+          "position": [
+            583,
+            -216.0
+          ]
+        },
+        {
+          "id": 247,
+          "position": [
+            26.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 248,
+          "position": [
+            79.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 249,
+          "position": [
+            132.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 250,
+          "position": [
+            185.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 251,
+          "position": [
+            238.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 253,
+          "position": [
+            344.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 256,
+          "position": [
+            503.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 257,
+          "position": [
+            556.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 258,
+          "position": [
+            609.5,
+            -229.5
+          ]
+        },
+        {
+          "id": 262,
+          "position": [
+            53,
+            -243.0
+          ]
+        },
+        {
+          "id": 263,
+          "position": [
+            106,
+            -243.0
+          ]
+        },
+        {
+          "id": 264,
+          "position": [
+            159,
+            -243.0
+          ]
+        },
+        {
+          "id": 265,
+          "position": [
+            212,
+            -243.0
+          ]
+        },
+        {
+          "id": 267,
+          "position": [
+            318,
+            -243.0
+          ]
+        },
+        {
+          "id": 270,
+          "position": [
+            477,
+            -243.0
+          ]
+        },
+        {
+          "id": 271,
+          "position": [
+            530,
+            -243.0
+          ]
+        },
+        {
+          "id": 272,
+          "position": [
+            583,
+            -243.0
+          ]
+        },
+        {
+          "id": 273,
+          "position": [
+            636,
+            -243.0
+          ]
+        },
+        {
+          "id": 277,
+          "position": [
+            79.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 278,
+          "position": [
+            132.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 279,
+          "position": [
+            185.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 281,
+          "position": [
+            291.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 286,
+          "position": [
+            556.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 287,
+          "position": [
+            609.5,
+            -256.5
+          ]
+        },
+        {
+          "id": 293,
+          "position": [
+            159,
+            -270.0
+          ]
+        },
+        {
+          "id": 295,
+          "position": [
+            265,
+            -270.0
+          ]
+        },
+        {
+          "id": 299,
+          "position": [
+            477,
+            -270.0
+          ]
+        },
+        {
+          "id": 300,
+          "position": [
+            530,
+            -270.0
+          ]
+        },
+        {
+          "id": 302,
+          "position": [
+            636,
+            -270.0
+          ]
+        },
+        {
+          "id": 303,
+          "position": [
+            689,
+            -270
+          ]
+        },
+        {
+          "id": 305,
+          "position": [
+            26.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 307,
+          "position": [
+            132.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 308,
+          "position": [
+            185.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 309,
+          "position": [
+            238.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 314,
+          "position": [
+            503.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 316,
+          "position": [
+            609.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 317,
+          "position": [
+            662.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 318,
+          "position": [
+            715.5,
+            -283.5
+          ]
+        },
+        {
+          "id": 320,
+          "position": [
+            53,
+            -297.0
+          ]
+        },
+        {
+          "id": 322,
+          "position": [
+            159,
+            -297.0
+          ]
+        },
+        {
+          "id": 323,
+          "position": [
+            212,
+            -297.0
+          ]
+        },
+        {
+          "id": 324,
+          "position": [
+            265,
+            -297.0
+          ]
+        },
+        {
+          "id": 326,
+          "position": [
+            371,
+            -297
+          ]
+        },
+        {
+          "id": 328,
+          "position": [
+            477,
+            -297.0
+          ]
+        },
+        {
+          "id": 329,
+          "position": [
+            530,
+            -297.0
+          ]
+        },
+        {
+          "id": 331,
+          "position": [
+            636,
+            -297.0
+          ]
+        },
+        {
+          "id": 332,
+          "position": [
+            689,
+            -297.0
+          ]
+        },
+        {
+          "id": 334,
+          "position": [
+            26.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 335,
+          "position": [
+            79.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 337,
+          "position": [
+            185.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 338,
+          "position": [
+            238.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 340,
+          "position": [
+            344.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 341,
+          "position": [
+            397.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 342,
+          "position": [
+            450.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 343,
+          "position": [
+            503.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 344,
+          "position": [
+            556.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 345,
+          "position": [
+            609.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 346,
+          "position": [
+            662.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 347,
+          "position": [
+            715.5,
+            -310.5
+          ]
+        },
+        {
+          "id": 349,
+          "position": [
+            53,
+            -324.0
+          ]
+        },
+        {
+          "id": 351,
+          "position": [
+            159,
+            -324
+          ]
+        },
+        {
+          "id": 352,
+          "position": [
+            212,
+            -324.0
+          ]
+        },
+        {
+          "id": 353,
+          "position": [
+            265,
+            -324.0
+          ]
+        },
+        {
+          "id": 354,
+          "position": [
+            318,
+            -324.0
+          ]
+        },
+        {
+          "id": 355,
+          "position": [
+            371,
+            -324.0
+          ]
+        },
+        {
+          "id": 356,
+          "position": [
+            424,
+            -324.0
+          ]
+        },
+        {
+          "id": 357,
+          "position": [
+            477,
+            -324.0
+          ]
+        },
+        {
+          "id": 358,
+          "position": [
+            530,
+            -324.0
+          ]
+        },
+        {
+          "id": 359,
+          "position": [
+            583,
+            -324.0
+          ]
+        },
+        {
+          "id": 360,
+          "position": [
+            636,
+            -324.0
+          ]
+        },
+        {
+          "id": 361,
+          "position": [
+            689,
+            -324.0
+          ]
+        },
+        {
+          "id": 363,
+          "position": [
+            26.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 364,
+          "position": [
+            79.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 365,
+          "position": [
+            132.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 366,
+          "position": [
+            185.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 367,
+          "position": [
+            238.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 368,
+          "position": [
+            291.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 369,
+          "position": [
+            344.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 370,
+          "position": [
+            397.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 371,
+          "position": [
+            450.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 372,
+          "position": [
+            503.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 373,
+          "position": [
+            556.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 374,
+          "position": [
+            609.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 375,
+          "position": [
+            662.5,
+            -337.5
+          ]
+        },
+        {
+          "id": 378,
+          "position": [
+            53,
+            -351.0
+          ]
+        },
+        {
+          "id": 379,
+          "position": [
+            106,
+            -351.0
+          ]
+        },
+        {
+          "id": 380,
+          "position": [
+            159,
+            -351.0
+          ]
+        },
+        {
+          "id": 381,
+          "position": [
+            212,
+            -351.0
+          ]
+        },
+        {
+          "id": 382,
+          "position": [
+            265,
+            -351.0
+          ]
+        },
+        {
+          "id": 383,
+          "position": [
+            318,
+            -351.0
+          ]
+        },
+        {
+          "id": 384,
+          "position": [
+            371,
+            -351.0
+          ]
+        },
+        {
+          "id": 386,
+          "position": [
+            477,
+            -351.0
+          ]
+        },
+        {
+          "id": 387,
+          "position": [
+            530,
+            -351.0
+          ]
+        },
+        {
+          "id": 388,
+          "position": [
+            583,
+            -351.0
+          ]
+        },
+        {
+          "id": 389,
+          "position": [
+            636,
+            -351.0
+          ]
+        },
+        {
+          "id": 392,
+          "position": [
+            26.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 393,
+          "position": [
+            79.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 394,
+          "position": [
+            132.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 395,
+          "position": [
+            185.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 397,
+          "position": [
+            291.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 398,
+          "position": [
+            344.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 400,
+          "position": [
+            450.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 401,
+          "position": [
+            503.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 402,
+          "position": [
+            556.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 403,
+          "position": [
+            609.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 404,
+          "position": [
+            662.5,
+            -364.5
+          ]
+        },
+        {
+          "id": 407,
+          "position": [
+            53,
+            -378.0
+          ]
+        },
+        {
+          "id": 408,
+          "position": [
+            106,
+            -378.0
+          ]
+        },
+        {
+          "id": 409,
+          "position": [
+            159,
+            -378.0
+          ]
+        },
+        {
+          "id": 412,
+          "position": [
+            318,
+            -378.0
+          ]
+        },
+        {
+          "id": 413,
+          "position": [
+            371,
+            -378.0
+          ]
+        },
+        {
+          "id": 415,
+          "position": [
+            477,
+            -378.0
+          ]
+        },
+        {
+          "id": 416,
+          "position": [
+            530,
+            -378.0
+          ]
+        },
+        {
+          "id": 417,
+          "position": [
+            583,
+            -378.0
+          ]
+        },
+        {
+          "id": 419,
+          "position": [
+            689,
+            -378
+          ]
+        },
+        {
+          "id": 421,
+          "position": [
+            26.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 422,
+          "position": [
+            79.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 423,
+          "position": [
+            132.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 424,
+          "position": [
+            185.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 425,
+          "position": [
+            238.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 427,
+          "position": [
+            344.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 428,
+          "position": [
+            397.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 429,
+          "position": [
+            450.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 430,
+          "position": [
+            503.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 431,
+          "position": [
+            556.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 433,
+          "position": [
+            662.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 434,
+          "position": [
+            715.5,
+            -391.5
+          ]
+        },
+        {
+          "id": 436,
+          "position": [
+            53,
+            -405.0
+          ]
+        },
+        {
+          "id": 437,
+          "position": [
+            106,
+            -405.0
+          ]
+        },
+        {
+          "id": 438,
+          "position": [
+            159,
+            -405.0
+          ]
+        },
+        {
+          "id": 439,
+          "position": [
+            212,
+            -405.0
+          ]
+        },
+        {
+          "id": 440,
+          "position": [
+            265,
+            -405.0
+          ]
+        },
+        {
+          "id": 442,
+          "position": [
+            371,
+            -405.0
+          ]
+        },
+        {
+          "id": 443,
+          "position": [
+            424,
+            -405.0
+          ]
+        },
+        {
+          "id": 444,
+          "position": [
+            477,
+            -405.0
+          ]
+        },
+        {
+          "id": 445,
+          "position": [
+            530,
+            -405.0
+          ]
+        },
+        {
+          "id": 448,
+          "position": [
+            689,
+            -405.0
+          ]
+        },
+        {
+          "id": 450,
+          "position": [
+            26.5,
+            -418.5
+          ]
+        },
+        {
+          "id": 451,
+          "position": [
+            79.5,
+            -418.5
+          ]
+        },
+        {
+          "id": 452,
+          "position": [
+            132.5,
+            -418.5
+          ]
+        },
+        {
+          "id": 453,
+          "position": [
+            185.5,
+            -418.5
+          ]
+        },
+        {
+          "id": 454,
+          "position": [
+            238.5,
+            -418.5
+          ]
+        },
+        {
+          "id": 458,
+          "position": [
+            450.5,
+            -418.5
+          ]
+        },
+        {
+          "id": 459,
+          "position": [
+            503.5,
+            -418.5
+          ]
+        },
+        {
+          "id": 462,
+          "position": [
+            662.5,
+            -418.5
+          ]
+        },
+        {
+          "id": 463,
+          "position": [
+            715.5,
+            -418.5
+          ]
+        }
+      ],
+      "spawn": [
+        371,
+        -324.0
+      ],
+      "enemySpawns": [
+        [
+          715.5,
+          -121.5
+        ],
+        [
+          26.5,
+          -148.5
+        ],
+        [
+          662.5,
+          -94.5
+        ],
+        [
+          26.5,
+          -202.5
+        ],
+        [
+          26.5,
+          -418.5
+        ],
+        [
+          715.5,
+          -418.5
+        ],
+        [
+          79.5,
+          -121.5
+        ],
+        [
+          26.5,
+          -283.5
+        ]
+      ]
     }
   }
 }

@@ -416,3 +416,60 @@ L'archive Remastered et le client source restent locaux.
 ### Lot préparé indépendant livré le 5 novembre 2026
 
 `public/assets/prepared/` contient les six familles restantes de `TODO.md`, sans activation dans le jeu : 806 séquences Remastered, six cartes graphiques, 35 icônes, 43 sprites sources distincts, dix accessoires et neuf gardiens. Les 426 PNG occupent environ 575 Mio avec le manifeste. Les références temporelles passent de 22 051 à 19 334 par regroupement des pauses consécutives identiques ; aucune pose différente n'est retirée. Le manifeste actif ne référence pas ce lot. Catalogue, sources exactes, paramètres d'export et limites : [PREPARED-ASSETS.md](PREPARED-ASSETS.md).
+
+
+### Activation jouable Chef Bwork / Blop Multi — 5 novembre 2026
+
+Bworkette (sprite `1241`, carte publique `9760`) et Blop Multicolore Royal
+(`1647`, disposition publique `11892`) sont intégrés avec leurs familles,
+portraits HD, onze icônes et accessoires Bwork `6813` / `6811`.
+Les chemins SWF exacts figurent dans `scripts/future-dungeons-assets.json` ;
+les paramètres d’export et l’empreinte d’archive Remastered restent ceux de
+[PREPARED-ASSETS.md](PREPARED-ASSETS.md#activation-chef-bwork--blop-multi--5-novembre-2026).
+Cette activation remplace le statut inactif indiqué dans les notes historiques
+ci-dessus pour ces deux familles. Le manifeste actif référence leurs PNG sous
+`prepared/`, sans copie des atlas ni modification du lot historique. Les cartes
+utilisent les couches fixes originales, avec la navigation revue et versionnée.
+La validation exige les deux cartes et les accessoires Bwork.
+Aucun droit de redistribution ni autorisation d’Ankama n’est établi.
+
+### Coiffe du dev — apparence Champion Remastered, 5 novembre 2026
+
+Objet personnalisé du fangame, nommé « Coiffe du dev » (`devHat`), sans table
+de butin. Son dessin est exclusivement celui de la **Coiffe du Champion 8069** :
+identité vérifiée dans `lang/fr/items/items_fr_450.swf / I.u[8069]`, au commit
+Dofedex `ec4c08459f73f058294c34baa6baa739f9373753` (type 16, graphisme 127).
+Les bonus personnalisés ne sont pas ceux de l’objet canonique.
+
+Sources graphiques acquises dans l’archive **Remastered 1.40.13** SHA-256
+`aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5` :
+
+| Usage | Source originale | SHA-256 du SWF |
+| --- | --- | --- |
+| Icône | `clips/items/16/127.swf`, frame 1 | `acfc3abece8bdc789e646549e56e69ac5b26619e15bb99cda6f44bfc461d7a5d` |
+| Coiffe portée | `clips/sprites/accessories/a1.swf#16_127` | `61c32e94c618b82818ae75359b2ffdcb2bc735f75a11309042e5e1bd5ce50b17` |
+
+Le préparateur vérifie l’empreinte de l’archive et compare les deux SWF locaux
+à leurs entrées originales avant export. JPEXS 26.4.0 exporte les vecteurs ;
+Chromium les rasterise à densité 3 en jeu et 10 pour les aperçus. L’icône est
+recadrée au dessin transparent, côté maximal 192 pixels. Les cinq labels source
+R/L/F/B/S comportent chacun une frame native : aucune animation de la coiffe
+n’est retirée. Le port suit les matrices et profondeurs GAC déjà extraites du Crâ,
+pour ses directions et gestes, y compris avec les autres capes.
+
+Les onze séquences finales et leur petit manifeste sont versionnés sous
+`public/assets/dev-hat/`, avec références explicites du manifeste actif.
+Aucune archive, source SWF, ActionScript ou SVG intermédiaire n’est publiée.
+Les restrictions de redistribution et l’absence d’autorisation d’Ankama
+restent inchangées.
+
+Régénération après installation des sources et outils décrits plus haut :
+
+```sh
+pnpm assets:prepare:dev-hat
+pnpm assets:validate
+```
+
+Le lot de travail est `.local-assets/dev-hat-runtime/`. Les préparations du jeu
+réintègrent le lot versionné via `activate-bwork-blop.ts` ; l’import conserve
+le dossier `dev-hat/` comme le dossier préparé des familles.

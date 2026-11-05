@@ -1,5 +1,5 @@
 import {existsSync} from 'node:fs';
-import {test,expect} from '@playwright/test';
+import {test,expect} from './fixtures';
 import {newProfile} from '../../src/game/progression/profile';
 
 test('vend tous les doublons du sac, conserve les exemplaires portés et sauvegarde',async({page})=>{
@@ -16,7 +16,7 @@ test('vend tous les doublons du sac, conserve les exemplaires portés et sauvega
  await expect(dialog.getByText('3 doublons vendus : +8 kamas.',{exact:true})).toBeVisible();await expect(sell).toBeDisabled();
  await dialog.getByRole('button',{name:'Tous',exact:true}).click();await expect(dialog.locator('.item-cell')).toHaveCount(1);
  await expect(dialog.getByRole('img',{name:'Aperçu du Crâ équipé',exact:true})).toHaveAttribute('data-asset','appearance.2411.2414.cra.idle.southeast');
- const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('bouftourush.save.v1')!).profile);
+ const saved=await page.evaluate(()=>fetch('/api/profile').then(response=>response.json()).then(saved=>saved.profile));
  expect(saved.kamas).toBe(18);expect(saved.inventory.map((item:{uid:string})=>item.uid)).toEqual(['ring-two','worn-hat','cape','ring-one','amulet']);expect(saved.equipment).toEqual({hat:'worn-hat',cape:'cape',ring1:'ring-one',ring2:'ring-two'});
  await page.reload();await page.getByRole('button',{name:'Inventaire (I)',exact:true}).click();await expect(sell).toBeDisabled();await expect(dialog.locator('.item-cell')).toHaveCount(1);
 });

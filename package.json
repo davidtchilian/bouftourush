@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "engines": {"node": ">=22.13.0"},
   "packageManager": "pnpm@10.28.2",
   "scripts": {
+    "account:grant-dev-hat": "tsx scripts/grant-dev-hat.ts",
+    "assets:prepare:dev-hat": "python3 scripts/prepare-dev-hat.py && tsx scripts/rasterize-appearance.ts --root=.local-assets/dev-hat-runtime && tsx scripts/import-dev-hat.ts",
+    "account:provision": "tsx scripts/provision-account.ts",
     "dev": "vite --host 0.0.0.0",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 0.0.0.0",
@@ -15,7 +19,7 @@
     "assets:inspect": "python3 scripts/inspect-client.py",
     "assets:export": "python3 scripts/export-sprites.py",
     "assets:prepare": "python3 scripts/prepare-hub.py",
-    "assets:prepare:game": "python3 scripts/prepare-hub.py && python3 scripts/prepare-game.py && tsx scripts/compose-ui-buttons.ts && python3 scripts/prepare-spell-icons.py && tsx scripts/rasterize-appearance.ts --spell-icons && python3 scripts/prepare-appearance.py && tsx scripts/rasterize-appearance.ts && python3 scripts/prepare-dungeon-vectors.py && tsx scripts/rasterize-appearance.ts --dungeon-vectors && python3 scripts/prepare-ui-previews.py && tsx scripts/rasterize-appearance.ts --previews && python3 scripts/prepare-enemy-abilities.py && tsx scripts/rasterize-appearance.ts --enemy-abilities && tsx scripts/pack-atlas.ts .local-assets/game-runtime && tsx scripts/pack-atlas.ts .local-assets/game-runtime --previews && tsx scripts/bake-static-maps.ts",
+    "assets:prepare:game": "python3 scripts/prepare-hub.py && python3 scripts/prepare-game.py && tsx scripts/compose-ui-buttons.ts && python3 scripts/prepare-spell-icons.py && tsx scripts/rasterize-appearance.ts --spell-icons && python3 scripts/prepare-appearance.py && tsx scripts/rasterize-appearance.ts && python3 scripts/prepare-dungeon-vectors.py && tsx scripts/rasterize-appearance.ts --dungeon-vectors && python3 scripts/prepare-ui-previews.py && tsx scripts/rasterize-appearance.ts --previews && python3 scripts/prepare-enemy-abilities.py && tsx scripts/rasterize-appearance.ts --enemy-abilities && tsx scripts/pack-atlas.ts .local-assets/game-runtime && tsx scripts/pack-atlas.ts .local-assets/game-runtime --previews && tsx scripts/activate-bwork-blop.ts .local-assets/game-runtime && tsx scripts/bake-static-maps.ts",
     "test:offline": "playwright test -c playwright.offline.config.ts",
     "test:simulation": "tsx scripts/simulate-run.ts",
     "assets:compare": "tsx scripts/verify-composition.ts",
@@ -24,9 +28,10 @@
     "assets:prepare:enemies": "python3 scripts/prepare-enemy-abilities.py && tsx scripts/rasterize-appearance.ts --enemy-abilities",
     "assets:spells": "python3 scripts/prepare-spell-icons.py && tsx scripts/rasterize-appearance.ts --spell-icons",
     "start": "vite preview --host 0.0.0.0",
-    "assets:prepare:tofu-scara": "python3 scripts/prepare-tofu-scara.py --monsters && python3 scripts/prepare-dungeon-maps.py && python3 scripts/prepare-composition.py --tofu-scara-only && tsx scripts/rasterize-appearance.ts && python3 scripts/prepare-dungeon-vectors.py && tsx scripts/rasterize-appearance.ts --dungeon-vectors && python3 scripts/prepare-ui-previews.py && tsx scripts/rasterize-appearance.ts --previews && tsx scripts/pack-atlas.ts .local-assets/game-runtime && tsx scripts/pack-atlas.ts .local-assets/game-runtime --previews && tsx scripts/bake-static-maps.ts",
+    "assets:prepare:tofu-scara": "python3 scripts/prepare-tofu-scara.py --monsters && python3 scripts/prepare-dungeon-maps.py && python3 scripts/prepare-composition.py --tofu-scara-only && tsx scripts/rasterize-appearance.ts && python3 scripts/prepare-dungeon-vectors.py && tsx scripts/rasterize-appearance.ts --dungeon-vectors && python3 scripts/prepare-ui-previews.py && tsx scripts/rasterize-appearance.ts --previews && tsx scripts/pack-atlas.ts .local-assets/game-runtime && tsx scripts/pack-atlas.ts .local-assets/game-runtime --previews && tsx scripts/activate-bwork-blop.ts .local-assets/game-runtime && tsx scripts/bake-static-maps.ts",
     "assets:prepare:future": "python3 scripts/prepare-future-assets.py && tsx scripts/rasterize-appearance.ts --root=.local-assets/future-dungeons-runtime --workers=2 --batch-jobs=8 && tsx scripts/prepare-map-previews.ts && tsx scripts/pack-atlas.ts .local-assets/future-dungeons-runtime && tsx scripts/pack-atlas.ts .local-assets/future-dungeons-runtime --previews && tsx scripts/import-prepared-assets.ts",
-    "assets:validate:future": "tsx scripts/validate-prepared-assets.ts"
+    "assets:validate:future": "tsx scripts/validate-prepared-assets.ts",
+    "assets:activate:bwork-blop": "tsx scripts/activate-bwork-blop.ts"
   },
   "dependencies": {
     "react": "^19.0.0",

@@ -1,3 +1,4 @@
+import {equipmentLimits} from '../game/progression/profile';
 import {useEffect,useState,type ReactNode} from 'react';
 import {useAppStore} from '../app/store';
 import type {GameController} from '../game/rendering/game';
@@ -44,11 +45,11 @@ export function GameUI({controller}:{controller:GameController|null}){
     {(Object.entries(spells) as [SpellId,typeof spells[SpellId]][]).map(([id,spell])=><div key={id} className="spell" tabIndex={0} aria-label={`${spell.name} · ${spell.key.toUpperCase()} · ${s.cooldowns[id]>0?`${s.cooldowns[id].toFixed(1)} secondes`:'Prêt'}`} data-ready={s.cooldowns[id]<=0}>
      <img className="spell-icon" src={image(`ui.spell.${id}`)} alt=""/><span className="spell-key">{spell.key.toUpperCase()}</span><span className="spell-short-name">{spellLabels[id]}</span>
      <span className="spell-timer">{s.cooldowns[id]>0?`${s.cooldowns[id].toFixed(1)} s`:id==='power'&&s.buffRemaining>0?`${s.buffRemaining.toFixed(1)} s`:'Prêt'}</span>
-     <span className="spell-tooltip" role="tooltip"><strong>{spell.name}</strong><span>{id==='power'?'Augmente temporairement vos dégâts.':'Visez avec la souris, puis appuyez sur '+spell.key.toUpperCase()+'.'}</span><span>Recharge : {Number(cooldownFor(id,s.cooldownReduction).toFixed(3))} s{s.cooldownReduction>0?` (−${s.cooldownReduction} %)` : ''}</span></span>
+     <span className="spell-tooltip" role="tooltip"><strong>{spell.name}</strong><span>{id==='power'?'Augmente temporairement vos dégâts.':'Visez avec la souris, puis appuyez sur '+spell.key.toUpperCase()+'.'}</span><span>Recharge : {Number(cooldownFor(id,s.cooldownReduction,equipmentLimits(controller.simulation.profile).cooldownReduction).toFixed(3))} s{s.cooldownReduction>0?` (−${s.cooldownReduction} %)` : ''}</span></span>
     </div>)}
    </div>
    <div className="adventure-tools">
-   <div className="adventure-status"><span className="adventure-location">{s.dungeon?`${dungeons[s.dungeon].name}${s.mode==='extreme'?' · Extrême':''}`:'Astrub'}</span><strong>{s.kamas.toLocaleString('fr-FR')} kamas</strong><span>{s.buffRemaining>0?`Tir puissant · ${s.buffRemaining.toFixed(1)} s`:s.phase==='combat'?(s.living===0&&s.waveDelay>0?`Prochaine vague · ${s.waveDelay.toFixed(1)} s`:`Vague ${s.wave||1}/${s.totalWaves}${s.boss?' · Boss':''} · ${s.living} ennemi${s.living>1?'s':''}`):'Astrub · Zone de repos'}</span><span className="save-status" title="Votre progression est sauvegardée sur cet appareil">Sauvegarde locale</span></div>
+   <div className="adventure-status"><span className="adventure-location">{s.dungeon?`${dungeons[s.dungeon].name}${s.mode==='extreme'?' · Extrême':''}`:'Astrub'}</span><strong>{s.kamas.toLocaleString('fr-FR')} kamas</strong><span>{s.buffRemaining>0?`Tir puissant · ${s.buffRemaining.toFixed(1)} s`:s.phase==='combat'?(s.living===0&&s.waveDelay>0?`Prochaine vague · ${s.waveDelay.toFixed(1)} s`:`Vague ${s.wave||1}/${s.totalWaves}${s.boss?' · Boss':''} · ${s.living} ennemi${s.living>1?'s':''}`):'Astrub · Zone de repos'}</span><span className="save-status" title="Votre progression est liée au compte et enregistrée sur le serveur">Sauvegarde serveur</span></div>
    <nav className="actions" aria-label="Menu du jeu">{s.phase==='hub'&&button('Donjons',()=>{setMenu(true);setInventory(false);setHelp(false);},{className:'primary-action'})}{button('Inventaire (I)',()=>{setInventory(v=>!v);setMenu(false);setHelp(false);})}{s.phase==='combat'&&button('Abandonner',()=>{controller.simulation.returnHub();setMenu(false);setInventory(false);})}{button('Aide',()=>setHelp(v=>!v),{'aria-expanded':help,'aria-controls':'game-help',className:'help-toggle'})}</nav>
    </div>
   </footer>

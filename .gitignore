@@ -5,6 +5,7 @@
 /dofedex/
 /dofedex-*/
 .local-auth/
+.server-data/
 
 # Dépendances et caches locaux.
 node_modules/

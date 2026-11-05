@@ -18,8 +18,9 @@ async function setup(){
 describe('Authentification serveur',()=>{
  it('bloque le jeu, les assets et les sources, sans inscription',async()=>{
   const {request}=await setup();
-  for(const path of ['/','/assets/manifest.json','/src/main.tsx','/auth/register','/%2elocal-auth/account.json'])expect((await request(path)).status).toBe(401);
+  for(const path of ['/','/assets/manifest.json','/src/main.tsx','/%2elocal-auth/account.json'])expect((await request(path)).status).toBe(401);
   expect((await request('/',{headers:{Accept:'text/html'}})).headers.get('location')).toBe('/login');
+  expect((await request('/auth/register')).status).toBe(404);
   expect(await (await request('/login')).text()).toContain('Inscription indisponible');
  });
  it('refuse les identifiants invalides et les origines externes',async()=>{

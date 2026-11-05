@@ -12,8 +12,20 @@ export function finalStats(profile:Profile):Stats&{cooldownReduction:number} {
   const threshold=Object.keys(set.thresholds).map(Number).filter(n=>n<=count).sort((a,b)=>b-a)[0];
   if(threshold){stats.hp+=set.thresholds[threshold].hp;stats.power+=set.thresholds[threshold].power;stats.cooldownReduction+=set.thresholds[threshold].cooldownReduction??0;}
  }
- stats.cooldownReduction=Math.min(balance.maxCooldownReduction,Math.max(0,stats.cooldownReduction));
+ stats.cooldownReduction=Math.min(equipmentLimits(profile).cooldownReduction,Math.max(0,stats.cooldownReduction));
  return stats;
+}
+/** Les objets administratifs peuvent relever leurs plafonds sans modifier les autres panoplies. */
+export function equipmentLimits(profile:Profile):{movementSpeed:number;cooldownReduction:number}{
+ const equipped=new Set(Object.values(profile.equipment));
+ const limits={movementSpeed:Number(balance.maxMovementSpeedBonus),cooldownReduction:Number(balance.maxCooldownReduction)};
+ for(const instance of profile.inventory){
+  if(!equipped.has(instance.uid))continue;
+  const override=items[instance.item]?.statLimits;
+  limits.movementSpeed=Math.max(limits.movementSpeed,override?.movementSpeed??0);
+  limits.cooldownReduction=Math.max(limits.cooldownReduction,override?.cooldownReduction??0);
+ }
+ return limits;
 }
 /** Bonus de vitesse en pourcentage, recalculé sans modifier la sauvegarde. */
 export function movementSpeedBonus(profile:Profile):number {
@@ -24,7 +36,7 @@ export function movementSpeedBonus(profile:Profile):number {
   const threshold=Object.keys(set.thresholds).map(Number).filter(n=>n<=count).sort((a,b)=>b-a)[0];
   if(threshold)bonus+=set.thresholds[threshold].movementSpeed??0;
  }
- return Math.max(-50,Math.min(60,bonus));
+ return Math.max(-50,Math.min(equipmentLimits(profile).movementSpeed,bonus));
 }
 export function awardXp(profile:Profile,amount:number):number {
  const old=profile.level;profile.xp+=amount;

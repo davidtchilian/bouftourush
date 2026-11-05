@@ -1,6 +1,6 @@
-# Assets des prochains donjons — préparation sans activation
+# Assets préparés des prochains donjons
 
-La demande du 5 novembre 2026 concerne uniquement les graphismes des six lignes
+La préparation initiale du 5 novembre 2026 concernait uniquement les graphismes des six lignes
 restantes de `TODO.md`. Les donjons, objets, statistiques, butins et sauvegardes
 actifs restent définis par les cinq donjons déjà intégrés. Le catalogue de travail
 est `scripts/future-dungeons-assets.json` ; il ne constitue aucune donnée de jeu.
@@ -73,3 +73,45 @@ Le lot séparé contient **806 séquences, six cartes, 35 icônes, 43 sprites so
 Les aperçus des six cartes et les vues source des dix accessoires ont été examinés, en complément des icônes et gardiens. Cette vérification graphique ne remplace pas la future revue de navigation ni la validation des accessoires attachés au Crâ lors de leur intégration.
 
 L’assemblage lit les PNG page par page et renouvelle la page Chromium toutes les huit pages pour limiter la mémoire. Après validation du lot publié, les PNG de travail devenus non référencés sont supprimés pour libérer le disque ; les sources Remastered, vecteurs, métadonnées et atlas restent locaux et permettent de régénérer les exports.
+
+
+## Activation Chef Bwork / Blop Multi — 5 novembre 2026
+
+Ces deux familles sont désormais jouables. Les quatre autres restent préparées.
+Le catalogue historique garde `preparedOnly: true` et ses cartes sans navigation :
+les décisions revues, cellules accessibles, spawn et huit points d’apparition par
+carte sont dans `scripts/map-navigation.json`. Leurs dispositions publiques SQL
+ont été décodées puis comparées cellule par cellule aux placements préparés :
+414 couches pour Bwork et 278 pour Blop, identiques. Aucune donnée protégée n’a été utilisée.
+Les graphismes sont toujours les exports Remastered déjà préparés.
+
+`pnpm assets:activate:bwork-blop` active les deux familles dans `public/assets/`.
+Le script est répétable, valide la composition du Crâ et la navigation avant
+publication du manifeste ; il référence les PNG existants sans les dupliquer.
+Pour régénérer un lot actif depuis les vecteurs : préparer et importer le lot futur,
+puis lancer `pnpm assets:prepare:game`, `pnpm assets:import .local-assets/game-runtime`
+et `pnpm assets:validate`. La préparation du jeu appelle l’activation avant de
+composer les fonds fixes. Sur un lot local sans dossier préparé, l’activateur copie
+celui de `public/assets/prepared/`. Il accepte aussi un chemin de lot en argument.
+Conserver le dossier préparé dans tout déploiement : ses atlas sont maintenant
+nécessaires aux deux donjons actifs.
+
+Bworks : 157 cellules accessibles, trois décors de premier plan rétablis et quatre
+exclusions de bord. Blop : 248 cellules, 25 décors rétablis et 15 exclusions.
+Les poteaux, murs, barrières, puits, socles et stalagmites au sol bloquent ; les
+feuilles, herbes, petits débris, outils posés et stalactites suspendues restent
+traversables sur le terrain accessible. Les positions des objets sont protégées
+par empreinte, et la validation contrôle aussi la liste exacte des cellules revues.
+
+Bworkette garde les Bworks ; le Blop Multicolore Royal est accompagné des quatre
+Blops Royaux. Les attaques utilisent l’IA de mêlée existante : aucune capacité
+spéciale canonique supplémentaire n’est revendiquée. Chaque famille donne sa
+panoplie à poids égaux, avec 3 % / 2,5 % par monstre ordinaire et 40 % par boss.
+En Extrême, les règles existantes (effectifs ×5, PV ×1,5, panoplie complète à la
+victoire) s’appliquent. Les statistiques sont provisoires, propres au fangame,
+dans `src/data/bworkBlop.ts` et `src/data/monsters.ts`.
+Le Chef Bwork favorise la Vie ; Blop favorise la Puissance et la récupération.
+Les sept objets Bwork incluent la vraie coiffe 6813 et la cape 6811, branchées
+sur les matrices d’attache existantes ; les quatre objets Blop n’inventent
+aucune coiffe ni cape. La sauvegarde v1 accepte les nouveaux objets et donjons,
+sans réinitialiser les profils existants.

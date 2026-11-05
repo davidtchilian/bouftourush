@@ -1,4 +1,4 @@
-import { test,expect } from '@playwright/test';
+import { test,expect } from './fixtures';
 test('explique le blocage quand le manifeste est absent',async({page})=>{
  await page.route('**/assets/manifest.json',route=>route.fulfill({status:404,body:'Absent'}));
  await page.goto('/');

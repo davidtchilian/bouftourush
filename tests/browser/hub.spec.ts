@@ -1,5 +1,5 @@
 import { readFileSync, existsSync } from 'node:fs';
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 import { parseManifest } from '../../src/game/assets/manifest';
 import { Navigation } from '../../src/game/movement/navigation';
 const installed=existsSync('public/assets/manifest.json');

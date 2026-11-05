@@ -1,6 +1,6 @@
 # Panoplies et donjons
 
-Tofu et Scarafeuille sont intégrés au jeu avec leurs boss, vagues, butins et équipements. Les six autres familles ci-dessous disposent de leurs assets préparés dans `public/assets/prepared/` : elles ne sont pas activées. Voir [les assets préparés](docs/PREPARED-ASSETS.md) pour les sources, les limites et les commandes.
+Tofu, Scarafeuille, Chef Bwork et Blop Multi sont intégrés au jeu avec leurs boss, vagues, butins et équipements. Les quatre autres familles ci-dessous disposent de leurs assets préparés dans `public/assets/prepared/` : elles ne sont pas activées. Voir [les assets préparés](docs/PREPARED-ASSETS.md) pour les sources, les limites et les commandes.
 
 | Panoplie | Vie | Puissance | Vitessedeplacement | Récupération |
 | --- | --- | --- | --- | --- |

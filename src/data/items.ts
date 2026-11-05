@@ -1,9 +1,11 @@
+import {developerHat} from './developerItem';
+import {bworkBlopItems,bworkBlopSets} from './bworkBlop';
 import {tofuScaraItems,tofuScaraSets} from './tofuScara';
 export type Stats={hp:number;power:number;cooldownReduction?:number;movementSpeed?:number};
 export const slots=['hat','cape','amulet','ring1','ring2','belt','boots','weapon'] as const;
 export type Slot=typeof slots[number];
 export const slotNames:Record<Slot,string>={hat:'Coiffe',cape:'Cape',amulet:'Amulette',ring1:'Anneau 1',ring2:'Anneau 2',belt:'Ceinture',boots:'Bottes',weapon:'Arme'};
-export type ItemDefinition={id:string;name:string;category:Slot|'ring';stats:Stats;set:string;icon:string};
+export type ItemDefinition={id:string;name:string;category:Slot|'ring';stats:Stats;set:string;icon:string;statLimits?:{movementSpeed?:number;cooldownReduction?:number}};
 /** Identités/icônes originales vérifiées dans items_fr_450.swf ; stats adaptées au fangame. */
 export const items:Record<string,ItemDefinition>={
  '2411':{id:'2411',name:'Coiffe du Bouftou',category:'hat',stats:{hp:44,power:24},set:'bouftou',icon:'item.2411'},
@@ -58,3 +60,12 @@ Object.assign(items,tofuScaraItems);
 Object.assign(sets,tofuScaraSets);
 export const tofuLoot=Object.values(tofuScaraItems).filter(i=>i.set==='tofu').map(i=>({item:i.id,weight:1}));
 export const scaraLoot=Object.values(tofuScaraItems).filter(i=>i.set==='blackScara').map(i=>({item:i.id,weight:1}));
+
+Object.assign(items,bworkBlopItems);
+Object.assign(sets,bworkBlopSets);
+export const bworkLoot=Object.values(bworkBlopItems).filter(i=>i.set==='chefBwork').map(i=>({item:i.id,weight:1}));
+export const blopLoot=Object.values(bworkBlopItems).filter(i=>i.set==='blopMulti').map(i=>({item:i.id,weight:1}));
+
+// Aucun butin : attribution administrative uniquement.
+items[developerHat.id]=developerHat;
+sets.developer={name:"Équipement du développeur",thresholds:{}};

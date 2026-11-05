@@ -1,0 +1,345 @@
+{
+  "version": 1,
+  "assets": {
+    "item.devHat": {
+      "frames": [
+        {
+          "path": "textures/item-devHat/000.png",
+          "durationMs": 50
+        }
+      ],
+      "size": [
+        188,
+        181
+      ],
+      "pivot": [
+        -0.17553191489361702,
+        -0.08839779005524862
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "loop": false,
+      "flipX": false,
+      "provenance": {
+        "source": "https://github.com/dofera/dofedex/releases/tag/1.40.13",
+        "version": "1.40.13-remastered",
+        "usageRights": "Graphismes Ankama ; aucun droit de redistribution établi.",
+        "archiveSha256": "aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5",
+        "originalFile": "clips/items/16/127.swf",
+        "conversion": "JPEXS 26.4.0 ; vecteurs originaux ; densité 3 ; icône recadrée 192px ; Coiffe du Champion 8069, skin uniquement, objet personnalisé Coiffe du dev ; recadrage transparent aux limites du dessin original"
+      }
+    },
+    "piece.accessory.devHat.R": {
+      "frames": [
+        {
+          "path": "textures/piece-accessory-devHat-R/000.png",
+          "durationMs": 83.33333333333333
+        }
+      ],
+      "size": [
+        31,
+        30
+      ],
+      "pivot": [
+        0.5483870967741935,
+        0.5
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "loop": true,
+      "flipX": false,
+      "provenance": {
+        "source": "https://github.com/dofera/dofedex/releases/tag/1.40.13",
+        "version": "1.40.13-remastered",
+        "usageRights": "Graphismes Ankama ; aucun droit de redistribution établi.",
+        "archiveSha256": "aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5",
+        "originalFile": "clips/sprites/accessories/a1.swf#16_127:R",
+        "conversion": "JPEXS 26.4.0 ; vecteurs originaux ; densité 3 ; icône recadrée 192px ; Coiffe du Champion 8069, skin uniquement, objet personnalisé Coiffe du dev"
+      }
+    },
+    "preview.piece.accessory.devHat.R": {
+      "frames": [
+        {
+          "path": "textures/preview-piece-accessory-devHat-R/000.png",
+          "durationMs": 83.33333333333333
+        }
+      ],
+      "size": [
+        31,
+        30
+      ],
+      "pivot": [
+        0.5483870967741935,
+        0.5
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "loop": true,
+      "flipX": false,
+      "provenance": {
+        "source": "https://github.com/dofera/dofedex/releases/tag/1.40.13",
+        "version": "1.40.13-remastered",
+        "usageRights": "Graphismes Ankama ; aucun droit de redistribution établi.",
+        "archiveSha256": "aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5",
+        "originalFile": "clips/sprites/accessories/a1.swf#16_127:R",
+        "conversion": "JPEXS 26.4.0 ; vecteurs originaux ; densité 10 ; icône recadrée 192px ; Coiffe du Champion 8069, skin uniquement, objet personnalisé Coiffe du dev"
+      }
+    },
+    "piece.accessory.devHat.L": {
+      "frames": [
+        {
+          "path": "textures/piece-accessory-devHat-L/000.png",
+          "durationMs": 83.33333333333333
+        }
+      ],
+      "size": [
+        26,
+        32
+      ],
+      "pivot": [
+        0.4230769230769231,
+        0.53125
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "loop": true,
+      "flipX": false,
+      "provenance": {
+        "source": "https://github.com/dofera/dofedex/releases/tag/1.40.13",
+        "version": "1.40.13-remastered",
+        "usageRights": "Graphismes Ankama ; aucun droit de redistribution établi.",
+        "archiveSha256": "aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5",
+        "originalFile": "clips/sprites/accessories/a1.swf#16_127:L",
+        "conversion": "JPEXS 26.4.0 ; vecteurs originaux ; densité 3 ; icône recadrée 192px ; Coiffe du Champion 8069, skin uniquement, objet personnalisé Coiffe du dev"
+      }
+    },
+    "preview.piece.accessory.devHat.L": {
+      "frames": [
+        {
+          "path": "textures/preview-piece-accessory-devHat-L/000.png",
+          "durationMs": 83.33333333333333
+        }
+      ],
+      "size": [
+        26,
+        32
+      ],
+      "pivot": [
+        0.4230769230769231,
+        0.53125
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "loop": true,
+      "flipX": false,
+      "provenance": {
+        "source": "https://github.com/dofera/dofedex/releases/tag/1.40.13",
+        "version": "1.40.13-remastered",
+        "usageRights": "Graphismes Ankama ; aucun droit de redistribution établi.",
+        "archiveSha256": "aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5",
+        "originalFile": "clips/sprites/accessories/a1.swf#16_127:L",
+        "conversion": "JPEXS 26.4.0 ; vecteurs originaux ; densité 10 ; icône recadrée 192px ; Coiffe du Champion 8069, skin uniquement, objet personnalisé Coiffe du dev"
+      }
+    },
+    "piece.accessory.devHat.F": {
+      "frames": [
+        {
+          "path": "textures/piece-accessory-devHat-F/000.png",
+          "durationMs": 83.33333333333333
+        }
+      ],
+      "size": [
+        33,
+        27
+      ],
+      "pivot": [
+        0.5151515151515151,
+        0.48148148148148145
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "loop": true,
+      "flipX": false,
+      "provenance": {
+        "source": "https://github.com/dofera/dofedex/releases/tag/1.40.13",
+        "version": "1.40.13-remastered",
+        "usageRights": "Graphismes Ankama ; aucun droit de redistribution établi.",
+        "archiveSha256": "aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5",
+        "originalFile": "clips/sprites/accessories/a1.swf#16_127:F",
+        "conversion": "JPEXS 26.4.0 ; vecteurs originaux ; densité 3 ; icône recadrée 192px ; Coiffe du Champion 8069, skin uniquement, objet personnalisé Coiffe du dev"
+      }
+    },
+    "preview.piece.accessory.devHat.F": {
+      "frames": [
+        {
+          "path": "textures/preview-piece-accessory-devHat-F/000.png",
+          "durationMs": 83.33333333333333
+        }
+      ],
+      "size": [
+        33,
+        27
+      ],
+      "pivot": [
+        0.5151515151515151,
+        0.48148148148148145
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "loop": true,
+      "flipX": false,
+      "provenance": {
+        "source": "https://github.com/dofera/dofedex/releases/tag/1.40.13",
+        "version": "1.40.13-remastered",
+        "usageRights": "Graphismes Ankama ; aucun droit de redistribution établi.",
+        "archiveSha256": "aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5",
+        "originalFile": "clips/sprites/accessories/a1.swf#16_127:F",
+        "conversion": "JPEXS 26.4.0 ; vecteurs originaux ; densité 10 ; icône recadrée 192px ; Coiffe du Champion 8069, skin uniquement, objet personnalisé Coiffe du dev"
+      }
+    },
+    "piece.accessory.devHat.B": {
+      "frames": [
+        {
+          "path": "textures/piece-accessory-devHat-B/000.png",
+          "durationMs": 83.33333333333333
+        }
+      ],
+      "size": [
+        33,
+        28
+      ],
+      "pivot": [
+        0.5151515151515151,
+        0.4642857142857143
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "loop": true,
+      "flipX": false,
+      "provenance": {
+        "source": "https://github.com/dofera/dofedex/releases/tag/1.40.13",
+        "version": "1.40.13-remastered",
+        "usageRights": "Graphismes Ankama ; aucun droit de redistribution établi.",
+        "archiveSha256": "aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5",
+        "originalFile": "clips/sprites/accessories/a1.swf#16_127:B",
+        "conversion": "JPEXS 26.4.0 ; vecteurs originaux ; densité 3 ; icône recadrée 192px ; Coiffe du Champion 8069, skin uniquement, objet personnalisé Coiffe du dev"
+      }
+    },
+    "preview.piece.accessory.devHat.B": {
+      "frames": [
+        {
+          "path": "textures/preview-piece-accessory-devHat-B/000.png",
+          "durationMs": 83.33333333333333
+        }
+      ],
+      "size": [
+        33,
+        28
+      ],
+      "pivot": [
+        0.5151515151515151,
+        0.4642857142857143
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "loop": true,
+      "flipX": false,
+      "provenance": {
+        "source": "https://github.com/dofera/dofedex/releases/tag/1.40.13",
+        "version": "1.40.13-remastered",
+        "usageRights": "Graphismes Ankama ; aucun droit de redistribution établi.",
+        "archiveSha256": "aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5",
+        "originalFile": "clips/sprites/accessories/a1.swf#16_127:B",
+        "conversion": "JPEXS 26.4.0 ; vecteurs originaux ; densité 10 ; icône recadrée 192px ; Coiffe du Champion 8069, skin uniquement, objet personnalisé Coiffe du dev"
+      }
+    },
+    "piece.accessory.devHat.S": {
+      "frames": [
+        {
+          "path": "textures/piece-accessory-devHat-S/000.png",
+          "durationMs": 83.33333333333333
+        }
+      ],
+      "size": [
+        24,
+        32
+      ],
+      "pivot": [
+        0.5416666666666666,
+        0.5
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "loop": true,
+      "flipX": false,
+      "provenance": {
+        "source": "https://github.com/dofera/dofedex/releases/tag/1.40.13",
+        "version": "1.40.13-remastered",
+        "usageRights": "Graphismes Ankama ; aucun droit de redistribution établi.",
+        "archiveSha256": "aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5",
+        "originalFile": "clips/sprites/accessories/a1.swf#16_127:S",
+        "conversion": "JPEXS 26.4.0 ; vecteurs originaux ; densité 3 ; icône recadrée 192px ; Coiffe du Champion 8069, skin uniquement, objet personnalisé Coiffe du dev"
+      }
+    },
+    "preview.piece.accessory.devHat.S": {
+      "frames": [
+        {
+          "path": "textures/preview-piece-accessory-devHat-S/000.png",
+          "durationMs": 83.33333333333333
+        }
+      ],
+      "size": [
+        24,
+        32
+      ],
+      "pivot": [
+        0.5416666666666666,
+        0.5
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "loop": true,
+      "flipX": false,
+      "provenance": {
+        "source": "https://github.com/dofera/dofedex/releases/tag/1.40.13",
+        "version": "1.40.13-remastered",
+        "usageRights": "Graphismes Ankama ; aucun droit de redistribution établi.",
+        "archiveSha256": "aa9bccb901feb8bc06c16464c36ffbef1a46f8db27ce497bf252b9bd8c5d42d5",
+        "originalFile": "clips/sprites/accessories/a1.swf#16_127:S",
+        "conversion": "JPEXS 26.4.0 ; vecteurs originaux ; densité 10 ; icône recadrée 192px ; Coiffe du Champion 8069, skin uniquement, objet personnalisé Coiffe du dev"
+      }
+    }
+  },
+  "accessory": {
+    "slot": "hat",
+    "views": {
+      "R": "piece.accessory.devHat.R",
+      "L": "piece.accessory.devHat.L",
+      "F": "piece.accessory.devHat.F",
+      "B": "piece.accessory.devHat.B",
+      "S": "piece.accessory.devHat.S"
+    }
+  }
+}

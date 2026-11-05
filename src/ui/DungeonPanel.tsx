@@ -13,7 +13,6 @@ function DungeonCard({dungeon,manifest,completed,onEnter}:{dungeon:DungeonDefini
   <h3>{dungeon.name}</h3>
   <div className="boss-portrait">{boss&&<AssetSprite manifest={manifest} assetId={`mob.${boss.sprite}.${active?'attack':'idle'}.R`} label={`Gardien : ${boss.name}`} width={230} height={164} restMs={1600}/>}</div>
   {boss&&<div className="boss-caption"><span className="eyebrow">Gardien du donjon</span><strong>{boss.name}</strong></div>}
-  <p className="dungeon-recommendation muted">{dungeon.recommendedGear}</p>
   <p className="dungeon-waves">{dungeon.normalWaves.length} vagues <span>+ boss · {dungeon.normalWaves.reduce((sum,wave)=>sum+wave.length,0)+dungeon.bossWave.length} ennemis</span></p>
   <div className="dungeon-loot"><span className="muted">Butin à découvrir</span><div>{boss&&boss.loot.slice(0,4).map(drop=><img key={drop.item} src={assetImage(manifest,items[drop.item].icon)} alt={items[drop.item].name} title={items[drop.item].name}/>)}</div></div>
   {boss?.bonusLoot&&<p className="muted">Chaque {boss.name} : {boss.bonusLoot.chance*100} % de chances de trouver une pièce de la panoplie du Bouftou Royal, en plus du butin habituel.</p>}

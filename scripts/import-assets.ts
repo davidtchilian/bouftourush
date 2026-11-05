@@ -18,7 +18,7 @@ try {
   }
   await inspectAssets(staging);
   // Un lot futur est indépendant du manifeste actif et survit à sa régénération.
-  try { await cp(resolve(destination,'prepared'),resolve(staging,'prepared'),{recursive:true}); }
+  for(const folder of ['prepared','dev-hat'])try { await cp(resolve(destination,folder),resolve(staging,folder),{recursive:true}); }
   catch(error) { if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error; }
   await rm(destination,{recursive:true,force:true});
   await rename(staging,destination);

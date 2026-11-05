@@ -1,5 +1,5 @@
 import {readFileSync,existsSync} from 'node:fs';
-import {test,expect} from '@playwright/test';
+import {test,expect} from './fixtures';
 import {parseManifest} from '../../src/game/assets/manifest';
 import {Navigation,type Point} from '../../src/game/movement/navigation';
 import {auditProfile,combatDestination} from '../../scripts/combat-audit';
@@ -44,8 +44,8 @@ for(const dungeon of Object.keys(dungeons) as DungeonId[]){
   const dialog=page.getByRole('dialog',{name:'Inventaire et équipement',exact:true});await expect(dialog).toBeVisible();
   const item=dialog.locator('.item-cell').first();await expect(item).toBeVisible();const itemName=(await item.getAttribute('aria-label'))!;await item.click();
   await dialog.getByRole('button',{name:/^Équiper/}).first().click();await expect(dialog.locator('.equipment-slot').getByRole('img',{name:itemName,exact:true})).toBeVisible();
-  const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('bouftourush.save.v1')??'null'));
-  expect(saved.version).toBe(1);expect(saved.profile.kamas).toBeGreaterThan(0);expect(saved.profile.completed).toContain(dungeon);expect(Object.keys(saved.profile.equipment).length).toBeGreaterThan(0);
+  const saved=await page.evaluate(()=>fetch('/api/profile').then(response=>response.json()));
+  expect(saved.revision).toBeGreaterThan(0);expect(saved.profile.kamas).toBeGreaterThan(0);expect(saved.profile.completed).toContain(dungeon);expect(Object.keys(saved.profile.equipment).length).toBeGreaterThan(0);
   await page.reload();await expect(page.getByRole('button',{name:'Donjons',exact:true})).toBeVisible({timeout:60000});
   await page.getByRole('button',{name:'Inventaire (I)',exact:true}).click();
   await expect(page.getByRole('dialog',{name:'Inventaire et équipement'}).locator('.equipment-slot').getByRole('img',{name:itemName,exact:true})).toBeVisible();

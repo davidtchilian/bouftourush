@@ -1,5 +1,5 @@
 import {existsSync,readFileSync} from 'node:fs';
-import {test,expect} from '@playwright/test';
+import {test,expect} from './fixtures';
 import type {GameController} from '../../src/game/rendering/game';
 import {newProfile} from '../../src/game/progression/profile';
 test('compose toutes les animations équipées dans Three.js, dont les masques de mort',async({page},testInfo)=>{

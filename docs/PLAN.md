@@ -94,3 +94,39 @@ Les contrôles de navigation, de composition, de récompense Extrême et le pilo
 Tofu et Scarafeuille sont jouables avec leurs quatre vagues, boss, récompenses et équipements. Les deux parcours navigateur complets ont réussi ; leurs profils recommandés réussissent également en simulation. À la reprise : 103 tests TypeScript, 17 tests Python, validation du manifeste actif (2 543 séquences et six cartes) et build de production réussis.
 
 Les six familles restantes de TODO.md disposent d’un lot séparé validé dans `public/assets/prepared/` : 806 séquences, six cartes, 35 icônes, 43 sprites sources, dix accessoires et neuf gardiens ; 426 PNG. Les données de combat, objets, butins et sauvegardes actifs ne les intègrent pas. Les cartes préparées exigent toujours leur revue de navigation avant toute future activation. Sources et limites détaillées dans `PREPARED-ASSETS.md`.
+
+
+## Chef Bwork et Blop Multi — 5 novembre 2026
+
+Intégration des deux donjons aux paliers 6 et 7, trois vagues puis boss,
+Normal/Extrême, loot, panoplies, filtres d’inventaire et sauvegarde v1 étendue.
+Navigation revue sur les cartes publiques 9760 et 11892 ; graphismes exclusifs
+Remastered du lot préparé, accessoires Bwork composés sur le Crâ.
+Les quatre autres familles du TODO restent préparées et inactives.
+
+
+## Compte et progression serveur — 5 novembre 2026
+
+Remplacement du fichier de compte local obligatoire par SQLite côté serveur.
+Configuration initiale unique dans le navigateur, sessions persistantes, page
+Mon compte, modification du nom et du mot de passe, révocation des sessions.
+Progression sauvegardée et chargée via une API authentifiée avec contrôle de
+révision. Migration initiale de la sauvegarde locale puis serveur comme référence.
+Voir `docs/AUTH.md` pour les routes, le stockage et les limites.
+
+
+### Connexion uniquement
+
+La création de compte depuis le navigateur est retirée. Les routes de création
+renvoient 404 et le serveur exige un compte déjà provisionné. Le compte `fredi`
+est configuré dans la base privée ; aucun mot de passe en clair n’est versionné.
+La commande administrative `account:provision` conserve la progression.
+
+## Coiffe du dev — 5 novembre 2026
+
+Objet administratif à apparence Champion Remastered 8069 : icône et cinq vues
+originales, bonus +10 000 Vie/Puissance, +150 % déplacement et −90 % recharge.
+Plafonds spéciaux liés à l’équipement, aucun drop, attribution idempotente au
+compte `fredi` sans remise à zéro ni équipement automatique.
+Les recommandations de panoplies ont été retirées de l’affichage des donjons,
+sans test de cette modification à la demande du joueur.

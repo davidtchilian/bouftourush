@@ -1,4 +1,4 @@
-import {test,expect} from '@playwright/test';
+import {test,expect} from './fixtures';
 import {items} from '../../src/data/items';
 import {newProfile,equip} from '../../src/game/progression/profile';
 import {dungeons} from '../../src/data/dungeons';

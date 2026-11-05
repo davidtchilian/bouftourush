@@ -40,6 +40,6 @@ const localAssets:Plugin={
 };
 export default defineConfig({
  plugins:[authentication(),localAssets],
- server:{watch:{usePolling:true,interval:750,ignored:['**/.local-assets/**','**/dist/**','**/test-results/**','**/public/assets/**','**/public/.assets-staging/**']}},
+ server:{watch:{usePolling:true,interval:750,ignored:['**/.server-data/**','**/.local-assets/**','**/dist/**','**/test-results/**','**/public/assets/**','**/public/.assets-staging/**']}},
  optimizeDeps:{entries:['index.html']},
 });

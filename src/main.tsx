@@ -19,10 +19,10 @@ function App(){
    return mountGame(host.current!,abort.signal,snapshot=>useAppStore.setState({snapshot}),status=>useAppStore.setState({status}),updateLabels);
   }).then(game=>{
    if(abort.signal.aborted){game.dispose();return;}runtime=game;useAppStore.setState({manifest:game.manifest});setController(game);
-  }).catch((error:unknown)=>{if(!abort.signal.aborted)useAppStore.setState({status:'Assets requis',error:error instanceof Error?error.message:String(error)});});
+  }).catch((error:unknown)=>{if(!abort.signal.aborted)useAppStore.setState({status:'Chargement impossible',error:error instanceof Error?error.message:String(error)});});
   return()=>{abort.abort();runtime?.dispose();updateLabels([]);};
  },[]);
-  return <main><form className="session-logout" method="post" action="/auth/logout"><button type="submit">Déconnexion</button></form><GameUI controller={controller}/><div className="viewport" ref={host} onContextMenu={e=>e.preventDefault()} aria-label="Scène de jeu"><div className="labels" ref={labelsHost} aria-hidden="true"/></div>{!controller&&<aside aria-live="polite"><h1>Bouftourush</h1><p>{status}</p>{error&&<><p>{error}</p><p>Installer les sources locales avec assets:prepare:game et assets:import. Voir docs/ASSETS.md.</p></>}</aside>}</main>;
+  return <main><form className="session-logout" method="post" action="/auth/logout" onSubmit={async event=>{event.preventDefault();const form=event.currentTarget;try{await controller?.flush();form.submit();}catch(error){window.alert(error instanceof Error?error.message:String(error));}}}><a href="/account" onClick={async event=>{event.preventDefault();try{await controller?.flush();location.assign('/account');}catch(error){window.alert(error instanceof Error?error.message:String(error));}}}>Mon compte</a><button type="submit">Déconnexion</button></form><GameUI controller={controller}/><div className="viewport" ref={host} onContextMenu={e=>e.preventDefault()} aria-label="Scène de jeu"><div className="labels" ref={labelsHost} aria-hidden="true"/></div>{!controller&&<aside aria-live="polite"><h1>Bouftourush</h1><p>{status}</p>{error&&<><p>{error}</p></>}</aside>}</main>;
 }
 const appRoot=createRoot(document.getElementById('root')!);
 appRoot.render(<App/>);

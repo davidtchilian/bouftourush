@@ -31,7 +31,7 @@ export const manifestSchema=z.object({version:z.literal(1),composition:compositi
   for (const layer of [m.hub,...Object.values(m.maps??{})].flatMap(map=>map.layers??[])) if (!m.assets[layer.assetId]) ctx.addIssue({code:'custom',message:`Couche absente : ${layer.assetId}`,path:['hub','layers']});
   for(const map of [m.hub,...Object.values(m.maps??{})])if(map.backgroundAssetId&&!m.assets[map.backgroundAssetId])ctx.addIssue({code:'custom',message:`Fond composé absent : ${map.backgroundAssetId}`,path:['maps']});
   if(m.gameplayReady){
-    for(const id of ['incarnam','bouftou','ensable','tofu','scara']) if(!m.maps?.[id]?.enemySpawns?.length || !m.maps[id].walkable?.length)ctx.addIssue({code:'custom',message:`Carte de donjon incomplète : ${id}`,path:['maps',id]});
+    for(const id of ['incarnam','bouftou','ensable','tofu','scara','chefBwork','blopMulti']) if(!m.maps?.[id]?.enemySpawns?.length || !m.maps[id].walkable?.length)ctx.addIssue({code:'custom',message:`Carte de donjon incomplète : ${id}`,path:['maps',id]});
     const required=['ui.spell.explosive','ui.spell.flaming','ui.spell.magic','ui.spell.power','ui.button.hover','ui.button.down','ui.portrait','ui.selection','ui.window','ui.button','ui.slot','ui.heart','spell.magic.projectile','spell.magic.impact','spell.explosive.projectile','spell.explosive.impact','spell.flaming.projectile','spell.flaming.impact','spell.power.cast'];
     for(const sprite of new Set(Object.values(monsters).map(monster=>monster.sprite)))for(const action of ['idle','run','attack','hit','death'])for(const direction of ['R','L'])required.push(`mob.${sprite}.${action}.${direction}`);
     for(const action of ['cast','buff','hit','death'])for(const direction of ['R','L'])required.push(`cra.${action}.${direction}`);
@@ -46,7 +46,7 @@ export const manifestSchema=z.object({version:z.literal(1),composition:compositi
     const actors=[...directions.flatMap(direction=>[`cra.idle.${direction}`,`cra.run.${direction}`]),...['cast','buff','hit','death'].flatMap(action=>['R','L'].map(direction=>`cra.${action}.${direction}`))];
     if(!m.composition)ctx.addIssue({code:'custom',message:'Composition Crâ absente : lancer assets:prepare:game',path:['composition']});
     for(const actor of actors)if(!m.composition?.actors[actor])ctx.addIssue({code:'custom',message:`Composition absente : ${actor}`,path:['composition','actors',actor]});
-    for(const [item,slot] of [['8114','hat'],['8133','hat'],['8112','cape'],['8134','cape']])if(m.composition?.accessories[item]?.slot!==slot)ctx.addIssue({code:'custom',message:`Accessoire requis absent : ${item}`,path:['composition','accessories',item]});
+    for(const [item,slot] of [['devHat','hat'],['6813','hat'],['6811','cape'],['8114','hat'],['8133','hat'],['8112','cape'],['8134','cape']])if(m.composition?.accessories[item]?.slot!==slot)ctx.addIssue({code:'custom',message:`Accessoire requis absent : ${item}`,path:['composition','accessories',item]});
     const previewActors=Object.values(monsters).filter(monster=>monster.boss).flatMap(monster=>['idle','attack'].map(action=>`mob.${monster.sprite}.${action}.R`));
     for(const actor of previewActors)required.push(`preview.${actor}`);
     for(const id of required)if(!m.assets[id])ctx.addIssue({code:'custom',message:`Asset de jeu absent : ${id}`,path:['assets',id]});

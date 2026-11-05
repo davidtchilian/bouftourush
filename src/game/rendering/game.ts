@@ -15,10 +15,11 @@ import {speedBurstActive} from '../ai/speedBurst';
 import {worldTexturePaths} from '../assets/worldTextures';
 import {dungeons} from '../../data/dungeons';
 import type {MonsterId} from '../../data/monsters';
-import {loadProfile,saveProfile,type StorageLike} from '../save/persistence';
+import type {StorageLike} from '../save/persistence';
+import {openServerProfile} from '../save/serverProfile';
 import {finalStats} from '../progression/profile';
 export type ScreenLabel={id:string;x:number;y:number;text:string;kind:'player'|'enemy'|'boss'|'damage'|'reward'|'loot';icon?:string;hp?:number;maxHp?:number};
-export type GameController={simulation:Simulation;manifest:Manifest;dispose:()=>void};
+export type GameController={simulation:Simulation;manifest:Manifest;dispose:()=>void;flush:()=>Promise<void>};
 type Node={mesh:THREE.Mesh<THREE.PlaneGeometry,THREE.MeshBasicMaterial>;asset:string};
 const storage:StorageLike={getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)};
 /** Tout le rendu reste en quads texturés ; simulation et navigation ne dépendent pas du GPU. */
@@ -54,11 +55,10 @@ export async function mountGame(host:HTMLElement,signal:AbortSignal,onSnapshot:(
    const texture=base.clone(),[x,y,w,h,pw,ph]=frame.region;
    texture.repeat.set(w/pw,h/ph);texture.offset.set(x/pw,1-(y+h)/ph);texture.updateMatrix();frameTextures.set(frameKey(frame),texture);return texture;
   };
-  const loadedProfile=loadProfile(storage);
-  const game=new Simulation(manifest,loadedProfile.profile,()=>save());
-  let saveWarning=false;
-  save=()=>{if(!saveProfile(storage,game.profile)&&!saveWarning){saveWarning=true;game.message('Sauvegarde locale indisponible. Votre progression reste disponible dans cet onglet.');}};
-  if(loadedProfile.warning)game.message(loadedProfile.warning);
+  const saved=await openServerProfile(storage,signal,message=>game.message(message));
+  const game=new Simulation(manifest,saved.profile,()=>save());
+  save=()=>saved.save(game.profile);
+  if(saved.warning)game.message(saved.warning);
   const scene=new THREE.Scene(),camera=new THREE.OrthographicCamera(-1,1,1,-1,0.1,100);camera.position.z=50;
   renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.domElement.setAttribute('aria-label','Scène de jeu');host.append(renderer.domElement);
   const geometryFor=(id:string)=>{
@@ -210,6 +210,6 @@ export async function mountGame(host:HTMLElement,signal:AbortSignal,onSnapshot:(
    onLabels(labels);
   });
   onSnapshot(game.snapshot());onStatus('Prêt');
-  return{simulation:game,manifest,dispose};
+  return{simulation:game,manifest,dispose,flush:async()=>{save();await saved.flush();}};
  }catch(error){dispose();throw error;}
 }

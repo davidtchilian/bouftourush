@@ -1,5 +1,5 @@
 import {existsSync,readFileSync} from 'node:fs';
-import {test,expect} from '@playwright/test';
+import {test,expect} from './fixtures';
 import {newProfile} from '../../src/game/progression/profile';
 test('icônes recadrées, coiffe et cape portées, cartes figées',async({page},testInfo)=>{
  test.skip(!existsSync('public/assets/manifest.json'),'Assets locaux nécessaires.');

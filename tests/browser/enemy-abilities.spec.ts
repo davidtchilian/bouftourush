@@ -1,4 +1,4 @@
-import {test,expect} from '@playwright/test';
+import {test,expect} from './fixtures';
 import type {GameController} from '../../src/game/rendering/game';
 import {newProfile} from '../../src/game/progression/profile';
 

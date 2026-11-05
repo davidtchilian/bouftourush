@@ -6,7 +6,7 @@ import {Navigation,type Point} from '../src/game/movement/navigation';
 import {segmentDistance} from '../src/game/combat/damage';
 export function auditProfile(dungeon:DungeonId):Profile{
  const profile=newProfile();
- const stage={incarnam:{level:1,set:null},ensable:{level:8,set:'adventurer'},bouftou:{level:16,set:'mousse'},tofu:{level:24,set:'bouftou'},scara:{level:30,set:'tofu'}}[dungeon];
+ const stage={incarnam:{level:1,set:null},ensable:{level:8,set:'adventurer'},bouftou:{level:16,set:'mousse'},tofu:{level:24,set:'bouftou'},scara:{level:30,set:'tofu'},chefBwork:{level:36,set:'blackScara'},blopMulti:{level:42,set:'chefBwork'}}[dungeon];
  profile.level=stage.level;
  for(const item of Object.values(items).filter(item=>item.set===stage.set)){
   const uid=`audit-${item.id}`;profile.inventory.push({uid,item:item.id});equip(profile,uid);

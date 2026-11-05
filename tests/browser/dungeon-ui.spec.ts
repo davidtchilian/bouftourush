@@ -1,7 +1,7 @@
 import {existsSync} from 'node:fs';
 import {dungeons} from '../../src/data/dungeons';
 import {monsters} from '../../src/data/monsters';
-import {test,expect} from '@playwright/test';
+import {test,expect} from './fixtures';
 test('présente les gardiens des donjons avec leurs sprites, animations et butins',async({page},testInfo)=>{
  test.setTimeout(120000);
  test.skip(!existsSync('public/assets/manifest.json'),'Assets locaux nécessaires.');

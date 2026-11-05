@@ -1,4 +1,4 @@
-import {test,expect} from '@playwright/test';
+import {test,expect} from './fixtures';
 test('icônes Remastered AZER et états orange/blanc puis beige/noir pendant la recharge',async({page},testInfo)=>{
  await page.addInitScript(()=>localStorage.setItem('bouftourush.help.seen','1'));await page.goto('/');
  const deck=page.getByRole('group',{name:'Sorts AZER'}),spell=deck.locator('.spell').first();

@@ -13,7 +13,7 @@ pnpm install
 pnpm dev
 ```
 
-Le serveur exige le fichier privé `.local-auth/account.json` ; le compte demandé est configuré sur cette machine. Ce fichier ne fait pas partie du dépôt. Voir [Authentification](docs/AUTH.md) pour installer une autre instance. Aucune inscription publique.
+Connectez-vous avec le compte serveur existant `fredi`. Aucune création de compte n’est proposée. Compte, mot de passe haché, sessions et progression sont conservés côté serveur dans `.server-data/game.sqlite`. Node.js 22.13+ est requis. Voir [Authentification](docs/AUTH.md) pour le provisionnement administratif et les sauvegardes.
 
 Ouvrir l’adresse affichée, généralement **http://localhost:5173**. Les assets préparés sont inclus dans Git : un nouveau clone peut lancer le jeu directement après installation des dépendances. Si le manifeste est absent, récupérer le dossier `public/assets/` du dépôt ou le régénérer avec la procédure ci-dessous.
 

@@ -1,4 +1,4 @@
-import {test,expect} from '@playwright/test';
+import {test,expect} from './fixtures';
 import {readFileSync} from 'node:fs';
 import type {GameController} from '../../src/game/rendering/game';
 import {parseManifest} from '../../src/game/assets/manifest';
