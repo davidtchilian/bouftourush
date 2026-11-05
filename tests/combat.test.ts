@@ -30,6 +30,15 @@ describe('combat déterministe',()=>{
   game.update(0.02);expect(game.player.position[0]-318).toBeCloseTo(balance.playerSpeed*0.01);
   advance(game,0.1);expect(game.player.position[0]).toBeGreaterThan(318);expect(game.shots.length).toBe(1);
  });
+ it('laisse les monstres se traverser et se superposer sans répulsion',()=>{
+  const game=new Simulation(fixtureManifest(),newProfile());game.enter('incarnam');game.update(2);
+  game.enemies=game.enemies.slice(0,2);
+  for(const enemy of game.enemies){enemy.position=[159,-135];enemy.route=[[...game.player.position]];enemy.pathAt=Infinity;enemy.actionUntil=0;}
+  game.update(0.1);
+  expect(game.enemies[0].position).toEqual(game.enemies[1].position);
+  expect(game.enemies[0].position).not.toEqual([159,-135]);
+  expect(game.navigation.contains(game.enemies[0].position)).toBe(true);
+ });
  it('termine les trois donjons, récompense chaque mort une seule fois et garde les gains',()=>{
   for(const dungeon of ['incarnam','bouftou','ensable'] as const){
    const profile=auditProfile(dungeon),owned=profile.inventory.length,game=new Simulation(fixtureManifest(),profile,()=>{},42,1);game.enter(dungeon);

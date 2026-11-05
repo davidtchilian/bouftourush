@@ -13,7 +13,11 @@ try{
   const times:number[]=[];let previous=performance.now();for(let i=0;i<120;i++){const now=await new Promise<number>(resolve=>requestAnimationFrame(resolve));times.push(now-previous);previous=now;}
   times.shift();times.sort((a,b)=>a-b);return {median:times[Math.floor(times.length/2)],p95:times[Math.floor(times.length*0.95)]};
  });
- const render=JSON.parse(await canvas.getAttribute('data-render-stats')??'{}'),enemies=JSON.parse(await canvas.getAttribute('data-enemies')??'[]').length;
+ const render=JSON.parse(await canvas.getAttribute('data-render-stats')??'{}'),enemies=await canvas.evaluate(async c=>{
+  const path='/src/game/rendering/inspection.ts',{inspectSimulation}=await import(path);
+  const game=inspectSimulation(c as HTMLCanvasElement) as import('../src/game/core/simulation').Simulation;
+  return game.enemies.filter(e=>e.hp>0).length;
+ });
  const cdp=await page.context().newCDPSession(page);await cdp.send('Performance.enable');const metrics=await cdp.send('Performance.getMetrics');
  const heapBytes=metrics.metrics.find(m=>m.name==='JSHeapUsedSize')?.value;
  const report={assets:Object.keys(manifest.assets).length,files:paths.length,bytes,decodedBytes,loadMs,frameMs,render,enemies,heapBytes,notes:'Chromium headless local : temps et mémoire dépendent du GPU/logiciel et du cache système. decodedBytes = RGBA sans mipmaps, toutes pages y compris UI.'};

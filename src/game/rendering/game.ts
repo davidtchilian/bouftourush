@@ -1,3 +1,4 @@
+import {registerSimulationInspection} from './inspection';
 import * as THREE from 'three';
 import {parseManifest,type Manifest,type Animation} from '../assets/manifest';
 import {animationFrame,retimedAnimationAge} from './animation';
@@ -27,9 +28,9 @@ export async function mountGame(host:HTMLElement,signal:AbortSignal,onSnapshot:(
  const response=await fetch('/assets/manifest.json',{signal});
  if(!response.ok||!response.headers.get('content-type')?.includes('application/json'))throw new Error('Manifeste absent : lancer pnpm assets:prepare:game puis pnpm assets:import .local-assets/game-runtime. Voir docs/ASSETS.md.');
  const manifest=parseManifest(await response.json()),textures=new Map<string,THREE.Texture>(),geometries=new Map<string,THREE.PlaneGeometry>(),frameTextures=new Map<string,THREE.Texture>();
- let renderer:THREE.WebGLRenderer|undefined,stop=()=>{},removeInput=()=>{},resize=()=>{},save=()=>{},disposed=false,sceneDirty=true;
+ let renderer:THREE.WebGLRenderer|undefined,stop=()=>{},removeInput=()=>{},removeInspection=()=>{},resize=()=>{},save=()=>{},disposed=false,sceneDirty=true;
  const nodes=new Map<string,Node>(),mapNodes:Node[]=[];let observer:ResizeObserver|undefined;
- const dispose=()=>{disposed=true;stop();removeInput();save();observer?.disconnect();window.removeEventListener('resize',resize);window.removeEventListener('pagehide',save);for(const n of [...nodes.values(),...mapNodes])n.mesh.material.dispose();for(const g of geometries.values())g.dispose();for(const t of frameTextures.values())t.dispose();for(const t of textures.values())t.dispose();renderer?.dispose();renderer?.domElement.remove();};
+ const dispose=()=>{disposed=true;stop();removeInput();removeInspection();save();observer?.disconnect();window.removeEventListener('resize',resize);window.removeEventListener('pagehide',save);for(const n of [...nodes.values(),...mapNodes])n.mesh.material.dispose();for(const g of geometries.values())g.dispose();for(const t of frameTextures.values())t.dispose();for(const t of textures.values())t.dispose();renderer?.dispose();renderer?.domElement.remove();};
  try{
   const loader=new THREE.TextureLoader();
   const loadTextures=async(paths:string[])=>{
@@ -61,6 +62,7 @@ export async function mountGame(host:HTMLElement,signal:AbortSignal,onSnapshot:(
   if(saved.warning)game.message(saved.warning);
   const scene=new THREE.Scene(),camera=new THREE.OrthographicCamera(-1,1,1,-1,0.1,100);camera.position.z=50;
   renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.domElement.setAttribute('aria-label','Scène de jeu');host.append(renderer.domElement);
+  if(import.meta.env.DEV)removeInspection=registerSimulationInspection(renderer.domElement,game);
   const geometryFor=(id:string)=>{
    let geometry=geometries.get(id);if(geometry)return geometry;
    const asset=manifest.assets[id];if(!asset)throw new Error(`Animation absente : ${id}`);
@@ -145,7 +147,7 @@ export async function mountGame(host:HTMLElement,signal:AbortSignal,onSnapshot:(
    if(!worldReady())return;
    snapshotTimer+=dt;
    if(game.paused){
-    const key=JSON.stringify([game.time,game.mapRevision,game.player,game.enemies,game.shots,game.enemyShots,game.effects,game.profile.equipment]);
+    const key=JSON.stringify([game.time,game.mapRevision,game.player,game.shots,game.enemyShots,game.effects,game.profile.equipment]);
     if(key===pausedScene){
      if(snapshotTimer>=0.1){snapshotTimer=0;onSnapshot(game.snapshot());}
      return;
@@ -191,7 +193,6 @@ export async function mountGame(host:HTMLElement,signal:AbortSignal,onSnapshot:(
    const alive=new Set([...playerKeys,...game.enemies.map(e=>`enemy-${e.id}`),...game.shots.map(e=>`shot-${e.id}`),...game.enemyShots.map(e=>`enemy-shot-${e.id}`),...game.effects.map(e=>`effect-${e.id}`)]);
    for(const [key,node] of nodes)if(!alive.has(key)){scene.remove(node.mesh);node.mesh.material.dispose();nodes.delete(key);}
    const canvas=renderer!.domElement;canvas.dataset.playerX=player.position[0].toFixed(2);canvas.dataset.playerY=player.position[1].toFixed(2);canvas.dataset.animation=hat==='none'&&cape==='none'?asset:`appearance.${hat}.${cape}.${asset}`;canvas.dataset.compositionLayers=String(layers.length);canvas.dataset.map=game.mapId;canvas.dataset.phase=game.phase;canvas.dataset.mode=game.mode;
-   canvas.dataset.enemies=JSON.stringify(game.enemies.filter(e=>e.hp>0).map(e=>({id:e.id,kind:e.kind,x:e.position[0],y:e.position[1],hp:e.hp})));
    canvas.dataset.projectiles=String(game.shots.length);
    canvas.dataset.enemyProjectiles=String(game.enemyShots.length);
    if(snapshotTimer>=0.1){

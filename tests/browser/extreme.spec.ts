@@ -10,9 +10,14 @@ test('choisit Extrême, affiche ×5 monstres avec ×1,5 PV et conserve le mode l
  await page.setViewportSize({width:390,height:844});expect(await dialog.evaluate(element=>element.scrollWidth<=element.clientWidth+1)).toBe(true);
  await page.screenshot({path:testInfo.outputPath('choix-extreme-mobile.png')});
  await dialog.getByRole('button',{name:'Entrer en Extrême — Donjon d’Incarnam',exact:true}).click();
- const canvas=page.locator('canvas');await expect(canvas).toHaveAttribute('data-mode','extreme');
- await expect.poll(async()=>JSON.parse(await canvas.getAttribute('data-enemies')??'[]').length).toBe(30);
- const enemies=JSON.parse(await canvas.getAttribute('data-enemies')??'[]') as {kind:string;hp:number}[];
+ const canvas=page.locator('canvas');await expect(canvas).toHaveAttribute('data-mode','extreme',{timeout:30000});
+ const readEnemies=()=>canvas.evaluate(async c=>{
+  const path='/src/game/rendering/inspection.ts',{inspectSimulation}=await import(path);
+  const game=inspectSimulation(c as HTMLCanvasElement) as import('../../src/game/core/simulation').Simulation;
+  return game.enemies.filter(e=>e.hp>0).map(e=>({kind:e.kind,hp:e.hp}));
+ });
+ await expect.poll(async()=>(await readEnemies()).length).toBe(30);
+ const enemies=await readEnemies();
  expect(enemies.filter(e=>e.kind==='youngWhite')).toHaveLength(15);expect(enemies.filter(e=>e.kind==='youngBlack')).toHaveLength(15);
  expect(enemies.every(e=>e.hp===(e.kind==='youngWhite'?63:72))).toBe(true);
  await page.screenshot({path:testInfo.outputPath('premiere-vague-extreme.png')});

@@ -119,14 +119,14 @@ export class Simulation {
   const positions=this.map.enemySpawns??[];
   this.enemies=this.enemies.filter(e=>e.hp>0);
   const multipliers=this.director?waveMultipliers(this.director.dungeon,this.director.index,this.mode):{hp:1,damage:1};
-  const occupied:Point[]=[];
+  const occupied=new Set<number>();
   wave.forEach((kind,index)=>{
    const anchor=positions[index%positions.length]??this.map.spawn;
    // Répartir les groupes renforcés sur les cellules traversables autour des ancres
-   // authored ; ne pas empiler les ennemis lorsque leur nombre dépasse les ancres.
-   const candidates=this.navigation.cells.filter(cell=>occupied.every(p=>distance(p,cell.position)>=20)&&distance(cell.position,this.map.spawn)>=70&&distance(cell.position,this.player.position)>=70).sort((a,b)=>distance(a.position,anchor)-distance(b.position,anchor));
-   const point=candidates.find(cell=>this.navigation.clear(anchor,cell.position))?.position??candidates.find(cell=>this.navigation.route(anchor,cell.position).length)?.position??anchor;
-   occupied.push(point);
+   // authored, avec une cellule distincte sans comparaison de distance entre monstres.
+   const candidates=this.navigation.cells.filter(cell=>!occupied.has(cell.id)&&distance(cell.position,this.map.spawn)>=70&&distance(cell.position,this.player.position)>=70).sort((a,b)=>distance(a.position,anchor)-distance(b.position,anchor));
+   const cell=candidates.find(cell=>this.navigation.clear(anchor,cell.position))??candidates.find(cell=>this.navigation.route(anchor,cell.position).length);
+   const point=cell?.position??anchor;if(cell)occupied.add(cell.id);
    const maxHp=Math.round(monsters[kind].hp*multipliers.hp),attackDamage=Math.round(monsters[kind].damage*multipliers.damage);
    this.enemies.push({id:++this.serial,kind,position:[...point],direction:'south',action:'idle',animationTime:0,actionUntil:0,route:[],hp:maxHp,maxHp,damage:attackDamage,spawnedAt:this.time,attackAt:this.time+0.6+index*0.13,pathAt:0,deadAt:0,rewarded:false});
   });
@@ -208,13 +208,6 @@ export class Simulation {
     }
     const speed=enemyMovementSpeed(data,this.time-dt-enemy.spawnedAt,this.time-enemy.spawnedAt);
     this.setAction(enemy,this.moveActor(enemy,speed,dt)?'run':'idle');
-    for(const other of this.enemies){
-     if(other===enemy||other.hp<=0)continue;
-     const gap=distance(enemy.position,other.position);if(gap>=17)continue;
-     const dx=gap?((enemy.position[0]-other.position[0])/gap):(enemy.id%2?1:-1),dy=gap?((enemy.position[1]-other.position[1])/gap):0;
-     const next:Point=[enemy.position[0]+dx*(17-gap)*dt*3,enemy.position[1]+dy*(17-gap)*dt*3];
-     if(this.navigation.clear(enemy.position,next))enemy.position=next;
-    }
    }
    if(this.phase==='death')break;
   }

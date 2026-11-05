@@ -25,7 +25,11 @@ for(const dungeon of Object.keys(dungeons) as DungeonId[]){
   const screen=(p:Point)=>({x:rect.x+rect.width/2+(p[0]-(left+right)/2)*scale,y:rect.y+rect.height/2-(p[1]-(bottom+top)/2)*scale});
   let moving=false,sawBoss=false,sawProjectile=false;const deadline=Date.now()+420000;
   while(Date.now()<deadline&&(await canvas.getAttribute('data-phase'))==='combat'){
-   const state=await canvas.evaluate(c=>({x:Number(c.dataset.playerX),y:Number(c.dataset.playerY),enemies:JSON.parse(c.dataset.enemies??'[]') as {id:number;kind:string;x:number;y:number;hp:number}[],projectiles:Number(c.dataset.projectiles)}));
+   const state=await canvas.evaluate(async c=>{
+    const path='/src/game/rendering/inspection.ts',{inspectSimulation}=await import(path);
+    const game=inspectSimulation(c as HTMLCanvasElement) as import('../../src/game/core/simulation').Simulation;
+    return {x:game.player.position[0],y:game.player.position[1],enemies:game.enemies.filter(e=>e.hp>0).map(e=>({id:e.id,kind:e.kind,x:e.position[0],y:e.position[1],hp:e.hp})),projectiles:game.shots.length};
+   });
    sawProjectile ||= state.projectiles>0;sawBoss ||= state.enemies.some(e=>e.kind===dungeons[dungeon].bossWave[0]);
    const enemy=state.enemies.sort((a,b)=>Math.hypot(a.x-state.x,a.y-state.y)-Math.hypot(b.x-state.x,b.y-state.y))[0];
    if(enemy){

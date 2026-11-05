@@ -130,3 +130,15 @@ Plafonds spéciaux liés à l’équipement, aucun drop, attribution idempotente
 compte `fredi` sans remise à zéro ni équipement automatique.
 Les recommandations de panoplies ont été retirées de l’affichage des donjons,
 sans test de cette modification à la demande du joueur.
+
+
+## Allègement des combats nombreux — 5 novembre 2026
+
+Suppression de la répulsion entre monstres : ils peuvent se traverser et se
+superposer. Les collisions de carte et de projectiles restent inchangées.
+Les apparitions utilisent un ensemble de cellules occupées au lieu de comparer
+les distances entre tous les monstres déjà placés.
+La liste des monstres n’est plus sérialisée en JSON à chaque pas de simulation,
+y compris pour détecter une scène en pause. Les outils lisent la simulation à
+la demande via une inspection enregistrée uniquement en développement ; aucune
+liste de monstres n’est publiée dans un attribut HTML du canvas.
